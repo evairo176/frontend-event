@@ -1,4 +1,5 @@
 import { HeroUiProvider } from "@/providers/heroui-provider";
+import QueryClientProvider from "@/providers/query-client-provider";
 import "@/styles/globals.css";
 import { cn } from "@/utils/cn";
 import type { AppProps } from "next/app";
@@ -10,15 +11,17 @@ const inter = Inter({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <HeroUiProvider>
-      <main
-        className={cn(
-          inter.className,
-          "flex min-h-screen min-w-full flex-col items-center justify-center gap-10",
-        )}
-      >
-        <Component {...pageProps} />
-      </main>
-    </HeroUiProvider>
+    <QueryClientProvider>
+      <HeroUiProvider>
+        <main
+          className={cn(
+            inter.className,
+            "flex min-h-screen min-w-full flex-col items-center justify-center gap-10",
+          )}
+        >
+          <Component {...pageProps} />
+        </main>
+      </HeroUiProvider>
+    </QueryClientProvider>
   );
 }
