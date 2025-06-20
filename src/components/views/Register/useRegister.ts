@@ -1,5 +1,7 @@
 import authServices from "@/services/auth";
 import { IRegister } from "@/types/Auth";
+import { errorCallback, successCallback } from "@/utils/tanstack-callback";
+import { addToast } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -61,19 +63,36 @@ const useRegister = () => {
 
   const { mutate: mutateRegister, isPending: isPendingRegister } = useMutation({
     mutationFn: registerService,
-    onError: (error) => {
+    onError: (error: any) => {
+      let message = errorCallback(error);
+
+      addToast({
+        title: "Failed",
+        description: message,
+        color: "danger",
+        variant: "flat",
+      });
+
       setError("root", {
-        message: error?.message,
+        message: message,
       });
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      // console.log(response);
+      const message = successCallback(response);
+      addToast({
+        title: "Success",
+        description: message,
+        color: "success",
+        variant: "flat",
+      });
       router.push("/auth/register/success");
       reset();
     },
   });
 
   const handleRegister = (data: IRegister) => {
-    console.log("Register form data:", data);
+    // console.log("Register form data:", data);
     mutateRegister(data);
   };
 

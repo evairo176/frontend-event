@@ -48,11 +48,11 @@ const Register = (props: Props) => {
               Login Here
             </Link>
           </p>
-          {errors.root && (
+          {/* {errors.root && (
             <div className="mb-4 rounded-md bg-red-100 p-4 text-red-800">
               <p className="text-sm">{errors.root.message}</p>
             </div>
-          )}
+          )} */}
           <form
             className={cn(
               "flex w-80 flex-col",
