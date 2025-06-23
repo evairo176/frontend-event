@@ -1,4 +1,5 @@
 import environment from "@/config/environment";
+import { ISessionExtended } from "@/types/Auth";
 import axios from "axios";
 import { get } from "http";
 import { Session } from "next-auth";
@@ -20,7 +21,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   async (request) => {
-    const session: CustomSession | null = await getSession();
+    const session: ISessionExtended | null = await getSession();
 
     if (session && session.accessToken) {
       request.headers.Authorization = `Bearer ${session.accessToken}`;
@@ -29,7 +30,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 instance.interceptors.response.use(
@@ -38,7 +39,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 export default instance;

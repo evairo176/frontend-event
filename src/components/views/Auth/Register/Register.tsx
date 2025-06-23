@@ -21,7 +21,6 @@ const Register = (props: Props) => {
     isPendingRegister,
   } = useRegister();
 
-  console.log(errors);
   return (
     <div className="flex w-full flex-col items-center justify-center gap-10 py-10 lg:flex-row lg:gap-20 lg:py-0">
       <div className="flex w-full flex-col items-center justify-center gap-10 lg:w-1/3">
@@ -48,11 +47,11 @@ const Register = (props: Props) => {
               Login Here
             </Link>
           </p>
-          {/* {errors.root && (
+          {errors.root && (
             <div className="mb-4 rounded-md bg-red-100 p-4 text-red-800">
               <p className="text-sm">{errors.root.message}</p>
             </div>
-          )} */}
+          )}
           <form
             className={cn(
               "flex w-80 flex-col",

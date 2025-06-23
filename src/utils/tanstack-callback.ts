@@ -6,7 +6,10 @@ export const errorCallback = (error: any) => {
     message = error.response.data.message || message;
   }
 
-  return message;
+  return {
+    message,
+    error: error.response.data.error || [],
+  };
 };
 
 export const successCallback = (response: any) => {

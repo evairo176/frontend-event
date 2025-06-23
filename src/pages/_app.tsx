@@ -2,6 +2,7 @@ import { HeroUiProvider } from "@/providers/heroui-provider";
 import QueryClientProvider from "@/providers/query-client-provider";
 import "@/styles/globals.css";
 import { cn } from "@/utils/cn";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 const inter = Inter({
@@ -11,17 +12,14 @@ const inter = Inter({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider>
-      <HeroUiProvider>
-        <main
-          className={cn(
-            inter.className,
-            "flex min-h-screen min-w-full flex-col items-center justify-center gap-10",
-          )}
-        >
-          <Component {...pageProps} />
-        </main>
-      </HeroUiProvider>
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider>
+        <HeroUiProvider>
+          <main className={cn(inter.className)}>
+            <Component {...pageProps} />
+          </main>
+        </HeroUiProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }
