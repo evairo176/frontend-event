@@ -47,6 +47,7 @@ export default NextAuth({
             const accessToken = response?.data?.accessToken;
             const refreshToken = response?.data?.refreshToken;
             const user = response?.data?.user;
+
             const expiresInMinutes = parseInt(
               environment.JWT_EXPIRES_IN || "60",
               10,
@@ -55,7 +56,6 @@ export default NextAuth({
               ...user,
               accessToken,
               refreshToken,
-              role: "admin",
               accessTokenExpires: Date.now() + expiresInMinutes + 60 * 1000, // 🔒 expire in 15 minute
             };
           }
@@ -79,11 +79,11 @@ export default NextAuth({
         token.accessTokenExpires = user?.accessTokenExpires;
         token.role = user.role;
       }
-      console.log({
-        callback: {
-          token,
-        },
-      });
+      // console.log({
+      //   callback: {
+      //     token,
+      //   },
+      // });
       const expiresIn = token.accessTokenExpires - Date.now();
 
       if (expiresIn > 0) {

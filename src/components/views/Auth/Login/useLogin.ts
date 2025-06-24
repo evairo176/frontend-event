@@ -1,9 +1,9 @@
-import { ILogin } from "@/types/Auth";
+import { ILogin, ISessionExtended } from "@/types/Auth";
 import { errorCallback, successCallback } from "@/utils/tanstack-callback";
 import { addToast } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -67,16 +67,27 @@ const useLogin = () => {
       //   message: error?.message,
       // });
     },
-    onSuccess: (response: any) => {
-      // console.log(response);
-      const message = response?.message;
-      addToast({
-        title: "Success",
-        description: message,
-        color: "success",
-        variant: "flat",
-      });
-      router.push("/dashboard");
+    onSuccess: async () => {
+      const session = (await getSession()) as ISessionExtended | null;
+      // const message = response?.message;
+      const role = session?.user?.role;
+
+      if (session && role) {
+        addToast({
+          title: "Success",
+          description: "Login Successfully",
+          color: "success",
+          variant: "flat",
+        });
+
+        if (role === "admin") {
+          router.push("/admin");
+        }
+        if (role === "user") {
+          router.push("/member");
+        }
+      }
+
       reset();
     },
   });

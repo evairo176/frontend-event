@@ -27,8 +27,11 @@ interface IUserExtended extends User {
 }
 
 interface ISessionExtended extends Session {
-  accessToken?: string;
-  refreshToken?: string;
+  user?: {
+    accessToken?: string;
+    refreshToken?: string;
+    role?: string;
+  };
 }
 
 interface IJWTExtended extends JWT {

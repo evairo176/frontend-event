@@ -21,10 +21,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   async (request) => {
-    const session: ISessionExtended | null = await getSession();
+    const session = (await getSession()) as ISessionExtended | null;
 
-    if (session && session.accessToken) {
-      request.headers.Authorization = `Bearer ${session.accessToken}`;
+    if (session && session.user && session.user.accessToken) {
+      request.headers.Authorization = `Bearer ${session.user.accessToken}`;
     }
     return request;
   },

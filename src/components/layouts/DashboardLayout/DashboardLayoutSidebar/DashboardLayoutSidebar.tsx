@@ -1,10 +1,11 @@
+import authServices from "@/services/auth.service";
 import { cn } from "@/utils/cn";
-import { Button, Listbox, ListboxItem } from "@heroui/react";
+import { addToast, Button, Listbox, ListboxItem, Spinner } from "@heroui/react";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 interface sidebarItem {
   key: string;
@@ -21,6 +22,25 @@ const DashboardLayoutSidebar = (props: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const { sidebarItems, isOpen } = props;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    try {
+      await authServices.logout();
+      signOut();
+    } catch (error) {
+      console.log(error);
+      addToast({
+        title: "Failed",
+        description: "Gagal logout",
+        color: "danger",
+        variant: "flat",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div
       className={cn(
@@ -51,7 +71,7 @@ const DashboardLayoutSidebar = (props: Props) => {
               <ListboxItem
                 key={item.key}
                 className={cn("my-1 h-12 text-2xl", {
-                  "bg-danger-500 text-white": pathname === item.href,
+                  "bg-danger-500 text-white": pathname.startsWith(item.href),
                 })}
                 startContent={item.icon}
                 textValue={item.label}
@@ -66,14 +86,15 @@ const DashboardLayoutSidebar = (props: Props) => {
       </div>
       <div className="flex items-center p-1">
         <Button
-          onClick={signOut}
+          disabled={isLoading}
+          onClick={handleLogout}
           fullWidth
           variant="light"
           color="danger"
           className="flex justify-start rounded-lg px-2 py-1.5"
           size="lg"
         >
-          <LogOut />
+          {isLoading ? <Spinner /> : <LogOut />}
           Logout
         </Button>
       </div>
