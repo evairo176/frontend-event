@@ -34,7 +34,7 @@ const DashboardLayout = ({
             classNames={{ wrapper: "p-0" }}
           >
             <div>
-              <h1 className="text-3xl font-bold">{title}</h1>
+              <h1 className="mb-2 text-3xl font-bold">{title}</h1>
               <p className="mb-4 text-small">{description}</p>
             </div>
             <NavbarMenuToggle

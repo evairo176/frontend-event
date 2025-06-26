@@ -5,7 +5,7 @@ import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 
 interface sidebarItem {
   key: string;
@@ -77,6 +77,7 @@ const DashboardLayoutSidebar = (props: Props) => {
                 textValue={item.label}
                 aria-labelledby={item.label}
                 aria-describedby={item.label}
+                href={item.href}
               >
                 <p className="text-small">{item.label}</p>
               </ListboxItem>
@@ -87,7 +88,7 @@ const DashboardLayoutSidebar = (props: Props) => {
       <div className="flex items-center p-1">
         <Button
           disabled={isLoading}
-          onClick={handleLogout}
+          onPress={handleLogout}
           fullWidth
           variant="light"
           color="danger"

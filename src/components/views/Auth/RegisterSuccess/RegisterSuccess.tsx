@@ -32,7 +32,7 @@ const RegisterSuccess = (props: Props) => {
           Check your email to verify your account
         </p>
         <Button
-          onClick={() => router.replace("/")}
+          onPress={() => router.replace("/")}
           className="mt-4 w-fit"
           variant="bordered"
           color="danger"

@@ -4,7 +4,7 @@ import React from "react";
 
 type Props = {};
 
-const DashboardAdminPage = (props: Props) => {
+const AdminDashboardPage = (props: Props) => {
   return (
     <DashboardLayout
       type="admin"
@@ -16,4 +16,4 @@ const DashboardAdminPage = (props: Props) => {
   );
 };
 
-export default DashboardAdminPage;
+export default AdminDashboardPage;

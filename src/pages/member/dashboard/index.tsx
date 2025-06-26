@@ -5,7 +5,7 @@ import React from "react";
 
 type Props = {};
 
-const DashboardMemberPage = (props: Props) => {
+const MemberDashboardPage = (props: Props) => {
   return (
     <DashboardLayout
       type="member"
@@ -17,4 +17,4 @@ const DashboardMemberPage = (props: Props) => {
   );
 };
 
-export default DashboardMemberPage;
+export default MemberDashboardPage;
