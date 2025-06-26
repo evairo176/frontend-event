@@ -60,6 +60,7 @@ const Category = (props: Props) => {
   return (
     <section>
       <DataTabale
+        isLoading={false}
         onChangeLimit={() => {}}
         onChangePage={() => {}}
         onChangeSearch={() => {}}

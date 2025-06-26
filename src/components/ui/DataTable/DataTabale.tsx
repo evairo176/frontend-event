@@ -1,4 +1,5 @@
 import { LIMIT_LIST } from "@/components/constants/list.constants";
+import { cn } from "@/utils/cn";
 import {
   Button,
   Input,
@@ -30,6 +31,7 @@ type Props = {
   onChangePage: (page: number) => void;
   onChangeLimit: (e: ChangeEvent<HTMLSelectElement>) => void;
   emptyContent: string;
+  isLoading: boolean;
 };
 
 const DataTabale = ({
@@ -46,6 +48,7 @@ const DataTabale = ({
   buttonTopContentLabel,
   onClickButtonTopContent,
   emptyContent,
+  isLoading,
 }: Props) => {
   const topContent = useMemo(() => {
     return (
@@ -102,7 +105,7 @@ const DataTabale = ({
         />
       </div>
     );
-  }, [limit, currentPage, totalPages, onChangePage]);
+  }, [limit, currentPage, totalPages, onChangePage, onChangeLimit]);
 
   return (
     <Table
@@ -110,6 +113,10 @@ const DataTabale = ({
       topContentPlacement="outside"
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
+      classNames={{
+        base: "max-w-full",
+        wrapper: cn({ "overflow-x-hidden": isLoading }),
+      }}
     >
       <TableHeader columns={columns}>
         {(column) => {
@@ -126,7 +133,12 @@ const DataTabale = ({
       <TableBody
         emptyContent={emptyContent}
         items={data}
-        loadingContent={<Spinner label="Loading..." />}
+        isLoading={isLoading}
+        loadingContent={
+          <div className="flex h-full w-full items-center justify-center bg-foreground-700/30 backdrop-blur-sm">
+            <Spinner label="Loading..." />
+          </div>
+        }
       >
         {(item) => {
           return (
