@@ -8,12 +8,10 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { EllipsisVertical } from "lucide-react";
-import Image from "next/image";
 import React, { Key, ReactNode, useCallback, useEffect } from "react";
 import { COLUMN_LIST_CATEGORY } from "./Category.constants";
 import useCategory from "./useCategory";
 import { useRouter } from "next/router";
-import InputFile from "@/components/ui/InputFile";
 import AddCategoryModal from "./AddCategoryModal";
 
 type Props = {};

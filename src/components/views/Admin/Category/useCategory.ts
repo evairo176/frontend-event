@@ -70,21 +70,18 @@ const useCategory = () => {
       },
     });
   };
-
-  const handleSearch = useMemo(
-    () =>
-      debounce((e: ChangeEvent<HTMLInputElement>) => {
-        const search = e.target.value;
-        router.push({
-          query: {
-            ...router.query,
-            search,
-            page: PAGE_DEFAULT,
-          },
-        });
-      }, DELAY),
-    [debounce, router],
-  );
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    debounce(() => {
+      const search = e.target.value;
+      router.push({
+        query: {
+          ...router.query,
+          search,
+          page: PAGE_DEFAULT,
+        },
+      });
+    }, DELAY);
+  };
 
   const handleClearSearch = () => {
     router.push({
