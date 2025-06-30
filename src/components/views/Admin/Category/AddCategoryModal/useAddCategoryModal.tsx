@@ -15,15 +15,9 @@ const schema = yup.object().shape({
   icon: yup.mixed<FileList>().required("Please input icon"),
 });
 
-type UseAddCategoryModalProps = {
-  onClose: () => void;
-  refetchCategory: () => void;
-};
+type UseAddCategoryModalProps = {};
 
-const useAddCategoryModal = ({
-  onClose,
-  refetchCategory,
-}: UseAddCategoryModalProps) => {
+const useAddCategoryModal = () => {
   const {
     control,
     handleSubmit: handleSubmitCategoryForm,
@@ -57,7 +51,6 @@ const useAddCategoryModal = ({
     mutate: mutateAddCategory,
     isPending: isPendingMutateAddCategory,
     isSuccess: isSuccessMutateAddCategory,
-    reset: resetMutateAddCategory,
   } = useMutation({
     mutationFn: addCategory,
     onSuccess: (response) => {
@@ -69,11 +62,6 @@ const useAddCategoryModal = ({
         color: "success",
         variant: "flat",
       });
-
-      reset(); // ← reset form
-      refetchCategory(); // ⬅️ langsung panggil
-      onClose(); // ⬅️ langsung panggil
-      resetMutateAddCategory(); // ⬅️ reset mutation state
     },
     onError: (error: any) => {
       const { message } = errorCallback(error);

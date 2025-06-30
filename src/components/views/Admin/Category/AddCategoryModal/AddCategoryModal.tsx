@@ -34,7 +34,15 @@ const AddCategoryModal = ({
     handleAddCategory,
     isPendingMutateAddCategory,
     isPendingMutateAddFile,
-  } = useAddCategoryModal({ onClose, refetchCategory });
+    isSuccessMutateAddCategory,
+  } = useAddCategoryModal();
+
+  useEffect(() => {
+    if (isSuccessMutateAddCategory) {
+      onClose();
+      refetchCategory();
+    }
+  }, [isSuccessMutateAddCategory]);
 
   return (
     <Modal

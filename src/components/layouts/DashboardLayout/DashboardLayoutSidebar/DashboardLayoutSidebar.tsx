@@ -75,6 +75,7 @@ const DashboardLayoutSidebar = (props: Props) => {
                 })}
                 startContent={item.icon}
                 textValue={item.label}
+                aria-label={item.label}
                 aria-labelledby={item.label}
                 aria-describedby={item.label}
                 href={item.href}

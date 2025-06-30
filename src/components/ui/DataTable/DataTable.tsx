@@ -119,10 +119,11 @@ const DataTable = ({
         )}
       </div>
     );
-  }, [limit, currentPage, totalPages, onChangePage, onChangeLimit, totalData]);
+  }, [limit, currentPage, totalPages, onChangePage, onChangeLimit, totalPages]);
 
   return (
     <Table
+      aria-label="Example static collection table"
       topContent={topContent}
       topContentPlacement="outside"
       bottomContent={bottomContent}

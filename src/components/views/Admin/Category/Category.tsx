@@ -37,7 +37,7 @@ const Category = (props: Props) => {
     if (isReady) {
       setUrl();
     }
-  }, [isReady, setUrl]);
+  }, [isReady]);
 
   const renderCell = useCallback(
     (category: Record<string, unknown>, columnKey: Key) => {
