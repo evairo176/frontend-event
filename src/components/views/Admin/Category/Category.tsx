@@ -1,10 +1,11 @@
-import DataTabale from "@/components/ui/DataTable";
+import DataTable from "@/components/ui/DataTable";
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  useDisclosure,
 } from "@heroui/react";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -12,6 +13,8 @@ import React, { Key, ReactNode, useCallback, useEffect } from "react";
 import { COLUMN_LIST_CATEGORY } from "./Category.constants";
 import useCategory from "./useCategory";
 import { useRouter } from "next/router";
+import InputFile from "@/components/ui/InputFile";
+import AddCategoryModal from "./AddCategoryModal";
 
 type Props = {};
 
@@ -29,23 +32,24 @@ const Category = (props: Props) => {
     handleChangeLimit,
     handleSearch,
     handleClearSearch,
+    refetchCategory,
   } = useCategory();
 
   useEffect(() => {
     if (isReady) {
       setUrl();
     }
-  }, [isReady]);
+  }, [isReady, setUrl]);
 
   const renderCell = useCallback(
     (category: Record<string, unknown>, columnKey: Key) => {
       const cellValue = category[columnKey as keyof typeof category];
 
       switch (columnKey) {
-        case "icon":
-          return (
-            <Image src={`${cellValue}`} alt="icon" width={100} height={200} />
-          );
+        // case "icon":
+        //   return (
+        //     <Image src={`${cellValue}`} alt="icon" width={100} height={200} />
+        //   );
         case "actions":
           return (
             <Dropdown>
@@ -77,16 +81,17 @@ const Category = (props: Props) => {
     },
     [push],
   );
+  const addCategoryModal = useDisclosure();
   return (
     <section>
       {Object.keys(query)?.length > 0 && (
-        <DataTabale
+        <DataTable
           isLoading={isLoadingCategory || isRefetchingCategory}
           onChangeLimit={handleChangeLimit}
           onChangePage={handleChangePage}
           onChangeSearch={handleSearch}
           onClearSearch={handleClearSearch}
-          onClickButtonTopContent={() => {}}
+          onClickButtonTopContent={() => addCategoryModal.onOpen()}
           buttonTopContentLabel="Create Category"
           renderCell={renderCell}
           columns={COLUMN_LIST_CATEGORY}
@@ -98,6 +103,10 @@ const Category = (props: Props) => {
           data={dataCategory?.data || []}
         />
       )}
+      <AddCategoryModal
+        refetchCategory={refetchCategory}
+        {...addCategoryModal}
+      />
     </section>
   );
 };

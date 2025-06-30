@@ -36,7 +36,7 @@ type Props = {
   isLoading: boolean;
 };
 
-const DataTabale = ({
+const DataTable = ({
   columns,
   data,
   renderCell,
@@ -119,7 +119,7 @@ const DataTabale = ({
         )}
       </div>
     );
-  }, [limit, currentPage, totalPages, onChangePage, onChangeLimit]);
+  }, [limit, currentPage, totalPages, onChangePage, onChangeLimit, totalData]);
 
   return (
     <Table
@@ -168,4 +168,4 @@ const DataTabale = ({
   );
 };
 
-export default DataTabale;
+export default DataTable;

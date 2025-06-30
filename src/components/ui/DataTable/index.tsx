@@ -1,3 +1,3 @@
-import DataTabale from "./DataTabale";
+import DataTable from "./DataTable";
 
-export default DataTabale;
+export default DataTable;
