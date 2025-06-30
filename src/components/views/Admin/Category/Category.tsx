@@ -8,15 +8,35 @@ import {
 } from "@heroui/react";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { Key, ReactNode, useCallback } from "react";
+import React, { Key, ReactNode, useCallback, useEffect } from "react";
 import { COLUMN_LIST_CATEGORY } from "./Category.constants";
-import { LIMIT_LIST } from "@/components/constants/list.constants";
+import useCategory from "./useCategory";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const Category = (props: Props) => {
-  const { push } = useRouter();
+  const { push, isReady, query } = useRouter();
+
+  const {
+    setUrl,
+    dataCategory,
+    isLoadingCategory,
+    isRefetchingCategory,
+    currentPage,
+    currentLimit,
+    handleChangePage,
+    handleChangeLimit,
+    handleSearch,
+    handleClearSearch,
+  } = useCategory();
+
+  useEffect(() => {
+    if (isReady) {
+      setUrl();
+    }
+  }, [isReady]);
+
   const renderCell = useCallback(
     (category: Record<string, unknown>, columnKey: Key) => {
       const cellValue = category[columnKey as keyof typeof category];
@@ -59,35 +79,25 @@ const Category = (props: Props) => {
   );
   return (
     <section>
-      <DataTabale
-        isLoading={false}
-        onChangeLimit={() => {}}
-        onChangePage={() => {}}
-        onChangeSearch={() => {}}
-        onClearSearch={() => {}}
-        onClickButtonTopContent={() => {}}
-        buttonTopContentLabel="Create Category"
-        renderCell={renderCell}
-        columns={COLUMN_LIST_CATEGORY}
-        limit={LIMIT_LIST[0].value}
-        totalPages={100}
-        currentPage={1}
-        emptyContent="Category is empty"
-        data={[
-          {
-            id: "928287347499",
-            name: "Kebab Bogor",
-            description: "ini kebab bogor",
-            icon: "/images/general/logo.png",
-          },
-          {
-            id: "92828734749349",
-            name: "Kebab Bogor 2",
-            description: "ini kebab bogor 2",
-            icon: "/images/general/logo.png",
-          },
-        ]}
-      />
+      {Object.keys(query)?.length > 0 && (
+        <DataTabale
+          isLoading={isLoadingCategory || isRefetchingCategory}
+          onChangeLimit={handleChangeLimit}
+          onChangePage={handleChangePage}
+          onChangeSearch={handleSearch}
+          onClearSearch={handleClearSearch}
+          onClickButtonTopContent={() => {}}
+          buttonTopContentLabel="Create Category"
+          renderCell={renderCell}
+          columns={COLUMN_LIST_CATEGORY}
+          limit={String(currentLimit)}
+          totalPages={dataCategory?.pagination?.totalPages}
+          totalData={dataCategory?.pagination?.total}
+          currentPage={Number(currentPage)}
+          emptyContent="Category is empty"
+          data={dataCategory?.data || []}
+        />
+      )}
     </section>
   );
 };

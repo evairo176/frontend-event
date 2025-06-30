@@ -21,15 +21,17 @@ type Props = {
   columns: Record<string, unknown>[];
   data: Record<string, unknown>[];
   renderCell: (item: Record<string, unknown>, columnKey: Key) => ReactNode;
-  onClearSearch: () => void;
-  onChangeSearch: (e: ChangeEvent<HTMLInputElement>) => void;
+
   buttonTopContentLabel?: string;
   onClickButtonTopContent?: () => void;
   limit?: string;
   totalPages: number;
   currentPage: number;
+  totalData: number;
   onChangePage: (page: number) => void;
   onChangeLimit: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onClearSearch: () => void;
+  onChangeSearch: (e: ChangeEvent<HTMLInputElement>) => void;
   emptyContent: string;
   isLoading: boolean;
 };
@@ -41,6 +43,7 @@ const DataTabale = ({
   limit = "8",
   currentPage,
   totalPages,
+  totalData,
   onChangePage,
   onClearSearch,
   onChangeSearch,
@@ -78,31 +81,42 @@ const DataTabale = ({
   const bottomContent = useMemo(() => {
     return (
       <div className="flex items-center justify-center px-2 py-2 lg:justify-between">
-        <Select
-          className="hidden max-w-36 lg:block"
-          size="md"
-          selectedKeys={[limit]}
-          selectionMode="single"
-          onChange={onChangeLimit}
-          startContent={<p className="text-small">Show:</p>}
-        >
-          {LIMIT_LIST?.map((item) => {
-            return (
-              <SelectItem key={item.value} textValue={item.value}>
-                {item.label}
-              </SelectItem>
-            );
-          })}
-        </Select>
+        <div className="flex flex-row items-center justify-between gap-3">
+          <Select
+            className="hidden w-full max-w-36 lg:block"
+            size="md"
+            selectedKeys={[limit]}
+            selectionMode="single"
+            onChange={onChangeLimit}
+            startContent={<p className="text-small">Show:</p>}
+            disallowEmptySelection
+          >
+            {LIMIT_LIST?.map((item) => {
+              return (
+                <SelectItem key={item.value} textValue={item.value}>
+                  {item.label}
+                </SelectItem>
+              );
+            })}
+          </Select>
 
-        <Pagination
-          isCompact
-          showControls
-          color="danger"
-          page={currentPage}
-          total={totalPages}
-          onChange={onChangePage}
-        />
+          <div className="w-[200px]">
+            <p className="text-sm text-gray-400">
+              {limit} of {totalData || "-"} row(s)
+            </p>
+          </div>
+        </div>
+        {totalPages > 0 && (
+          <Pagination
+            isCompact
+            showControls
+            color="danger"
+            page={currentPage}
+            total={totalPages}
+            onChange={onChangePage}
+            loop
+          />
+        )}
       </div>
     );
   }, [limit, currentPage, totalPages, onChangePage, onChangeLimit]);

@@ -1,12 +1,6 @@
 import instance from "@/libs/axios/instance";
 import endpoint from "./endpoint.constant";
-import {
-  IVerificationEmail,
-  IRegister,
-  ILogin,
-  IRefreshToken,
-} from "@/types/Auth";
-import { headers } from "next/headers";
+import { IVerificationEmail, IRegister, ILogin } from "@/types/Auth";
 
 const authServices = {
   login: async (body: ILogin) =>

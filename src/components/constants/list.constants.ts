@@ -12,5 +12,10 @@ const LIMIT_LIST = [
     value: "16",
   },
 ];
+const LIMIT_DEFAULT = LIMIT_LIST[0].value;
 
-export { LIMIT_LIST };
+const PAGE_DEFAULT = 1;
+
+const DELAY = 500;
+
+export { LIMIT_LIST, LIMIT_DEFAULT, PAGE_DEFAULT, DELAY };
