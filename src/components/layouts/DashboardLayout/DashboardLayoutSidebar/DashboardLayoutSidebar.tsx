@@ -79,10 +79,9 @@ const DashboardLayoutSidebar = (props: Props) => {
                 aria-label={item.label}
                 aria-labelledby={item.label}
                 aria-describedby={item.label}
+                onPress={() => router.push(item.href)}
               >
-                <Link href={item.href}>
-                  <p className="text-small">{item.label}</p>
-                </Link>
+                <p className="text-small">{item.label}</p>
               </ListboxItem>
             );
           }}
