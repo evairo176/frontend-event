@@ -83,7 +83,7 @@ const useLogin = () => {
         if (role === "admin") {
           router.push("/admin");
         }
-        if (role === "user") {
+        if (role === "member") {
           router.push("/member");
         }
       }
