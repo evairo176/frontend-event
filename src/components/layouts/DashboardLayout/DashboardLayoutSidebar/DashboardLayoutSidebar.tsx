@@ -4,6 +4,7 @@ import { addToast, Button, Listbox, ListboxItem, Spinner } from "@heroui/react";
 import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { JSX, useState } from "react";
 
@@ -78,9 +79,10 @@ const DashboardLayoutSidebar = (props: Props) => {
                 aria-label={item.label}
                 aria-labelledby={item.label}
                 aria-describedby={item.label}
-                href={item.href}
               >
-                <p className="text-small">{item.label}</p>
+                <Link href={item.href}>
+                  <p className="text-small">{item.label}</p>
+                </Link>
               </ListboxItem>
             );
           }}
