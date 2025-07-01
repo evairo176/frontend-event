@@ -3,6 +3,7 @@ import {
   QueryClient,
   QueryClientProvider as QueryClientProvider_,
 } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React from "react";
 
 type Props = {
@@ -14,13 +15,17 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: false,
+      staleTime: 60 * 60 * 1000, // 60 menit
     },
   },
 });
 
 const QueryClientProvider = ({ children }: Props) => {
   return (
-    <QueryClientProvider_ client={queryClient}>{children}</QueryClientProvider_>
+    <QueryClientProvider_ client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider_>
   );
 };
 

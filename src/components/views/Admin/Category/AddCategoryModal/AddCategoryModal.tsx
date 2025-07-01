@@ -9,7 +9,7 @@ import {
   Spinner,
   Textarea,
 } from "@heroui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import useAddCategoryModal from "./useAddCategoryModal";
 import { Controller } from "react-hook-form";
 import InputFile from "@/components/ui/InputFile";
@@ -33,8 +33,14 @@ const AddCategoryModal = ({
     handleSubmitCategoryForm,
     handleAddCategory,
     isPendingMutateAddCategory,
-    isPendingMutateAddFile,
     isSuccessMutateAddCategory,
+
+    handleUploadIcon,
+    handleDeleteIcon,
+    handleOnClose,
+    isPendingMutateUploadFile,
+    isPendingMutateDeleteFile,
+    preview,
   } = useAddCategoryModal();
 
   useEffect(() => {
@@ -44,12 +50,25 @@ const AddCategoryModal = ({
     }
   }, [isSuccessMutateAddCategory]);
 
+  const disabledSubmit = useMemo(() => {
+    return (
+      isPendingMutateAddCategory ||
+      isPendingMutateUploadFile ||
+      isPendingMutateDeleteFile
+    );
+  }, [
+    isPendingMutateAddCategory,
+    isPendingMutateUploadFile,
+    isPendingMutateDeleteFile,
+  ]);
+
   return (
     <Modal
       onOpenChange={onOpenChange}
       isOpen={isOpen}
       placement="center"
       scrollBehavior="inside"
+      onClose={() => handleOnClose(onClose)}
     >
       <form onSubmit={handleSubmitCategoryForm(handleAddCategory)}>
         <ModalContent className="m-4">
@@ -102,11 +121,14 @@ const AddCategoryModal = ({
                       <InputFile
                         {...field}
                         name="icon"
-                        onChange={(e) => {
-                          onChange(e.currentTarget.files);
-                        }}
+                        onUpload={(files) => handleUploadIcon(files, onChange)}
+                        onDelete={() => handleDeleteIcon(onChange)}
+                        isUploading={isPendingMutateUploadFile}
+                        isDeleting={isPendingMutateDeleteFile}
                         isInvalid={errors.icon !== undefined}
                         errorMessage={errors.icon?.message}
+                        isDroppable
+                        preview={typeof preview === "string" ? preview : ""}
                       />
                     );
                   }}
@@ -118,17 +140,13 @@ const AddCategoryModal = ({
             <Button
               color="danger"
               variant="flat"
-              onPress={onClose}
-              disabled={isPendingMutateAddCategory || isPendingMutateAddFile}
+              onPress={() => handleOnClose(onClose)}
+              disabled={disabledSubmit}
             >
               Cancel
             </Button>
-            <Button
-              color="danger"
-              type="submit"
-              disabled={isPendingMutateAddCategory || isPendingMutateAddFile}
-            >
-              {isPendingMutateAddCategory || isPendingMutateAddFile ? (
+            <Button color="danger" type="submit" disabled={disabledSubmit}>
+              {disabledSubmit ? (
                 <Spinner size="sm" color="white" />
               ) : (
                 "Create category"

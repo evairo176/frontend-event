@@ -13,6 +13,7 @@ import { COLUMN_LIST_CATEGORY } from "./Category.constants";
 import useCategory from "./useCategory";
 import { useRouter } from "next/router";
 import AddCategoryModal from "./AddCategoryModal";
+import Image from "next/image";
 
 type Props = {};
 
@@ -44,10 +45,10 @@ const Category = (props: Props) => {
       const cellValue = category[columnKey as keyof typeof category];
 
       switch (columnKey) {
-        // case "icon":
-        //   return (
-        //     <Image src={`${cellValue}`} alt="icon" width={100} height={200} />
-        //   );
+        case "icon":
+          return (
+            <Image src={`${cellValue}`} alt="icon" width={100} height={200} />
+          );
         case "actions":
           return (
             <Dropdown>

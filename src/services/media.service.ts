@@ -10,7 +10,7 @@ const mediaServices = {
       },
     }),
   deleteFile: async (payload: IFileUrl) =>
-    instance.delete(`${endpoint.MEDIA}/remove)`, { data: payload }),
+    instance.delete(`${endpoint.MEDIA}/remove`, { data: payload }),
 };
 
 export default mediaServices;

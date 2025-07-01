@@ -1,21 +1,18 @@
+import useMediaHandling from "@/hooks/useMediaHandling";
 import categoryServices from "@/services/category.service";
-import mediaServices from "@/services/media.service";
-import { ICategory, ICategoryForm } from "@/types/Category";
+import { ICategory } from "@/types/Category";
 import { errorCallback, successCallback } from "@/utils/tanstack-callback";
 import { addToast } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
   name: yup.string().required("Please input name of category"),
   description: yup.string().required("Please input description"),
-  icon: yup.mixed<FileList>().required("Please input icon"),
+  icon: yup.mixed<FileList | string>().required("Please input icon"),
 });
-
-type UseAddCategoryModalProps = {};
 
 const useAddCategoryModal = () => {
   const {
@@ -23,22 +20,61 @@ const useAddCategoryModal = () => {
     handleSubmit: handleSubmitCategoryForm,
     formState: { errors },
     reset,
+    watch,
+    getValues,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const {
+    mutateUploadFile,
+    isPendingMutateUploadFile,
+    mutateDeleteFile,
+    isPendingMutateDeleteFile,
+  } = useMediaHandling();
 
-  const uploadIcon = async (data: ICategoryForm) => {
-    const formData = new FormData();
+  const preview = watch("icon");
 
-    formData.append("file", data.icon[0]);
+  const handleUploadIcon = (
+    files: FileList,
+    onChange: (files: FileList | undefined) => void,
+  ) => {
+    if (files?.length !== 0) {
+      onChange(files);
+      mutateUploadFile({
+        file: files[0],
+        callback: (fileUrl: string) => {
+          setValue("icon", fileUrl);
+        },
+      });
+    }
+  };
 
-    const { data: dataResponse } = await mediaServices.uploadFile(formData);
+  const handleDeleteIcon = (
+    onChange: (files: FileList | undefined) => void,
+  ) => {
+    const fileUrl = getValues("icon");
 
-    return {
-      name: data.name,
-      description: data.description,
-      icon: dataResponse?.data?.secure_url,
-    };
+    if (typeof fileUrl === "string") {
+      mutateDeleteFile({ fileUrl, callback: () => onChange(undefined) });
+    }
+  };
+
+  const handleOnClose = (onClose: () => void) => {
+    const fileUrl = getValues("icon");
+
+    if (typeof fileUrl === "string") {
+      mutateDeleteFile({
+        fileUrl,
+        callback: () => {
+          reset();
+          onClose();
+        },
+      });
+    } else {
+      reset();
+      onClose();
+    }
   };
 
   const addCategory = async (payload: ICategory) => {
@@ -75,27 +111,8 @@ const useAddCategoryModal = () => {
     },
   });
 
-  const { mutate: mutateAddFile, isPending: isPendingMutateAddFile } =
-    useMutation({
-      mutationFn: uploadIcon,
-      onError: (error: any) => {
-        let { message } = errorCallback(error);
-
-        addToast({
-          title: "Failed",
-          description: message,
-          color: "danger",
-          variant: "flat",
-        });
-      },
-      onSuccess: (response) => {
-        console.log({ ddd: response });
-        mutateAddCategory(response);
-      },
-    });
-
-  const handleAddCategory = async (data: ICategoryForm) => {
-    mutateAddFile(data);
+  const handleAddCategory = async (data: ICategory) => {
+    mutateAddCategory(data);
   };
 
   return {
@@ -105,7 +122,12 @@ const useAddCategoryModal = () => {
     handleAddCategory,
     isPendingMutateAddCategory,
     isSuccessMutateAddCategory,
-    isPendingMutateAddFile,
+    handleUploadIcon,
+    handleDeleteIcon,
+    handleOnClose,
+    isPendingMutateUploadFile,
+    isPendingMutateDeleteFile,
+    preview,
   };
 };
 

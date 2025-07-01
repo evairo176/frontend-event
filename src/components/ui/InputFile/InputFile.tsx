@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
+import { Button, Spinner } from "@heroui/react";
 import { p } from "framer-motion/client";
-import { File } from "lucide-react";
+import { File, Trash } from "lucide-react";
 import Image from "next/image";
 import React, { ChangeEvent, useEffect, useId, useRef, useState } from "react";
 
@@ -8,8 +9,12 @@ type Props = {
   name: string;
   className?: string;
   isDroppable?: boolean;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  isDeleting?: boolean;
+  isUploading?: boolean;
   isInvalid?: boolean;
+  onUpload?: (files: FileList) => void;
+  onDelete?: () => void;
+  preview?: string;
   errorMessage?: string;
 };
 
@@ -17,12 +22,15 @@ const InputFile = ({
   name,
   className,
   isDroppable = false,
-  onChange,
+
+  onUpload,
+  onDelete,
+  isDeleting,
+  isUploading,
   isInvalid,
+  preview,
   errorMessage,
 }: Props) => {
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-
   const drop = useRef<HTMLLabelElement>(null);
   const dropzoneId = useId();
 
@@ -35,7 +43,11 @@ const InputFile = ({
 
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
-    setUploadedImage(e.dataTransfer?.files[0] || null);
+    const files = e.dataTransfer?.files;
+
+    if (files && onUpload) {
+      onUpload(files);
+    }
   };
 
   useEffect(() => {
@@ -52,15 +64,11 @@ const InputFile = ({
     }
   }, [drop, handleDragOver, handleDrop]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOnUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
 
-    if (files && files?.length > 0) {
-      setUploadedImage(files[0]);
-
-      if (onChange) {
-        onChange(e);
-      }
+    if (files && onUpload) {
+      onUpload(files);
     }
   };
 
@@ -77,21 +85,27 @@ const InputFile = ({
           },
         )}
       >
-        {uploadedImage ? (
-          <div className="flex flex-col items-center justify-center p-5">
+        {preview && (
+          <div className="relative flex flex-col items-center justify-center p-5">
             <div className="mb-2 w-1/2">
-              <Image
-                fill
-                src={URL.createObjectURL(uploadedImage)}
-                alt="image"
-                className="!relative"
-              />
+              <Image fill src={preview} alt="image" className="!relative" />
             </div>
-            <p className="text-center text-sm font-semibold text-gray-500">
-              {uploadedImage.name}
-            </p>
+            <Button
+              onPress={onDelete}
+              disabled={isDeleting}
+              isIconOnly
+              className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded bg-danger-100"
+            >
+              {isDeleting ? (
+                <Spinner size="sm" color="danger" />
+              ) : (
+                <Trash className="h-5 w-5 text-danger-500" />
+              )}
+            </Button>
           </div>
-        ) : (
+        )}
+
+        {!preview && !isUploading && (
           <div className="flex flex-col items-center justify-center p-5">
             <File className="mb-2 h-10 w-10 text-gray-400" />
             <p className="text-center text-sm font-semibold text-gray-500">
@@ -101,13 +115,24 @@ const InputFile = ({
             </p>
           </div>
         )}
+
+        {isUploading && (
+          <div className="flex flex-col items-center justify-center p-5">
+            <Spinner size="sm" color="danger" />
+          </div>
+        )}
         <input
           type="file"
           name={name}
           className="hidden"
           accept="image/*"
           id={`dropzone-file-${dropzoneId}`}
-          onChange={handleChange}
+          onChange={handleOnUpload}
+          disabled={preview !== ""}
+          onClick={(e) => {
+            e.currentTarget.value = "";
+            e.target.dispatchEvent(new Event("change", { bubbles: true }));
+          }}
         />
       </label>
       {isInvalid && (
