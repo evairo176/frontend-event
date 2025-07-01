@@ -1,6 +1,6 @@
 import instance from "@/libs/axios/instance";
 import endpoint from "./endpoint.constant";
-import { ICategory, ICategoryForm } from "@/types/Category";
+import { ICategory } from "@/types/Category";
 
 const categoryServices = {
   getCategories: async (params?: string) =>
