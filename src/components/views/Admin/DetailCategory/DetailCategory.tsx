@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@heroui/react";
+import { Button, Tab, Tabs } from "@heroui/react";
 import React from "react";
 import IconTab from "./IconTab";
 import InfoTab from "./InfoTab";

@@ -8,6 +8,8 @@ import {
   Skeleton,
   Textarea,
 } from "@heroui/react";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/router";
 import React from "react";
 
 type Props = {
@@ -15,13 +17,20 @@ type Props = {
 };
 
 const InfoTab = ({ dataCategory }: Props) => {
+  const { back } = useRouter();
   return (
     <Card className="w-full p-4 lg:w-1/2">
-      <CardHeader className="flex flex-col items-center">
-        <h1 className="w-full text-xl font-bold">Category Information </h1>
-        <p className="w-full text-small text-default-500">
-          Manage information of this category
-        </p>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">Category Information</h1>
+          <p className="text-small text-default-500">
+            Manage information of this category
+          </p>
+        </div>
+        <Button color="danger" onPress={() => back()}>
+          <ArrowLeft className="h-4 w-4 text-white" />
+          Back
+        </Button>
       </CardHeader>
       <CardBody>
         <form className="flex flex-col gap-4" onSubmit={() => {}}>

@@ -1,6 +1,8 @@
 import InputFile from "@/components/ui/InputFile";
 import { Button, Card, CardBody, CardHeader, Skeleton } from "@heroui/react";
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import React from "react";
 
@@ -9,13 +11,20 @@ type Props = {
 };
 
 const IconTab = ({ currentIcon }: Props) => {
+  const { back } = useRouter();
   return (
     <Card className="w-full p-4 lg:w-1/2">
-      <CardHeader className="flex flex-col items-center">
-        <h1 className="w-full text-xl font-bold">Category Icon</h1>
-        <p className="w-full text-small text-default-500">
-          Manage icon of this category
-        </p>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold">Category Icon</h1>
+          <p className="text-small text-default-500">
+            Manage icon of this category
+          </p>
+        </div>
+        <Button color="danger" onPress={() => back()}>
+          <ArrowLeft className="h-4 w-4 text-white" />
+          Back
+        </Button>
       </CardHeader>
       <CardBody>
         <form className="flex flex-col gap-4" onSubmit={() => {}}>
