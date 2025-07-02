@@ -16,6 +16,7 @@ type Props = {
   onDelete?: () => void;
   preview?: string;
   errorMessage?: string;
+  label?: string;
 };
 
 const InputFile = ({
@@ -30,6 +31,7 @@ const InputFile = ({
   isInvalid,
   preview,
   errorMessage,
+  label,
 }: Props) => {
   const drop = useRef<HTMLLabelElement>(null);
   const dropzoneId = useId();
@@ -74,6 +76,7 @@ const InputFile = ({
 
   return (
     <div>
+      <p className="mb-1 text-sm text-gray-400"> {label}</p>
       <label
         ref={drop}
         htmlFor={`dropzone-file-${dropzoneId}`}

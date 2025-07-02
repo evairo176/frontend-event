@@ -112,7 +112,6 @@ const AddCategoryModal = ({
               />
 
               <div>
-                <p className="text-sm text-gray-400">Icon</p>
                 <Controller
                   name="icon"
                   control={control}
@@ -129,6 +128,7 @@ const AddCategoryModal = ({
                         errorMessage={errors.icon?.message}
                         isDroppable
                         preview={typeof preview === "string" ? preview : ""}
+                        label="Icon"
                       />
                     );
                   }}

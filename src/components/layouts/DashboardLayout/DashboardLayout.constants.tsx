@@ -1,4 +1,12 @@
-import { Blocks, Grid, Settings, ShoppingBag, Tv, View } from "lucide-react";
+import {
+  Blocks,
+  Grid,
+  Monitor,
+  Settings,
+  ShoppingBag,
+  Tv,
+  View,
+} from "lucide-react";
 
 const SIDEBAR_ADMIN = [
   {
@@ -11,7 +19,7 @@ const SIDEBAR_ADMIN = [
     key: "event",
     label: "Event",
     href: "/admin/event",
-    icon: <View />,
+    icon: <Monitor />,
   },
   {
     key: "category",
