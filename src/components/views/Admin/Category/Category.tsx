@@ -7,13 +7,14 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@heroui/react";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Eye, Trash } from "lucide-react";
 import React, { Key, ReactNode, useCallback, useEffect } from "react";
 import { COLUMN_LIST_CATEGORY } from "./Category.constants";
 import useCategory from "./useCategory";
 import { useRouter } from "next/router";
 import AddCategoryModal from "./AddCategoryModal";
 import Image from "next/image";
+import DeleteCategoryModal from "./DeleteCategoryModal";
 
 type Props = {};
 
@@ -32,6 +33,8 @@ const Category = (props: Props) => {
     handleSearch,
     handleClearSearch,
     refetchCategory,
+    selectedId,
+    setSelectedId,
   } = useCategory();
 
   useEffect(() => {
@@ -51,27 +54,29 @@ const Category = (props: Props) => {
           );
         case "actions":
           return (
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <EllipsisVertical className="h-5 w-5 text-default-700" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem
-                  key={`detail-category`}
-                  onPress={() => push(`/admin/category/${category.id}`)}
-                >
-                  Detail Category
-                </DropdownItem>
-                <DropdownItem
-                  className="text-danger-500"
-                  key={`delete-category`}
-                >
-                  Delete Category
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            <div className="flex items-center gap-3">
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onPress={() => push(`/admin/category/${category.id}`)}
+                className="bg-primary-100"
+              >
+                <Eye className="h-5 w-5 text-primary-500" />
+              </Button>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onPress={() => {
+                  setSelectedId(`${category.id}`);
+                  deleteCategoryModal.onOpen();
+                }}
+                className="bg-danger-100"
+              >
+                <Trash className="h-5 w-5 text-danger-500" />
+              </Button>
+            </div>
           );
 
         default:
@@ -81,6 +86,7 @@ const Category = (props: Props) => {
     [push],
   );
   const addCategoryModal = useDisclosure();
+  const deleteCategoryModal = useDisclosure();
   return (
     <section>
       {Object.keys(query)?.length > 0 && (
@@ -105,6 +111,12 @@ const Category = (props: Props) => {
       <AddCategoryModal
         refetchCategory={refetchCategory}
         {...addCategoryModal}
+      />
+      <DeleteCategoryModal
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
+        refetchCategory={refetchCategory}
+        {...deleteCategoryModal}
       />
     </section>
   );

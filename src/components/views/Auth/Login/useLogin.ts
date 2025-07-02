@@ -1,5 +1,4 @@
 import { ILogin, ISessionExtended } from "@/types/Auth";
-import { errorCallback, successCallback } from "@/utils/tanstack-callback";
 import { addToast } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";

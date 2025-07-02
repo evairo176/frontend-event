@@ -8,10 +8,11 @@ import useDebounce from "@/hooks/useDebounce";
 import categoryServices from "@/services/category.service";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { ChangeEvent, useMemo } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 
 const useCategory = () => {
   const router = useRouter();
+  const [selectedId, setSelectedId] = useState<string>("");
   const currentLimit = router.query.limit;
   const currentPage = router.query.page;
   const currentSearch = router.query.search;
@@ -106,6 +107,8 @@ const useCategory = () => {
     handleChangeLimit,
     handleSearch,
     handleClearSearch,
+    selectedId,
+    setSelectedId,
   };
 };
 
