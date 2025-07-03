@@ -17,6 +17,7 @@ type Props = {
   preview?: string;
   errorMessage?: string;
   label?: string;
+  isLoading?: boolean;
 };
 
 const InputFile = ({
@@ -32,6 +33,7 @@ const InputFile = ({
   preview,
   errorMessage,
   label,
+  isLoading = false,
 }: Props) => {
   const drop = useRef<HTMLLabelElement>(null);
   const dropzoneId = useId();
@@ -95,11 +97,11 @@ const InputFile = ({
             </div>
             <Button
               onPress={onDelete}
-              disabled={isDeleting}
+              disabled={isDeleting || isLoading}
               isIconOnly
               className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded bg-danger-100"
             >
-              {isDeleting ? (
+              {isDeleting || isLoading ? (
                 <Spinner size="sm" color="danger" />
               ) : (
                 <Trash className="h-5 w-5 text-danger-500" />

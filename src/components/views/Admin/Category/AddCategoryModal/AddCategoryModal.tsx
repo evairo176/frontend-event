@@ -127,6 +127,7 @@ const AddCategoryModal = ({
                         isUploading={isPendingMutateUploadFile}
                         isDeleting={isPendingMutateDeleteFile}
                         isInvalid={errors.icon !== undefined}
+                        isLoading={disabledSubmit}
                         errorMessage={errors.icon?.message}
                         isDroppable
                         preview={typeof preview === "string" ? preview : ""}

@@ -6,18 +6,47 @@ import {
   CardHeader,
   Input,
   Skeleton,
+  Spinner,
   Textarea,
 } from "@heroui/react";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
+import useInfoTab from "./useInfoTab";
+import { Controller } from "react-hook-form";
 
 type Props = {
   dataCategory: ICategory;
+  onUpdate: (data: ICategory) => void;
+  isPendingMutateUpdateCategory: boolean;
+  isSuccessMutateUpdateCategory: boolean;
 };
 
-const InfoTab = ({ dataCategory }: Props) => {
+const InfoTab = ({
+  dataCategory,
+  onUpdate,
+  isPendingMutateUpdateCategory,
+  isSuccessMutateUpdateCategory,
+}: Props) => {
   const { back } = useRouter();
+  const {
+    controlUpdateInfo,
+    errorsUpdateInfo,
+    handleSubmitUpdateInfo,
+    resetUpdateInfo,
+    setValueUpdateInfo,
+  } = useInfoTab();
+
+  useEffect(() => {
+    if (isSuccessMutateUpdateCategory) {
+      resetUpdateInfo();
+    }
+  }, [isSuccessMutateUpdateCategory]);
+
+  useEffect(() => {
+    setValueUpdateInfo("name", `${dataCategory?.name}`);
+    setValueUpdateInfo("description", `${dataCategory?.description}`);
+  }, [dataCategory]);
   return (
     <Card className="w-full p-4 lg:w-1/2">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -27,29 +56,60 @@ const InfoTab = ({ dataCategory }: Props) => {
             Manage information of this category
           </p>
         </div>
-        <Button color="danger" onPress={() => back()}>
+        <Button
+          color="danger"
+          onPress={() => back()}
+          disabled={isPendingMutateUpdateCategory}
+        >
           <ArrowLeft className="h-4 w-4 text-white" />
           Back
         </Button>
       </CardHeader>
       <CardBody>
-        <form className="flex flex-col gap-4" onSubmit={() => {}}>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmitUpdateInfo(onUpdate)}
+        >
           <Skeleton className="rounded-md" isLoaded={!!dataCategory?.name}>
-            <Input
-              variant="flat"
-              label="Name"
-              type="text"
-              defaultValue={dataCategory?.name}
+            <Controller
+              name="name"
+              control={controlUpdateInfo}
+              render={({ field }) => {
+                return (
+                  <Input
+                    {...field}
+                    type="text"
+                    label="Name"
+                    variant="underlined"
+                    autoComplete="off"
+                    isInvalid={errorsUpdateInfo.name !== undefined}
+                    errorMessage={errorsUpdateInfo.name?.message}
+                    className="mb-2"
+                  />
+                );
+              }}
             />
           </Skeleton>
           <Skeleton
             className="rounded-md"
             isLoaded={!!dataCategory?.description}
           >
-            <Textarea
-              variant="flat"
-              label="Description"
-              defaultValue={dataCategory?.description}
+            <Controller
+              name="description"
+              control={controlUpdateInfo}
+              render={({ field }) => {
+                return (
+                  <Textarea
+                    {...field}
+                    label="Description"
+                    variant="underlined"
+                    autoComplete="off"
+                    isInvalid={errorsUpdateInfo.description !== undefined}
+                    errorMessage={errorsUpdateInfo.description?.message}
+                    className="mb-2"
+                  />
+                );
+              }}
             />
           </Skeleton>
 
@@ -57,7 +117,11 @@ const InfoTab = ({ dataCategory }: Props) => {
             color="danger"
             className="mt-2 disabled:bg-default-500"
             type="submit"
+            disabled={isPendingMutateUpdateCategory}
           >
+            {isPendingMutateUpdateCategory && (
+              <Spinner size="sm" color="white" />
+            )}
             Save Changes
           </Button>
         </form>
