@@ -1,12 +1,10 @@
-import useMediaHandling from "@/hooks/useMediaHandling";
 import categoryServices from "@/services/category.service";
 import { ICategory } from "@/types/Category";
-import { errorCallback, successCallback } from "@/utils/tanstack-callback";
+import { errorCallback } from "@/utils/tanstack-callback";
 import { addToast } from "@heroui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
 
 const useDetailCategory = () => {
   const { query, isReady } = useRouter();
@@ -42,7 +40,7 @@ const useDetailCategory = () => {
     mutationFn: updateCategory,
     onSuccess: () => {
       refetchCategory();
-      queryClient.invalidateQueries({ queryKey: ["category", "1", "8", ""] });
+      queryClient.invalidateQueries({ queryKey: ["categories", "1", "8", ""] });
       // resetUpdateIcon();
       // resetUpdateInfo();
       addToast({
