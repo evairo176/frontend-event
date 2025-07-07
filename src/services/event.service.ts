@@ -9,6 +9,7 @@ const eventServices = {
     instance.post(`${endpoint.EVENT}`, payload),
   searchLocationByRegency: async (name: string) =>
     instance.get(`${endpoint.REGION}/search?name=${name}`),
+  deleteEvent: async (id: string) => instance.delete(`${endpoint.EVENT}/${id}`),
 };
 
 export default eventServices;

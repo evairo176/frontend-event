@@ -1,15 +1,13 @@
 import DataTable from "@/components/ui/DataTable";
-import { Button, Chip, useDisclosure } from "@heroui/react";
-import { Eye, Trash } from "lucide-react";
-import React, { Key, ReactNode, useCallback, useEffect } from "react";
-
+import { Chip, useDisclosure } from "@heroui/react";
+import React, { Key, ReactNode, useCallback } from "react";
 import { useRouter } from "next/router";
-
 import Image from "next/image";
 import useEvent from "./useEvent";
 import { COLUMN_LIST_EVENT } from "./Event.constants";
 import ButtonAction from "@/components/commons/ButtonAction";
 import AddEventModal from "./AddEventModal/AddEventModal";
+import DeleteEventModal from "./DeleteEventModal";
 
 type Props = {};
 
@@ -85,12 +83,12 @@ const Event = (props: Props) => {
         />
       )}
       <AddEventModal refetchEvent={refetchEvent} {...addEventModal} />
-      {/* <DeleteEventModal
+      <DeleteEventModal
         selectedId={selectedId}
         setSelectedId={setSelectedId}
         refetchEvent={refetchEvent}
         {...deleteEventModal}
-      /> */}
+      />
     </section>
   );
 };
