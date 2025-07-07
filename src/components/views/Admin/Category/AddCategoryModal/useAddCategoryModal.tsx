@@ -27,50 +27,40 @@ const useAddCategoryModal = () => {
     resolver: yupResolver(schema),
   });
   const {
-    mutateUploadFile,
     isPendingMutateUploadFile,
-    mutateDeleteFile,
     isPendingMutateDeleteFile,
+    handleUploadFile,
+    handleDeleteFile,
   } = useMediaHandling();
 
   const preview = watch("icon");
+  const fileUrl = getValues("icon");
 
   const handleUploadIcon = (
     files: FileList,
     onChange: (files: FileList | undefined) => void,
   ) => {
-    if (files?.length !== 0) {
-      onChange(files);
-      mutateUploadFile({
-        file: files[0],
-        callback: (fileUrl: string) => {
-          setValue("icon", fileUrl);
-        },
-      });
-    }
+    handleUploadFile(files, onChange, (fileUrl: string | undefined) => {
+      if (fileUrl) {
+        setValue("icon", fileUrl);
+      }
+    });
+    // You may want to handle the files?.length !== 0 logic here if needed
   };
 
   const handleDeleteIcon = (
     onChange: (files: FileList | undefined) => void,
   ) => {
     const fileUrl = getValues("icon");
-
-    if (typeof fileUrl === "string") {
-      mutateDeleteFile({ fileUrl, callback: () => onChange(undefined) });
-    }
+    handleDeleteFile(() => onChange(undefined), fileUrl);
   };
 
   const handleOnClose = (onClose: () => void) => {
-    const fileUrl = getValues("icon");
-
     if (typeof fileUrl === "string") {
-      mutateDeleteFile({
-        fileUrl,
-        callback: () => {
-          reset();
-          onClose();
-        },
-      });
+      handleDeleteFile(() => {
+        reset();
+        onClose();
+      }, fileUrl);
     } else {
       reset();
       onClose();

@@ -58,7 +58,7 @@ const DataTable = ({
 
   const topContent = useMemo(() => {
     return (
-      <div className="flex flex-col-reverse items-start justify-between gap-y-4 lg:flex-row lg:items-center">
+      <div className="mt-3 flex flex-col-reverse items-start justify-between gap-y-4 lg:flex-row lg:items-center">
         <Input
           isClearable
           className="w-full sm:max-w-[24%]"

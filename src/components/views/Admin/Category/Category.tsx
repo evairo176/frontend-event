@@ -1,14 +1,13 @@
 import DataTable from "@/components/ui/DataTable";
-import { Button, useDisclosure } from "@heroui/react";
-import { Eye, Trash } from "lucide-react";
-import React, { Key, ReactNode, useCallback, useEffect } from "react";
+import { useDisclosure } from "@heroui/react";
+import React, { Key, ReactNode, useCallback } from "react";
 import { COLUMN_LIST_CATEGORY } from "./Category.constants";
 import useCategory from "./useCategory";
 import { useRouter } from "next/router";
 import AddCategoryModal from "./AddCategoryModal";
 import Image from "next/image";
 import DeleteCategoryModal from "./DeleteCategoryModal";
-import ButtonAction from "@/components/cummons/ButtonAction";
+import ButtonAction from "@/components/commons/ButtonAction";
 
 type Props = {};
 

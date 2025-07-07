@@ -21,7 +21,7 @@ const COLUMN_LIST_EVENT = [
   },
   {
     name: "STATUS",
-    uid: "isPublish",
+    uid: "isPublished",
     sort: true,
   },
   {

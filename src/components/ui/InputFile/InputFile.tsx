@@ -77,8 +77,8 @@ const InputFile = ({
   };
 
   return (
-    <div>
-      <p className="mb-1 text-sm text-gray-400"> {label}</p>
+    <div className="mt-2">
+      <p className="mb-1 text-sm font-bold text-gray-800"> {label}</p>
       <label
         ref={drop}
         htmlFor={`dropzone-file-${dropzoneId}`}

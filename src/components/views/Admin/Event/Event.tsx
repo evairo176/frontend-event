@@ -8,7 +8,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import useEvent from "./useEvent";
 import { COLUMN_LIST_EVENT } from "./Event.constants";
-import ButtonAction from "@/components/cummons/ButtonAction";
+import ButtonAction from "@/components/commons/ButtonAction";
+import AddEventModal from "./AddEventModal/AddEventModal";
 
 type Props = {};
 
@@ -39,7 +40,7 @@ const Event = (props: Props) => {
               height={100}
             />
           );
-        case "isPublish":
+        case "isPublished":
           return (
             <Chip
               size="sm"
@@ -83,11 +84,8 @@ const Event = (props: Props) => {
           data={dataEvent?.data || []}
         />
       )}
-      {/* <AddEventModal
-        refetchEvent={refetchEvent}
-        {...addEventModal}
-      />
-      <DeleteEventModal
+      <AddEventModal refetchEvent={refetchEvent} {...addEventModal} />
+      {/* <DeleteEventModal
         selectedId={selectedId}
         setSelectedId={setSelectedId}
         refetchEvent={refetchEvent}

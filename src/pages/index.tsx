@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import { Button } from "@heroui/react";
-import PageHead from "@/components/cummons/PageHead";
+import PageHead from "@/components/commons/PageHead";
 
 const inter = Inter({ subsets: ["latin"] });
 

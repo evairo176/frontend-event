@@ -1,4 +1,4 @@
-import PageHead from "@/components/cummons/PageHead";
+import PageHead from "@/components/commons/PageHead";
 import React from "react";
 
 type Props = {
