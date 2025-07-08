@@ -13,6 +13,21 @@ export interface IEvent {
   longitude: string;
 }
 
+export interface IEventUpdate {
+  name?: string;
+  categoryId?: string;
+  startDate?: string | DateValue;
+  endDate?: string | DateValue;
+  banner?: FileList | string;
+  description?: string;
+  isPublished?: string;
+  isFeatured?: string;
+  isOnline?: string;
+  region?: string;
+  latitude?: string;
+  longitude?: string;
+}
+
 export interface IEventForm {
   name: string;
   categoryId: string;

@@ -45,7 +45,7 @@ const Event = (props: Props) => {
               variant="flat"
               color={cellValue ? "success" : "warning"}
             >
-              {cellValue === true ? "Published" : "Not Published"}{" "}
+              {cellValue === true ? "Published" : "Not Published"}
             </Chip>
           );
         case "actions":

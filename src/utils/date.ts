@@ -10,8 +10,8 @@ const standardTime = (time: number) => {
 };
 const toDateStandard = (date: DateValue) => {
   const year = date.year;
-  const month = date.month;
-  const day = date.day;
+  const month = standardTime(date.month);
+  const day = standardTime(date.day);
 
   const hour = "hour" in date ? date.hour : 0;
   const minute = "minute" in date ? date.minute : 0;

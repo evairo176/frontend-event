@@ -44,8 +44,10 @@ const InfoTab = ({
   }, [isSuccessMutateUpdateCategory]);
 
   useEffect(() => {
-    setValueUpdateInfo("name", `${dataCategory?.name}`);
-    setValueUpdateInfo("description", `${dataCategory?.description}`);
+    if (dataCategory) {
+      setValueUpdateInfo("name", `${dataCategory?.name}`);
+      setValueUpdateInfo("description", `${dataCategory?.description}`);
+    }
   }, [dataCategory]);
   return (
     <Card className="w-full p-4 lg:w-1/2">
