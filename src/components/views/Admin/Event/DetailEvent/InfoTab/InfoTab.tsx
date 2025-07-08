@@ -218,10 +218,10 @@ const InfoTab = ({
                     ]}
                     disallowEmptySelection
                   >
-                    <SelectItem key={"true"} textValue="true">
+                    <SelectItem key={"true"} textValue="Publish">
                       Publish
                     </SelectItem>
-                    <SelectItem key={"false"} textValue="false">
+                    <SelectItem key={"false"} textValue="Draft">
                       Draft
                     </SelectItem>
                   </Select>
@@ -247,10 +247,10 @@ const InfoTab = ({
                     ]}
                     disallowEmptySelection
                   >
-                    <SelectItem key={"true"} textValue="true">
+                    <SelectItem key={"true"} textValue="Yes">
                       Yes
                     </SelectItem>
-                    <SelectItem key={"false"} textValue="false">
+                    <SelectItem key={"false"} textValue="No">
                       No
                     </SelectItem>
                   </Select>
@@ -276,10 +276,10 @@ const InfoTab = ({
                     ]}
                     disallowEmptySelection
                   >
-                    <SelectItem key={"true"} textValue="true">
+                    <SelectItem key={"true"} textValue="Online">
                       Online
                     </SelectItem>
-                    <SelectItem key={"false"} textValue="false">
+                    <SelectItem key={"false"} textValue="Offline">
                       Offline
                     </SelectItem>
                   </Select>
