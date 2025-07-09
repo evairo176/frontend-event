@@ -69,16 +69,12 @@ const LocationTab = ({
   }, [dataEvent]);
 
   useEffect(() => {
-    replace(
-      {
-        pathname,
-        query: {
-          id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
-        },
+    replace({
+      pathname,
+      query: {
+        id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
       },
-      undefined,
-      { shallow: true },
-    );
+    });
   }, []);
   return (
     <Card className="w-full p-4 lg:w-1/2">

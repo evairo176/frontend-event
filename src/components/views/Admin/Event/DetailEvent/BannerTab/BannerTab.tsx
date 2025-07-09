@@ -49,16 +49,12 @@ const BannerTab = ({
   }, [isSuccessMutateUpdateEvent]);
 
   useEffect(() => {
-    replace(
-      {
-        pathname,
-        query: {
-          id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
-        },
+    replace({
+      pathname,
+      query: {
+        id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
       },
-      undefined,
-      { shallow: true },
-    );
+    });
   }, []);
 
   return (
