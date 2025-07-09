@@ -47,9 +47,9 @@ const InfoTab = ({
     dataCategory,
     isLoadingCategory,
 
-    dataRegion,
-    isLoadingRegion,
-    handleSearchRegion,
+    dataRegionId,
+    isLoadingRegionId,
+    handleSearchRegionId,
   } = useInfoTab();
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const InfoTab = ({
         "isOnline",
         `${dataEvent?.isOnline ? "true" : "false"}`,
       );
-      setValueUpdateInfo("region", `${dataEvent?.region}`);
+      setValueUpdateInfo("regionId", `${dataEvent?.regionId}`);
       setValueUpdateInfo("latitude", `${dataEvent?.latitude}`);
       setValueUpdateInfo("longitude", `${dataEvent?.longitude}`);
       setValueUpdateInfo("address", `${dataEvent?.address}`);
@@ -292,27 +292,27 @@ const InfoTab = ({
           <div>
             <Skeleton
               className="rounded-md"
-              isLoaded={!!dataEvent?.region && !!dataRegion}
+              isLoaded={!!dataEvent?.regionId && !!dataRegionId}
             >
               <Controller
-                name="region"
+                name="regionId"
                 control={controlUpdateInfo}
                 render={({ field: { onChange, ...field } }) => {
                   return (
                     <Autocomplete
                       {...field}
-                      isLoading={isLoadingRegion}
-                      disabled={isLoadingRegion}
-                      defaultItems={dataRegion?.data?.data || []}
+                      isLoading={isLoadingRegionId}
+                      disabled={isLoadingRegionId}
+                      defaultItems={dataRegionId?.data?.data || []}
                       label="City"
                       placeholder="Search city here"
                       variant="underlined"
-                      isInvalid={errorsUpdateInfo.region !== undefined}
-                      errorMessage={errorsUpdateInfo.region?.message}
+                      isInvalid={errorsUpdateInfo.regionId !== undefined}
+                      errorMessage={errorsUpdateInfo.regionId?.message}
                       onSelectionChange={(value) => {
                         onChange(value);
                       }}
-                      onInputChange={(value) => handleSearchRegion(value)}
+                      onInputChange={(value) => handleSearchRegionId(value)}
                       selectedKey={field.value} // controlled value
                     >
                       {(region: IRegion) => {

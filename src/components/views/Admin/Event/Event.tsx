@@ -31,19 +31,25 @@ const Event = (props: Props) => {
         case "city.name":
           return (
             <Tooltip content={event?.city?.name}>
-              <div className="line-clamp-1">{event?.city?.name}</div>
+              <div className="line-clamp-2 cursor-pointer">
+                {event?.city?.name}
+              </div>
             </Tooltip>
           );
         case "category.name":
           return (
             <Tooltip content={event?.category?.name}>
-              <div className="line-clamp-1">{event?.category?.name}</div>
+              <div className="line-clamp-2 cursor-pointer">
+                {event?.category?.name}
+              </div>
             </Tooltip>
           );
         case "address":
           return (
             <Tooltip content={event?.address}>
-              <div className="line-clamp-1">{event?.address}</div>
+              <div className="line-clamp-2 cursor-pointer">
+                {event?.address}
+              </div>
             </Tooltip>
           );
         case "banner":

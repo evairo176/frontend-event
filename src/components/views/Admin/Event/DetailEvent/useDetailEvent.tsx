@@ -70,7 +70,7 @@ const useDetailEvent = () => {
       isFeatured: Boolean(data.isFeatured),
       isPublished: Boolean(data.isPublished),
       isOnline: Boolean(data.isOnline),
-      region: String(data.region),
+      regionId: String(data.regionId),
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),
       startDate: toDateStandard(data.startDate),

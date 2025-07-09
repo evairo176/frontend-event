@@ -19,8 +19,8 @@ import useAddEventModal from "./useAddEventModal";
 import { Controller } from "react-hook-form";
 import InputFile from "@/components/ui/InputFile";
 import { ICategory } from "@/types/Category";
-import { IRegion } from "@/types/Regency";
 import { getLocalTimeZone, now } from "@internationalized/date";
+import { IRegion } from "@/types/Regency";
 
 type Props = {
   isOpen?: boolean;
@@ -53,9 +53,9 @@ const AddEventModal = ({
     dataCategory,
     isLoadingCategory,
 
-    dataRegion,
-    isLoadingRegion,
-    handleSearchRegion,
+    dataRegionId,
+    isLoadingRegionId,
+    handleSearchRegionId,
   } = useAddEventModal();
 
   useEffect(() => {
@@ -268,24 +268,24 @@ const AddEventModal = ({
               </p>
               <div>
                 <Controller
-                  name="region"
+                  name="regionId"
                   control={control}
                   render={({ field: { onChange, ...field } }) => {
                     return (
                       <Autocomplete
                         {...field}
-                        isLoading={isLoadingRegion}
-                        disabled={isLoadingRegion}
-                        defaultItems={dataRegion?.data?.data || []}
+                        isLoading={isLoadingRegionId}
+                        disabled={isLoadingRegionId}
+                        defaultItems={dataRegionId?.data?.data || []}
                         label="City"
                         placeholder="Search city here"
                         variant="underlined"
-                        isInvalid={errors.region !== undefined}
-                        errorMessage={errors.region?.message}
+                        isInvalid={errors.regionId !== undefined}
+                        errorMessage={errors.regionId?.message}
                         onSelectionChange={(value) => {
                           onChange(value);
                         }}
-                        onInputChange={(value) => handleSearchRegion(value)}
+                        onInputChange={(value) => handleSearchRegionId(value)}
                       >
                         {(region: IRegion) => {
                           return (

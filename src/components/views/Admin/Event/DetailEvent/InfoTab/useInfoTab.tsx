@@ -19,7 +19,7 @@ const schema = yup.object().shape({
   isPublished: yup.string().required("Please select status"),
   isFeatured: yup.string().required("Please select featured"),
   isOnline: yup.string().required("Please select online or offline"),
-  region: yup.string().required("Please select region"),
+  regionId: yup.string().required("Please select regionId"),
   latitude: yup.string().required("Please select latitude coordinate"),
   longitude: yup.string().required("Please select longitude coordinate"),
   address: yup.string().required("Please input address"),
@@ -49,15 +49,15 @@ const useInfoTab = () => {
 
   const [searchRegency, setSearchRegency] = useState("");
 
-  const handleSearchRegion = (region: string) => {
+  const handleSearchRegionId = (regionid: string) => {
     debounce(() => {
-      setSearchRegency(region);
+      setSearchRegency(regionid);
     }, DELAY);
   };
 
   const {
-    data: dataRegion,
-    isLoading: isLoadingRegion,
+    data: dataRegionId,
+    isLoading: isLoadingRegionId,
     // isRefetching: isRefetchingCategory,
     // refetch: refetchCategory,
   } = useQuery({
@@ -75,9 +75,9 @@ const useInfoTab = () => {
     dataCategory,
     isLoadingCategory,
 
-    dataRegion,
-    isLoadingRegion,
-    handleSearchRegion,
+    dataRegionId,
+    isLoadingRegionId,
+    handleSearchRegionId,
   };
 };
 
