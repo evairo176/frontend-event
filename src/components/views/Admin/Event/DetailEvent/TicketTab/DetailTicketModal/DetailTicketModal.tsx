@@ -9,43 +9,60 @@ import {
   Spinner,
   Textarea,
 } from "@heroui/react";
-import React, { useEffect, useMemo } from "react";
-import useAddTicketModal from "./useAddTicketModal";
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
+import useDetailTicketModal from "./useDetailTicketModal";
+import { ITicket } from "@/types/Ticket";
 
 type Props = {
   isOpen?: boolean;
   onClose: () => void;
   onOpenChange: () => void;
   refetchTicket: () => void;
+  selectedDataTicket: ITicket | null;
+  setSelectedDataTicket: Dispatch<SetStateAction<ITicket | null>>;
 };
 
-const AddTicketModal = ({
+const DetailTicketModal = ({
   isOpen = false,
   onClose,
   refetchTicket,
   onOpenChange,
+  selectedDataTicket,
+  setSelectedDataTicket,
 }: Props) => {
   const {
     control,
     errors,
     handleSubmitTicketForm,
-    handleAddTicket,
-    isPendingMutateAddTicket,
-    isSuccessMutateAddTicket,
+    handleUpdateTicket,
+    isPendingMutateUpdateTicket,
+    isSuccessMutateUpdateTicket,
+
     handleOnClose,
-  } = useAddTicketModal();
+
+    setValue,
+  } = useDetailTicketModal(selectedDataTicket, setSelectedDataTicket);
 
   useEffect(() => {
-    if (isSuccessMutateAddTicket) {
+    if (isSuccessMutateUpdateTicket) {
       onClose();
       refetchTicket();
     }
-  }, [isSuccessMutateAddTicket]);
+  }, [isSuccessMutateUpdateTicket]);
 
   const disabledSubmit = useMemo(() => {
-    return isPendingMutateAddTicket;
-  }, [isPendingMutateAddTicket]);
+    return isPendingMutateUpdateTicket;
+  }, [isPendingMutateUpdateTicket]);
+
+  useEffect(() => {
+    if (selectedDataTicket) {
+      setValue("name", `${selectedDataTicket.name}`);
+      setValue("price", `${selectedDataTicket.price}`);
+      setValue("quantity", `${selectedDataTicket.quantity}`);
+      setValue("description", `${selectedDataTicket.description}`);
+    }
+  }, [selectedDataTicket]);
 
   return (
     <Modal
@@ -55,9 +72,9 @@ const AddTicketModal = ({
       scrollBehavior="inside"
       onClose={() => handleOnClose(onClose)}
     >
-      <form onSubmit={handleSubmitTicketForm(handleAddTicket)}>
+      <form onSubmit={handleSubmitTicketForm(handleUpdateTicket)}>
         <ModalContent className="m-4">
-          <ModalHeader>Add Ticket</ModalHeader>
+          <ModalHeader>Update Ticket</ModalHeader>
           <ModalBody>
             <div className="flex flex-col gap-2">
               <p className="text-sm font-bold">Information</p>
@@ -147,7 +164,7 @@ const AddTicketModal = ({
               {disabledSubmit ? (
                 <Spinner size="sm" color="white" />
               ) : (
-                "Create ticket"
+                "Save changes"
               )}
             </Button>
           </ModalFooter>
@@ -157,4 +174,4 @@ const AddTicketModal = ({
   );
 };
 
-export default AddTicketModal;
+export default DetailTicketModal;

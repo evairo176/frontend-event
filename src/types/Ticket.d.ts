@@ -1,11 +1,12 @@
 export interface ITicketForm {
-  name: string;
-  price: string;
-  quantity: string;
-  description: string;
+  name?: string;
+  price?: string;
+  quantity?: string;
+  description?: string;
 }
 
 export interface ITicket {
+  id?: string;
   name: string;
   price: number;
   quantity: number;

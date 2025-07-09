@@ -15,6 +15,7 @@ import useTicketTab from "./useTicketTab";
 import AddTicketModal from "./AddTicketModal";
 import DeleteTicketModal from "./DeleteTicketModal";
 import ButtonAction from "@/components/commons/ButtonAction";
+import DetailTicketModal from "./DetailTicketModal";
 
 type Props = {};
 
@@ -30,6 +31,8 @@ const TicketTab = (props: Props) => {
     refetchTicket,
     selectedId,
     setSelectedId,
+    ticket,
+    setTicket,
   } = useTicketTab();
 
   const renderCell = useCallback((ticket: any, columnKey: Key) => {
@@ -41,7 +44,10 @@ const TicketTab = (props: Props) => {
       case "actions":
         return (
           <ButtonAction
-            onPressButtonDetail={() => updateTicketModal.onOpen()}
+            onPressButtonDetail={() => {
+              setTicket(ticket);
+              updateTicketModal.onOpen();
+            }}
             onPressButtonDelete={() => {
               setSelectedId(`${ticket.id}`);
               deleteTicketModal.onOpen();
@@ -86,6 +92,12 @@ const TicketTab = (props: Props) => {
         setSelectedId={setSelectedId}
         refetchTicket={refetchTicket}
         {...deleteTicketModal}
+      />
+      <DetailTicketModal
+        selectedDataTicket={ticket}
+        setSelectedDataTicket={setTicket}
+        refetchTicket={refetchTicket}
+        {...updateTicketModal}
       />
     </>
   );
