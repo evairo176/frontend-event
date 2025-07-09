@@ -12,6 +12,9 @@ import React, { Key, ReactNode, useCallback } from "react";
 import { COLUMN_LIST_TICKET } from "./TicketTab.constants";
 import { useRouter } from "next/router";
 import useTicketTab from "./useTicketTab";
+import AddTicketModal from "./AddTicketModal";
+import DeleteTicketModal from "./DeleteTicketModal";
+import ButtonAction from "@/components/commons/ButtonAction";
 
 type Props = {};
 
@@ -20,8 +23,14 @@ const TicketTab = (props: Props) => {
   const addTicketModal = useDisclosure();
   const updateTicketModal = useDisclosure();
   const deleteTicketModal = useDisclosure();
-  const { dataTicket, isLoadingTicket, isRefetchingTicket, refetchTicket } =
-    useTicketTab();
+  const {
+    dataTicket,
+    isLoadingTicket,
+    isRefetchingTicket,
+    refetchTicket,
+    selectedId,
+    setSelectedId,
+  } = useTicketTab();
 
   const renderCell = useCallback((ticket: any, columnKey: Key) => {
     const cellValue = ticket[columnKey as keyof typeof ticket];
@@ -29,47 +38,56 @@ const TicketTab = (props: Props) => {
     switch (columnKey) {
       case "price":
         return `${convertIDR(cellValue)}`;
-      // case "actions":
-      //   return (
-      //     <ButtonAction
-      //       onPressButtonDetail={() => push(`/admin/ticket/${ticket.id}`)}
-      //       onPressButtonDelete={() => {
-      //         setSelectedId(`${ticket.id}`);
-      //         deleteTicketModal.onOpen();
-      //       }}
-      //     />
-      //   );
+      case "actions":
+        return (
+          <ButtonAction
+            onPressButtonDetail={() => updateTicketModal.onOpen()}
+            onPressButtonDelete={() => {
+              setSelectedId(`${ticket.id}`);
+              deleteTicketModal.onOpen();
+            }}
+          />
+        );
 
       default:
         return cellValue as ReactNode;
     }
   }, []);
   return (
-    <Card className="w-full p-4">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold">Ticket Information</h1>
-          <p className="text-small text-default-500">
-            Manage information of this ticket
-          </p>
-        </div>
-      </CardHeader>
-      <CardBody>
-        {Object.keys(query)?.length > 0 && (
-          <DataTable
-            isLoading={isLoadingTicket || isRefetchingTicket}
-            onClickButtonTopContent={() => addTicketModal.onOpen()}
-            buttonTopContentLabel="Create Ticket"
-            renderCell={renderCell}
-            columns={COLUMN_LIST_TICKET}
-            totalPages={dataTicket?.pagination?.totalPages}
-            totalData={dataTicket?.pagination?.total}
-            emptyContent="Ticket is empty"
-            data={dataTicket?.data || []}
-          />
-        )}
-      </CardBody>
-    </Card>
+    <>
+      <Card className="w-full p-4">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold">Ticket Information</h1>
+            <p className="text-small text-default-500">
+              Manage information of this ticket
+            </p>
+          </div>
+        </CardHeader>
+        <CardBody>
+          {Object.keys(query)?.length > 0 && (
+            <DataTable
+              isLoading={isLoadingTicket || isRefetchingTicket}
+              onClickButtonTopContent={() => addTicketModal.onOpen()}
+              buttonTopContentLabel="Create Ticket"
+              renderCell={renderCell}
+              columns={COLUMN_LIST_TICKET}
+              totalPages={dataTicket?.pagination?.totalPages}
+              totalData={dataTicket?.pagination?.total}
+              emptyContent="Ticket is empty"
+              data={dataTicket?.data || []}
+            />
+          )}
+        </CardBody>
+      </Card>
+      <AddTicketModal refetchTicket={refetchTicket} {...addTicketModal} />
+      <DeleteTicketModal
+        selectedId={selectedId}
+        setSelectedId={setSelectedId}
+        refetchTicket={refetchTicket}
+        {...deleteTicketModal}
+      />
+    </>
   );
 };
 

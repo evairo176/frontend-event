@@ -68,14 +68,6 @@ const LocationTab = ({
     }
   }, [dataEvent]);
 
-  useEffect(() => {
-    replace({
-      pathname,
-      query: {
-        id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
-      },
-    });
-  }, []);
   return (
     <Card className="w-full p-4 lg:w-1/2">
       <CardHeader className="flex flex-row items-center justify-between">
