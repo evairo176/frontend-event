@@ -22,6 +22,7 @@ const schema = yup.object().shape({
   region: yup.string().required("Please select region"),
   latitude: yup.string().required("Please select latitude coordinate"),
   longitude: yup.string().required("Please select longitude coordinate"),
+  address: yup.string().required("Please input address"),
 });
 const useInfoTab = () => {
   const debounce = useDebounce();

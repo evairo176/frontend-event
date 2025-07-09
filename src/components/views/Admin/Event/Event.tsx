@@ -1,5 +1,5 @@
 import DataTable from "@/components/ui/DataTable";
-import { Chip, useDisclosure } from "@heroui/react";
+import { Chip, Tooltip, useDisclosure } from "@heroui/react";
 import React, { Key, ReactNode, useCallback } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -24,10 +24,28 @@ const Event = (props: Props) => {
   } = useEvent();
 
   const renderCell = useCallback(
-    (event: Record<string, unknown>, columnKey: Key) => {
+    (event: any, columnKey: Key) => {
       const cellValue = event[columnKey as keyof typeof event];
 
       switch (columnKey) {
+        case "city.name":
+          return (
+            <Tooltip content={event?.city?.name}>
+              <div className="line-clamp-1">{event?.city?.name}</div>
+            </Tooltip>
+          );
+        case "category.name":
+          return (
+            <Tooltip content={event?.category?.name}>
+              <div className="line-clamp-1">{event?.category?.name}</div>
+            </Tooltip>
+          );
+        case "address":
+          return (
+            <Tooltip content={event?.address}>
+              <div className="line-clamp-1">{event?.address}</div>
+            </Tooltip>
+          );
         case "banner":
           return (
             <Image

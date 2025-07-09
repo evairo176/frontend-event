@@ -29,6 +29,7 @@ const schema = yup.object().shape({
   region: yup.string().required("Please select region"),
   latitude: yup.string().required("Please select latitude coordinate"),
   longitude: yup.string().required("Please select longitude coordinate"),
+  address: yup.string().required("Please input address"),
 });
 
 const useAddEventModal = () => {
@@ -129,11 +130,12 @@ const useAddEventModal = () => {
       isFeatured: Boolean(data.isFeatured),
       isPublished: Boolean(data.isPublished),
       isOnline: Boolean(data.isOnline),
-      region: Number(data.region),
+      region: String(data.region),
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),
       startDate: toDateStandard(data.startDate),
       endDate: toDateStandard(data.endDate),
+      address: String(data.address),
     };
     mutateAddEvent(payload);
   };

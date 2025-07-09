@@ -70,11 +70,12 @@ const useDetailEvent = () => {
       isFeatured: Boolean(data.isFeatured),
       isPublished: Boolean(data.isPublished),
       isOnline: Boolean(data.isOnline),
-      region: Number(data.region),
+      region: String(data.region),
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),
       startDate: toDateStandard(data.startDate),
       endDate: toDateStandard(data.endDate),
+      address: String(data.address),
     };
     mutateUpdateEvent(payload);
   };

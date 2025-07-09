@@ -247,6 +247,22 @@ const AddEventModal = ({
                   );
                 }}
               />
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <Textarea
+                      {...field}
+                      label="Description"
+                      variant="underlined"
+                      autoComplete="off"
+                      isInvalid={errors.description !== undefined}
+                      errorMessage={errors.description?.message}
+                    />
+                  );
+                }}
+              />
               <p className="mb-1 mt-2 text-sm font-bold text-gray-800">
                 Location
               </p>
@@ -316,23 +332,23 @@ const AddEventModal = ({
                     );
                   }}
                 />
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <Textarea
+                        {...field}
+                        label="Address"
+                        variant="underlined"
+                        autoComplete="off"
+                        isInvalid={errors.address !== undefined}
+                        errorMessage={errors.address?.message}
+                      />
+                    );
+                  }}
+                />
               </div>
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <Textarea
-                      {...field}
-                      label="Description"
-                      variant="underlined"
-                      autoComplete="off"
-                      isInvalid={errors.description !== undefined}
-                      errorMessage={errors.description?.message}
-                    />
-                  );
-                }}
-              />
 
               <Controller
                 name="banner"

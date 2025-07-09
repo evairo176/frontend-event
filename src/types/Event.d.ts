@@ -11,6 +11,7 @@ export interface IEvent {
   region: string;
   latitude: string;
   longitude: string;
+  address: string;
 }
 
 export interface IEventUpdate {
@@ -26,6 +27,7 @@ export interface IEventUpdate {
   region?: string;
   latitude?: string;
   longitude?: string;
+  address?: string;
 }
 
 export interface IEventForm {
@@ -38,7 +40,8 @@ export interface IEventForm {
   isPublished: boolean;
   isFeatured: boolean;
   isOnline: boolean;
-  region: number;
+  region: string;
   latitude: number;
   longitude: number;
+  address: string;
 }

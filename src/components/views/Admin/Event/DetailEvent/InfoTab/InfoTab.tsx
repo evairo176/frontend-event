@@ -80,6 +80,7 @@ const InfoTab = ({
       setValueUpdateInfo("region", `${dataEvent?.region}`);
       setValueUpdateInfo("latitude", `${dataEvent?.latitude}`);
       setValueUpdateInfo("longitude", `${dataEvent?.longitude}`);
+      setValueUpdateInfo("address", `${dataEvent?.address}`);
     }
   }, [dataEvent]);
   return (
@@ -359,6 +360,24 @@ const InfoTab = ({
                       autoComplete="off"
                       isInvalid={errorsUpdateInfo.longitude !== undefined}
                       errorMessage={errorsUpdateInfo.longitude?.message}
+                    />
+                  );
+                }}
+              />
+            </Skeleton>
+            <Skeleton className="rounded-md" isLoaded={!!dataEvent?.address}>
+              <Controller
+                name="address"
+                control={controlUpdateInfo}
+                render={({ field }) => {
+                  return (
+                    <Textarea
+                      {...field}
+                      label="Address"
+                      variant="underlined"
+                      autoComplete="off"
+                      isInvalid={errorsUpdateInfo.address !== undefined}
+                      errorMessage={errorsUpdateInfo.address?.message}
                     />
                   );
                 }}

@@ -5,6 +5,16 @@ const COLUMN_LIST_EVENT = [
     sort: false,
   },
   {
+    name: "CATEGORY",
+    uid: "category.name",
+    sort: true,
+  },
+  {
+    name: "CITY",
+    uid: "city.name",
+    sort: true,
+  },
+  {
     name: "NAME",
     uid: "name",
     sort: true,
@@ -20,10 +30,16 @@ const COLUMN_LIST_EVENT = [
     sort: true,
   },
   {
+    name: "ADDRESS",
+    uid: "address",
+    sort: true,
+  },
+  {
     name: "STATUS",
     uid: "isPublished",
     sort: true,
   },
+
   {
     name: "ACTIONS",
     uid: "actions",
