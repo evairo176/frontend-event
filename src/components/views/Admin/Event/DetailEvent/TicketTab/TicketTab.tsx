@@ -61,31 +61,25 @@ const TicketTab = (props: Props) => {
   }, []);
   return (
     <>
-      <Card className="w-full p-4">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold">Ticket Information</h1>
-            <p className="text-small text-default-500">
-              Manage information of this ticket
-            </p>
-          </div>
-        </CardHeader>
-        <CardBody>
-          {Object.keys(query)?.length > 0 && (
-            <DataTable
-              isLoading={isLoadingTicket || isRefetchingTicket}
-              onClickButtonTopContent={() => addTicketModal.onOpen()}
-              buttonTopContentLabel="Create Ticket"
-              renderCell={renderCell}
-              columns={COLUMN_LIST_TICKET}
-              totalPages={dataTicket?.pagination?.totalPages}
-              totalData={dataTicket?.pagination?.total}
-              emptyContent="Ticket is empty"
-              data={dataTicket?.data || []}
-            />
-          )}
-        </CardBody>
-      </Card>
+      <div>
+        <h1 className="text-xl font-bold">Ticket Information</h1>
+        <p className="text-small text-default-500">
+          Manage information of this ticket
+        </p>
+      </div>
+      {Object.keys(query)?.length > 0 && (
+        <DataTable
+          isLoading={isLoadingTicket || isRefetchingTicket}
+          onClickButtonTopContent={() => addTicketModal.onOpen()}
+          buttonTopContentLabel="Create Ticket"
+          renderCell={renderCell}
+          columns={COLUMN_LIST_TICKET}
+          totalPages={dataTicket?.pagination?.totalPages}
+          totalData={dataTicket?.pagination?.total}
+          emptyContent="Ticket is empty"
+          data={dataTicket?.data || []}
+        />
+      )}
       <AddTicketModal refetchTicket={refetchTicket} {...addTicketModal} />
       <DeleteTicketModal
         selectedId={selectedId}
