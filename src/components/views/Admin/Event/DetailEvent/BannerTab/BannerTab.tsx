@@ -29,7 +29,7 @@ const BannerTab = ({
   isPendingMutateUpdateEvent,
   isSuccessMutateUpdateEvent,
 }: Props) => {
-  const { back } = useRouter();
+  const { back, replace, query, pathname } = useRouter();
   const {
     isPendingMutateDeleteFile,
     isPendingMutateUploadFile,
@@ -47,6 +47,19 @@ const BannerTab = ({
       resetUpdateBanner();
     }
   }, [isSuccessMutateUpdateEvent]);
+
+  useEffect(() => {
+    replace(
+      {
+        pathname,
+        query: {
+          id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  }, []);
 
   return (
     <Card className="w-full p-4 lg:w-1/2">

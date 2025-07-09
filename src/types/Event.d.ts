@@ -21,12 +21,12 @@ export interface IEventUpdate {
   endDate?: string | DateValue;
   banner?: FileList | string;
   description?: string;
-  isPublished?: string;
-  isFeatured?: string;
-  isOnline?: string;
+  isPublished?: string | boolean;
+  isFeatured?: string | boolean;
+  isOnline?: string | boolean;
   regionId?: string;
-  latitude?: string;
-  longitude?: string;
+  latitude?: string | number;
+  longitude?: string | number;
   address?: string;
 }
 

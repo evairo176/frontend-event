@@ -36,7 +36,7 @@ const InfoTab = ({
   isPendingMutateUpdateEvent,
   isSuccessMutateUpdateEvent,
 }: Props) => {
-  const { back } = useRouter();
+  const { back, replace, query, pathname } = useRouter();
   const {
     controlUpdateInfo,
     errorsUpdateInfo,
@@ -46,10 +46,6 @@ const InfoTab = ({
 
     dataCategory,
     isLoadingCategory,
-
-    dataRegionId,
-    isLoadingRegionId,
-    handleSearchRegionId,
   } = useInfoTab();
 
   useEffect(() => {
@@ -73,16 +69,21 @@ const InfoTab = ({
         "isFeatured",
         `${dataEvent?.isFeatured ? "true" : "false"}`,
       );
-      setValueUpdateInfo(
-        "isOnline",
-        `${dataEvent?.isOnline ? "true" : "false"}`,
-      );
-      setValueUpdateInfo("regionId", `${dataEvent?.regionId}`);
-      setValueUpdateInfo("latitude", `${dataEvent?.latitude}`);
-      setValueUpdateInfo("longitude", `${dataEvent?.longitude}`);
-      setValueUpdateInfo("address", `${dataEvent?.address}`);
     }
   }, [dataEvent]);
+
+  useEffect(() => {
+    replace(
+      {
+        pathname,
+        query: {
+          id: query?.id, // ✅ Penting! ini mengisi [id] di pathname
+        },
+      },
+      undefined,
+      { shallow: true },
+    );
+  }, []);
   return (
     <Card className="w-full p-4 lg:w-1/2">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -259,131 +260,6 @@ const InfoTab = ({
               }}
             />
           </Skeleton>
-
-          <Skeleton className="rounded-md" isLoaded={!!dataEvent?.isOnline}>
-            <Controller
-              name="isOnline"
-              control={controlUpdateInfo}
-              render={({ field }) => {
-                return (
-                  <Select
-                    {...field}
-                    label="Online / Offline"
-                    variant="underlined"
-                    isInvalid={errorsUpdateInfo.isOnline !== undefined}
-                    errorMessage={errorsUpdateInfo.isOnline?.message}
-                    defaultSelectedKeys={[
-                      dataEvent?.isOnline ? "true" : "false",
-                    ]}
-                    disallowEmptySelection
-                  >
-                    <SelectItem key={"true"} textValue="Online">
-                      Online
-                    </SelectItem>
-                    <SelectItem key={"false"} textValue="Offline">
-                      Offline
-                    </SelectItem>
-                  </Select>
-                );
-              }}
-            />
-          </Skeleton>
-          <p className="mb-1 mt-2 text-sm font-bold text-gray-800">Location</p>
-          <div>
-            <Skeleton
-              className="rounded-md"
-              isLoaded={!!dataEvent?.regionId && !!dataRegionId}
-            >
-              <Controller
-                name="regionId"
-                control={controlUpdateInfo}
-                render={({ field: { onChange, ...field } }) => {
-                  return (
-                    <Autocomplete
-                      {...field}
-                      isLoading={isLoadingRegionId}
-                      disabled={isLoadingRegionId}
-                      defaultItems={dataRegionId?.data?.data || []}
-                      label="City"
-                      placeholder="Search city here"
-                      variant="underlined"
-                      isInvalid={errorsUpdateInfo.regionId !== undefined}
-                      errorMessage={errorsUpdateInfo.regionId?.message}
-                      onSelectionChange={(value) => {
-                        onChange(value);
-                      }}
-                      onInputChange={(value) => handleSearchRegionId(value)}
-                      selectedKey={field.value} // controlled value
-                    >
-                      {(region: IRegion) => {
-                        return (
-                          <AutocompleteItem key={`${region.code}`}>
-                            {region.name}
-                          </AutocompleteItem>
-                        );
-                      }}
-                    </Autocomplete>
-                  );
-                }}
-              />
-            </Skeleton>
-            <Skeleton className="rounded-md" isLoaded={!!dataEvent?.latitude}>
-              <Controller
-                name="latitude"
-                control={controlUpdateInfo}
-                render={({ field }) => {
-                  return (
-                    <Input
-                      {...field}
-                      type="text"
-                      label="Latitude"
-                      variant="underlined"
-                      autoComplete="off"
-                      isInvalid={errorsUpdateInfo.latitude !== undefined}
-                      errorMessage={errorsUpdateInfo.latitude?.message}
-                    />
-                  );
-                }}
-              />
-            </Skeleton>
-            <Skeleton className="rounded-md" isLoaded={!!dataEvent?.longitude}>
-              <Controller
-                name="longitude"
-                control={controlUpdateInfo}
-                render={({ field }) => {
-                  return (
-                    <Input
-                      {...field}
-                      type="text"
-                      label="Longitude"
-                      variant="underlined"
-                      autoComplete="off"
-                      isInvalid={errorsUpdateInfo.longitude !== undefined}
-                      errorMessage={errorsUpdateInfo.longitude?.message}
-                    />
-                  );
-                }}
-              />
-            </Skeleton>
-            <Skeleton className="rounded-md" isLoaded={!!dataEvent?.address}>
-              <Controller
-                name="address"
-                control={controlUpdateInfo}
-                render={({ field }) => {
-                  return (
-                    <Textarea
-                      {...field}
-                      label="Address"
-                      variant="underlined"
-                      autoComplete="off"
-                      isInvalid={errorsUpdateInfo.address !== undefined}
-                      errorMessage={errorsUpdateInfo.address?.message}
-                    />
-                  );
-                }}
-              />
-            </Skeleton>
-          </div>
 
           <Skeleton className="rounded-md" isLoaded={!!dataEvent?.description}>
             <Controller

@@ -1,5 +1,5 @@
 import eventServices from "@/services/event.service";
-import { IEventForm, IEventUpdate } from "@/types/Event";
+import { IEventUpdate } from "@/types/Event";
 import { toDateStandard } from "@/utils/date";
 import { errorCallback } from "@/utils/tanstack-callback";
 import { addToast } from "@heroui/react";
@@ -23,7 +23,7 @@ const useDetailEvent = () => {
     enabled: isReady,
   });
 
-  const updateEvent = async (payload: IEventForm) => {
+  const updateEvent = async (payload: IEventUpdate) => {
     const { data } = await eventServices.updateEvent(
       query.id as string,
       payload,
@@ -61,7 +61,14 @@ const useDetailEvent = () => {
     },
   });
 
-  const handleUpdateEvent = (data: IEventUpdate) => {
+  const handleUpdateBannerEvent = (data: IEventUpdate) => {
+    const payload = {
+      ...data,
+    };
+    mutateUpdateEvent(payload);
+  };
+
+  const handleUpdateInfoEvent = (data: IEventUpdate) => {
     const payload = {
       ...data,
       description: String(data?.description),
@@ -69,12 +76,19 @@ const useDetailEvent = () => {
       name: String(data?.name),
       isFeatured: Boolean(data.isFeatured),
       isPublished: Boolean(data.isPublished),
+      startDate: toDateStandard(data.startDate),
+      endDate: toDateStandard(data.endDate),
+    };
+    mutateUpdateEvent(payload);
+  };
+
+  const handleUpdateLocationEvent = (data: IEventUpdate) => {
+    const payload = {
+      ...data,
       isOnline: Boolean(data.isOnline),
       regionId: String(data.regionId),
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),
-      startDate: toDateStandard(data.startDate),
-      endDate: toDateStandard(data.endDate),
       address: String(data.address),
     };
     mutateUpdateEvent(payload);
@@ -83,7 +97,9 @@ const useDetailEvent = () => {
   return {
     dataEvent,
 
-    handleUpdateEvent,
+    handleUpdateBannerEvent,
+    handleUpdateInfoEvent,
+    handleUpdateLocationEvent,
     isPendingMutateUpdateEvent,
     isSuccessMutateUpdateEvent,
   };

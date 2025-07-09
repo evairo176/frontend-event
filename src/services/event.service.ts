@@ -11,7 +11,7 @@ const eventServices = {
     instance.get(`${endpoint.REGION}/search?name=${name}`),
   deleteEvent: async (id: string) => instance.delete(`${endpoint.EVENT}/${id}`),
   getEventById: async (id: string) => instance.get(`${endpoint.EVENT}/${id}`),
-  updateEvent: async (id: string, payload: IEventForm) =>
+  updateEvent: async (id: string, payload: IEventUpdate) =>
     instance.put(`${endpoint.EVENT}/${id}`, payload),
   getRegencyById: async (id: string) =>
     instance.get(`${endpoint.REGION}/regency/${id}`),

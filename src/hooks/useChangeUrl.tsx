@@ -16,13 +16,19 @@ const useChangeUrl = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      router.replace({
-        query: {
-          limit: currentLimit || LIMIT_DEFAULT,
-          page: currentPage || PAGE_DEFAULT,
-          search: currentSearch || "",
+      router.replace(
+        {
+          pathname: router.pathname, // tetap gunakan path dinamis seperti /admin/event/[id]
+          query: {
+            ...router.query,
+            limit: currentLimit || LIMIT_DEFAULT,
+            page: currentPage || PAGE_DEFAULT,
+            search: currentSearch || "",
+          },
         },
-      });
+        undefined,
+        { shallow: true },
+      );
     }
   }, [router.isReady]);
 

@@ -9,7 +9,7 @@ const standardTime = (time: number) => {
   }
 };
 const toDateStandard = (date: DateValue) => {
-  const year = date.year;
+  const year = date?.year;
   const month = standardTime(date.month);
   const day = standardTime(date.day);
 

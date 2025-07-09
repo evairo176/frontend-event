@@ -1,8 +1,9 @@
 import PageHead from "@/components/commons/PageHead";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayoutSidebar from "./DashboardLayoutSidebar";
 import { SIDEBAR_ADMIN, SIDEBAR_MEMBER } from "./DashboardLayout.constants";
 import { Navbar, NavbarMenuToggle } from "@heroui/react";
+import { useIsMobile } from "@heroui/use-is-mobile";
 
 type Props = {
   title?: string;
@@ -17,7 +18,12 @@ const DashboardLayout = ({
   type = "admin",
   description,
 }: Props) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    setOpen(!isMobile); // otomatis hide jika mobile
+  }, [isMobile]);
   return (
     <>
       <PageHead title={title} />
