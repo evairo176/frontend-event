@@ -1,18 +1,17 @@
-const COLUMN_LIST_CATEGORY = [
+const COLUMN_LIST_BANNER = [
   {
-    name: "ICON",
-    uid: "icon",
+    name: "IMAGE",
+    uid: "image",
     sort: false,
   },
   {
-    name: "NAME",
-    uid: "name",
+    name: "TITLE",
+    uid: "title",
     sort: true,
   },
-
   {
-    name: "DESCRIPTION",
-    uid: "description",
+    name: "STATUS",
+    uid: "isShow",
     sort: true,
   },
   {
@@ -32,4 +31,4 @@ const COLUMN_LIST_CATEGORY = [
   },
 ];
 
-export { COLUMN_LIST_CATEGORY };
+export { COLUMN_LIST_BANNER };

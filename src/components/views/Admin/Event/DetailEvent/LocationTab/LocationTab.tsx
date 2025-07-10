@@ -91,7 +91,10 @@ const LocationTab = ({
           className="flex flex-col gap-4"
           onSubmit={handleSubmitUpdateLocation(onUpdate)}
         >
-          <Skeleton className="rounded-md" isLoaded={!!dataEvent?.isOnline}>
+          <Skeleton
+            className="rounded-md"
+            isLoaded={!!String(dataEvent?.isOnline)}
+          >
             <Controller
               name="isOnline"
               control={controlUpdateLocation}

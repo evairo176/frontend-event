@@ -127,9 +127,9 @@ const useAddEventModal = () => {
   const handleAddEvent = async (data: IEvent) => {
     const payload = {
       ...data,
-      isFeatured: Boolean(data.isFeatured),
-      isPublished: Boolean(data.isPublished),
-      isOnline: Boolean(data.isOnline),
+      isFeatured: data.isFeatured === "true" ? true : false,
+      isPublished: data.isPublished === "true" ? true : false,
+      isOnline: data.isOnline === "true" ? true : false,
       regionId: String(data.regionId),
       latitude: Number(data.latitude),
       longitude: Number(data.longitude),

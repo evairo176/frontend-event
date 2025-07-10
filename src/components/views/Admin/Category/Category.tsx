@@ -8,6 +8,7 @@ import AddCategoryModal from "./AddCategoryModal";
 import Image from "next/image";
 import DeleteCategoryModal from "./DeleteCategoryModal";
 import ButtonAction from "@/components/commons/ButtonAction";
+import { convertUTCToLocal } from "@/utils/date";
 
 type Props = {};
 
@@ -32,6 +33,10 @@ const Category = (props: Props) => {
           return (
             <Image src={`${cellValue}`} alt="icon" width={100} height={200} />
           );
+        case "createdAt":
+          return `${convertUTCToLocal(cellValue as string)}`;
+        case "updatedAt":
+          return `${convertUTCToLocal(cellValue as string)}`;
         case "actions":
           return (
             <ButtonAction

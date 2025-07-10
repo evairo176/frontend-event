@@ -30,16 +30,30 @@ const COLUMN_LIST_EVENT = [
     sort: true,
   },
   {
-    name: "ADDRESS",
-    uid: "address",
-    sort: true,
-  },
-  {
     name: "STATUS",
     uid: "isPublished",
     sort: true,
   },
-
+  {
+    name: "FEATURE",
+    uid: "isFeatured",
+    sort: true,
+  },
+  {
+    name: "ONLINE/OFFLINE",
+    uid: "isOnline",
+    sort: true,
+  },
+  {
+    name: "CREATED AT",
+    uid: "createdAt",
+    sort: true,
+  },
+  {
+    name: "UPDATED AT",
+    uid: "updatedAt",
+    sort: true,
+  },
   {
     name: "ACTIONS",
     uid: "actions",

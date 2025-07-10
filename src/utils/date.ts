@@ -26,4 +26,21 @@ const toInputDate = (date: string) => {
   return formattedDate;
 };
 
-export { toDateStandard, toInputDate };
+const convertUTCToLocal = (isoString: string, offsetHours: number = 0) => {
+  const date = new Date(isoString);
+
+  // Tambahkan offset waktu dalam milidetik
+  const localTime = new Date(date.getTime() + offsetHours * 60 * 60 * 1000);
+
+  const pad = (n: number) => n.toString().padStart(2, "0");
+
+  const year = localTime.getFullYear();
+  const month = pad(localTime.getMonth() + 1); // 0-based
+  const day = pad(localTime.getDate());
+  const hours = pad(localTime.getHours());
+  const minutes = pad(localTime.getMinutes());
+  const seconds = pad(localTime.getSeconds());
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+export { toDateStandard, toInputDate, convertUTCToLocal };

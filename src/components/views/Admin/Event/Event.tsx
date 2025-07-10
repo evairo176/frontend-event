@@ -8,6 +8,7 @@ import { COLUMN_LIST_EVENT } from "./Event.constants";
 import ButtonAction from "@/components/commons/ButtonAction";
 import AddEventModal from "./AddEventModal/AddEventModal";
 import DeleteEventModal from "./DeleteEventModal";
+import { convertUTCToLocal } from "@/utils/date";
 
 type Props = {};
 
@@ -44,14 +45,7 @@ const Event = (props: Props) => {
               </div>
             </Tooltip>
           );
-        case "address":
-          return (
-            <Tooltip content={event?.address}>
-              <div className="line-clamp-2 cursor-pointer">
-                {event?.address}
-              </div>
-            </Tooltip>
-          );
+
         case "banner":
           return (
             <Image
@@ -72,6 +66,30 @@ const Event = (props: Props) => {
               {cellValue === true ? "Published" : "Not Published"}
             </Chip>
           );
+        case "isFeatured":
+          return (
+            <Chip
+              size="sm"
+              variant="flat"
+              color={cellValue ? "success" : "warning"}
+            >
+              {cellValue === true ? "Yes" : "No"}
+            </Chip>
+          );
+        case "isOnline":
+          return (
+            <Chip
+              size="sm"
+              variant="flat"
+              color={cellValue ? "success" : "warning"}
+            >
+              {cellValue === true ? "Online" : "Offline"}
+            </Chip>
+          );
+        case "createdAt":
+          return `${convertUTCToLocal(cellValue)}`;
+        case "updatedAt":
+          return `${convertUTCToLocal(cellValue)}`;
         case "actions":
           return (
             <ButtonAction

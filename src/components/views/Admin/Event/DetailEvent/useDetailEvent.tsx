@@ -74,8 +74,9 @@ const useDetailEvent = () => {
       description: String(data?.description),
       categoryId: String(data.categoryId),
       name: String(data?.name),
-      isFeatured: Boolean(data.isFeatured),
-      isPublished: Boolean(data.isPublished),
+      isFeatured: data.isFeatured === "true" ? true : false,
+      isPublished: data.isPublished === "true" ? true : false,
+      isOnline: data.isOnline === "true" ? true : false,
       startDate: toDateStandard(data.startDate),
       endDate: toDateStandard(data.endDate),
     };

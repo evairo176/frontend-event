@@ -191,7 +191,10 @@ const InfoTab = ({
               />
             </Skeleton>
           </div>
-          <Skeleton className="rounded-md" isLoaded={!!dataEvent?.isPublished}>
+          <Skeleton
+            className="rounded-md"
+            isLoaded={!!String(dataEvent?.isPublished)}
+          >
             <Controller
               name="isPublished"
               control={controlUpdateInfo}
@@ -220,7 +223,10 @@ const InfoTab = ({
             />
           </Skeleton>
 
-          <Skeleton className="rounded-md" isLoaded={!!dataEvent?.isFeatured}>
+          <Skeleton
+            className="rounded-md"
+            isLoaded={!!String(dataEvent?.isFeatured)}
+          >
             <Controller
               name="isFeatured"
               control={controlUpdateInfo}
