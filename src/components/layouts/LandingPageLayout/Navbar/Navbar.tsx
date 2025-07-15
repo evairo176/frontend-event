@@ -135,7 +135,7 @@ const Navbar = (props: Props) => {
                     variant="light"
                     className="flex h-full w-full justify-start p-0"
                   >
-                    {isLoading ? <Spinner size="sm" color="white" /> : "Logout"}
+                    {isLoading ? <Spinner size="sm" /> : "Logout"}
                   </Button>
                 </DropdownItem>
               </DropdownMenu>
