@@ -18,6 +18,7 @@ const authServices = {
       },
     }),
   logout: async () => instance.post(`${endpoint.AUTH}/logout`),
+  getProfile: async () => instance.get(`${endpoint.AUTH}/me`),
 };
 
 export default authServices;

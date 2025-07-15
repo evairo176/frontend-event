@@ -9,4 +9,17 @@ const NAV_ITEMS = [
   },
 ];
 
-export { NAV_ITEMS };
+const BUTTON_ITEMS = [
+  {
+    label: "Register",
+    href: "/auth/register",
+    variant: "bordered",
+  },
+  {
+    label: "Login",
+    href: "/auth/login",
+    variant: "solid",
+  },
+];
+
+export { NAV_ITEMS, BUTTON_ITEMS };
