@@ -178,20 +178,16 @@ const Navbar = (props: Props) => {
           {session?.status === "authenticated" ? (
             <>
               <NavbarMenuItem
-                as={Link}
-                href={"/admin/dashboard"}
                 className={cn("hover:danger font-medium text-default-700", {
                   hidden: dataProfile?.role !== "admin",
                 })}
               >
-                Admin
+                <Link href={"/admin/dashboard"}>Admin</Link>
               </NavbarMenuItem>
               <NavbarMenuItem
-                as={Link}
-                href={"/member/profile"}
                 className={cn("hover:danger font-medium text-default-700")}
               >
-                Profile
+                <Link href={"/member/profile"}>Profile</Link>
               </NavbarMenuItem>
 
               <NavbarMenuItem
