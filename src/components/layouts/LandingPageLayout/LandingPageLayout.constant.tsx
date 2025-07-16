@@ -1,3 +1,5 @@
+import { Facebook, Instagram } from "lucide-react";
+
 const NAV_ITEMS = [
   {
     label: "Home",
@@ -22,4 +24,17 @@ const BUTTON_ITEMS = [
   },
 ];
 
-export { NAV_ITEMS, BUTTON_ITEMS };
+const SOCIAL_ITEMS = [
+  {
+    label: "Facebook",
+    href: "https://facebook.com/abc",
+    icon: <Facebook />,
+  },
+  {
+    label: "Instagram",
+    href: "https://instagram.com/abc",
+    icon: <Instagram />,
+  },
+];
+
+export { NAV_ITEMS, BUTTON_ITEMS, SOCIAL_ITEMS };

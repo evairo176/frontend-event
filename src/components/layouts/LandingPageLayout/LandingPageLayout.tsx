@@ -1,6 +1,7 @@
 import PageHead from "@/components/commons/PageHead";
 import React from "react";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 type Props = {
   title: string;
@@ -14,9 +15,8 @@ const LandingPageLayout = ({ title, children }: Props) => {
       {/* navbar  */}
       <Navbar />
       {/* main  */}
-      <div className="max-w-screen-3xl 3xl:container py-10 md:p-6">
-        {children}
-      </div>
+      <div className="py-10 md:p-6">{children}</div>
+      <Footer />
     </>
   );
 };

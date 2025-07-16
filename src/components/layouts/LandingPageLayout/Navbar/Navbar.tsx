@@ -57,7 +57,7 @@ const Navbar = (props: Props) => {
   return (
     <NavbarUi
       maxWidth="full"
-      className="max-w-screen-3xl 3xl:container"
+      className="2xl:container"
       isBordered
       isBlurred
       shouldHideOnScroll
