@@ -1,6 +1,7 @@
 import {
   Blocks,
   Calendar,
+  Disc,
   Grid,
   Monitor,
   Settings,
@@ -39,6 +40,24 @@ const SIDEBAR_ADMIN = [
     label: "Transaction",
     href: "/admin/transaction",
     icon: <ShoppingBag />,
+  },
+  {
+    key: "blog",
+    label: "Blog",
+    href: "/admin/blog",
+    icon: <Disc />,
+    subItems: [
+      {
+        key: "all-blogs",
+        label: "All Blogs",
+        href: "/admin/blog",
+      },
+      {
+        key: "category-blog",
+        label: "Category",
+        href: "/admin/blog/category",
+      },
+    ],
   },
   {
     key: "setting",

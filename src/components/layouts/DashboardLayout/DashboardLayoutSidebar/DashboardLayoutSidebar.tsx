@@ -50,6 +50,29 @@ const DashboardLayoutSidebar = (props: Props) => {
   // On mobile: follow isOpen state
   const shouldShowSidebar = !isMobile || isOpen;
 
+  // Auto-expand menu items that contain active submenu on mount and pathname change
+  useEffect(() => {
+    const itemsToExpand: string[] = [];
+
+    sidebarItems.forEach((item) => {
+      if (item.subItems) {
+        const hasActiveSubItem = item.subItems.some(
+          (subItem) => pathname === subItem.href,
+        );
+        if (hasActiveSubItem) {
+          itemsToExpand.push(item.key);
+        }
+      }
+    });
+
+    if (itemsToExpand.length > 0) {
+      setExpandedItems((prev) => {
+        const newExpanded = [...new Set([...prev, ...itemsToExpand])];
+        return newExpanded;
+      });
+    }
+  }, [pathname, sidebarItems]);
+
   const handleLogout = async () => {
     setIsLoading(true);
     try {
