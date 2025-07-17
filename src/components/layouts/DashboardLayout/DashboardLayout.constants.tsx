@@ -1,5 +1,6 @@
 import {
   Blocks,
+  Calendar,
   Grid,
   Monitor,
   Settings,
@@ -44,6 +45,19 @@ const SIDEBAR_ADMIN = [
     label: "Setting",
     href: "/admin/setting",
     icon: <Settings />,
+    subItems: [
+      {
+        key: "all-events",
+        label: "All Events",
+        href: "/admin/events",
+        icon: <Calendar className="h-4 w-4" />,
+      },
+      {
+        key: "create-event",
+        label: "Create Event",
+        href: "/admin/events/create",
+      },
+    ],
   },
 ];
 
