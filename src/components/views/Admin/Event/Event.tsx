@@ -122,6 +122,7 @@ const Event = (props: Props) => {
           totalData={dataEvent?.pagination?.total}
           emptyContent="Event is empty"
           data={dataEvent?.data || []}
+          refetch={refetchEvent}
         />
       )}
       <AddEventModal refetchEvent={refetchEvent} {...addEventModal} />

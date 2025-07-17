@@ -85,6 +85,7 @@ const Banner = (props: Props) => {
           totalData={dataBanner?.pagination?.total}
           emptyContent="Banner is empty"
           data={dataBanner?.data || []}
+          refetch={refetchBanner}
         />
       )}
       <AddBannerModal refetchBanner={refetchBanner} {...addBannerModal} />

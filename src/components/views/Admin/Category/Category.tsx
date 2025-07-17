@@ -69,6 +69,7 @@ const Category = (props: Props) => {
           totalData={dataCategory?.pagination?.total}
           emptyContent="Category is empty"
           data={dataCategory?.data || []}
+          refetch={refetchCategory}
         />
       )}
       <AddCategoryModal

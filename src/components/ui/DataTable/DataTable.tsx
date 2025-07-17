@@ -42,6 +42,7 @@ type Props = {
   totalData: number;
   emptyContent: string;
   isLoading: boolean;
+  refetch: () => void;
 };
 
 const DataTable = ({
@@ -54,6 +55,7 @@ const DataTable = ({
   onClickButtonTopContent,
   emptyContent,
   isLoading,
+  refetch,
 }: Props) => {
   const {
     handleChangePage,
@@ -70,8 +72,19 @@ const DataTable = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = () => {
+    const defaultValue = "8";
+
+    const event = {
+      target: { value: defaultValue },
+    } as React.ChangeEvent<HTMLSelectElement>;
     setIsRefreshing(true);
-    setTimeout(() => setIsRefreshing(false), 1000);
+    setTimeout(() => {
+      refetch();
+      handleChangePage(1);
+      handleChangeLimit(event);
+      handleClearSearch();
+      setIsRefreshing(false);
+    }, 1000);
   };
 
   const topContent = useMemo(() => {
@@ -310,8 +323,7 @@ const DataTable = ({
                     classNames={{
                       wrapper: "gap-2",
                       item: "bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-300 transition-all duration-200",
-                      cursor:
-                        "bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg",
+                      cursor: "bg-gradient-to-r from-blue-600 to-purple-600",
                     }}
                   />
                 </motion.div>
