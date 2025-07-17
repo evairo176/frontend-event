@@ -4,6 +4,7 @@ import {
   Disc,
   Grid,
   Monitor,
+  Newspaper,
   Settings,
   ShoppingBag,
   Tv,
@@ -45,7 +46,7 @@ const SIDEBAR_ADMIN = [
     key: "blog",
     label: "Blog",
     href: "/admin/blog",
-    icon: <Disc />,
+    icon: <Newspaper />,
     subItems: [
       {
         key: "all-blogs",

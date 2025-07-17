@@ -120,7 +120,7 @@ const DataTable = ({
 
       // Generate filename with timestamp
       const timestamp = new Date().toISOString();
-      const filename = `data-export-${convertUTCToLocal(timestamp).replace("_", ":")}.xlsx`;
+      const filename = `data-export-${convertUTCToLocal(timestamp)}.xlsx`;
 
       // Save file
       XLSX.writeFile(wb, filename);
