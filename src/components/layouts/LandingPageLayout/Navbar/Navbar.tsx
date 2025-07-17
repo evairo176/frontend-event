@@ -1,41 +1,72 @@
+import React, { useState, useEffect } from "react";
 import {
-  addToast,
-  Avatar,
-  Button,
-  ButtonProps,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Input,
+  Navbar as HeroNavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  NavbarMenuToggle,
-  Navbar as NavbarUi,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Avatar,
+  addToast,
   Spinner,
 } from "@heroui/react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
-import { BUTTON_ITEMS, NAV_ITEMS } from "../LandingPageLayout.constant";
+import {
+  Search,
+  User,
+  Menu,
+  X,
+  Calendar,
+  Ticket,
+  Settings,
+  LogOut,
+  LayoutDashboard,
+  LogOutIcon,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
+import { NAV_ITEMS } from "../LandingPageLayout.constant";
 import { useRouter } from "next/router";
-import { Search } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import authServices from "@/services/auth.service";
 import useNavbar from "./useNavbar";
+import Link from "next/link";
+import authServices from "@/services/auth.service";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const router = useRouter();
   const session = useSession();
   const { dataProfile } = useNavbar();
-
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Set scrolled state for background blur
+      setIsScrolled(currentScrollY > 10);
+
+      // Hide/show navbar based on scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -54,182 +85,272 @@ const Navbar = (props: Props) => {
       setIsLoading(false);
     }
   };
+
   return (
-    <NavbarUi
-      maxWidth="full"
-      className="2xl:container"
-      isBordered
-      isBlurred
-      shouldHideOnScroll
-    >
-      <div className="flex items-center gap-8">
-        <NavbarBrand as={Link} href={"/"}>
-          <Image
-            src={"/images/general/logo.svg"}
-            alt="logo"
-            width={100}
-            height={50}
-            className="cursor-pointer"
-          />
-        </NavbarBrand>
-        <NavbarContent className="hidden lg:flex">
-          {NAV_ITEMS?.map((row, index) => {
-            return (
-              <NavbarItem
-                key={`${row.label}-${index}`}
-                as={Link}
-                href={row.href}
-                className={cn(
-                  "font-medium text-default-700 hover:text-danger",
-                  {
-                    "font-bold text-danger-500": router.pathname === row.href,
-                  },
-                )}
-              >
-                {row.label}
-              </NavbarItem>
-            );
-          })}
-        </NavbarContent>
-      </div>
-      <NavbarContent justify="end">
-        <NavbarMenuToggle className="lg:hidden" />
-        <NavbarItem className="hidden lg:relative lg:flex">
-          <Input
-            isClearable
-            className="w-[300px]"
-            placeholder="Search event"
-            startContent={<Search className="h-4 w-4 text-gray-500" />}
-            onClear={() => {}}
-            onChange={() => {}}
-          />
-        </NavbarItem>
-        {session?.status === "authenticated" ? (
-          <NavbarItem className="hidden lg:flex">
-            <Dropdown>
-              <DropdownTrigger>
-                <Avatar
-                  src={dataProfile?.profilePicture}
-                  className="cursor-pointer"
-                  showFallback
-                  name={dataProfile?.fullname}
-                />
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem
-                  key={"admin"}
-                  href="/admin/dashboard"
-                  className={cn({
-                    hidden: dataProfile?.role !== "admin",
-                  })}
-                >
-                  Admin
-                </DropdownItem>
-                <DropdownItem key={"profile"} href="/member/profile">
-                  Profile
-                </DropdownItem>
-                <DropdownItem key={"signout"}>
-                  <Button
-                    disabled={isLoading}
-                    onPress={handleLogout}
-                    variant="light"
-                    className="flex h-full w-full justify-start p-0"
-                  >
-                    {isLoading ? <Spinner size="sm" /> : "Logout"}
-                  </Button>
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </NavbarItem>
-        ) : (
-          <div className="hidden lg:flex lg:gap-4">
-            {BUTTON_ITEMS?.map((row, index) => {
-              return (
-                <NavbarItem key={`${row.label}-${index}`}>
-                  <Button
-                    color="danger"
-                    as={Link}
-                    href={row.href}
-                    variant={row.variant as ButtonProps["variant"]}
-                  >
-                    {row.label}
-                  </Button>
-                </NavbarItem>
-              );
-            })}
-          </div>
-        )}
-
-        <NavbarMenu className="gap-4">
-          {NAV_ITEMS?.map((row, index) => {
-            return (
-              <NavbarMenuItem
-                key={`${row.label}-${index}`}
-                as={Link}
-                href={row.href}
-                className={cn("hover:danger font-medium text-default-700", {
-                  "font-bold text-danger": router.pathname === row.href,
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ y: 0 }}
+          animate={{ y: 0 }}
+          exit={{ y: -100 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="fixed left-0 right-0 top-0 z-50"
+        >
+          <HeroNavbar
+            isMenuOpen={isMenuOpen}
+            onMenuOpenChange={setIsMenuOpen}
+            className={cn(
+              "transition-all duration-300",
+              isScrolled
+                ? "border-b border-white/20 bg-white/80 shadow-lg backdrop-blur-md"
+                : "bg-transparent",
+            )}
+            maxWidth="full"
+            height="4rem"
+          >
+            {/* Brand */}
+            <NavbarContent>
+              <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className={cn("text-white sm:hidden", {
+                  "text-black": isScrolled,
                 })}
-              >
-                {row.label}
-              </NavbarMenuItem>
-            );
-          })}
-          {session?.status === "authenticated" ? (
-            <>
-              <NavbarMenuItem
-                className={cn("hover:danger font-medium text-default-700", {
-                  hidden: dataProfile?.role !== "admin",
-                })}
-              >
-                <Link href={"/admin/dashboard"}>Admin</Link>
-              </NavbarMenuItem>
-              <NavbarMenuItem
-                className={cn("hover:danger font-medium text-default-700")}
-              >
-                <Link href={"/member/profile"}>Profile</Link>
-              </NavbarMenuItem>
-
-              <NavbarMenuItem
-                className={cn("hover:danger font-medium text-default-700")}
-              >
-                <Button
-                  variant={"bordered"}
-                  color={"danger"}
-                  disabled={isLoading}
-                  onPress={handleLogout}
-                  className="w-full"
-                >
-                  {isLoading ? (
-                    <Spinner size="sm" color="white" />
+                icon={
+                  isMenuOpen ? (
+                    <X className="h-5 w-5" />
                   ) : (
-                    <div className="text-danger">Logout</div>
+                    <Menu className="h-5 w-5" />
+                  )
+                }
+              />
+              <NavbarBrand>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2"
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-purple-600">
+                    <Ticket className="h-5 w-5 text-white" />
+                  </div>
+                  <span
+                    className={cn(
+                      "text-xl font-bold transition-colors",
+                      isScrolled ? "text-gray-800" : "text-white",
+                    )}
+                  >
+                    EventKu
+                  </span>
+                </motion.div>
+              </NavbarBrand>
+            </NavbarContent>
+
+            {/* Desktop Menu */}
+            <NavbarContent className="hidden gap-8 sm:flex" justify="center">
+              {NAV_ITEMS.map((item) => (
+                <NavbarItem key={item.label} className="hidden lg:flex">
+                  <motion.a
+                    href={item.href}
+                    className={cn(
+                      "relative font-medium transition-colors hover:text-blue-600",
+                      isScrolled ? "text-gray-700" : "text-white/90",
+                      {
+                        "block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent":
+                          router.pathname === item.href,
+                      },
+                    )}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    {item.label}
+                    <motion.div
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 origin-left bg-blue-600"
+                      initial={{ scaleX: 0 }}
+                      whileHover={{ scaleX: 1 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </motion.a>
+                </NavbarItem>
+              ))}
+            </NavbarContent>
+
+            {/* Right Content */}
+            <NavbarContent justify="end">
+              <NavbarItem className="hidden lg:flex">
+                <Button
+                  isIconOnly
+                  variant="light"
+                  className={cn(
+                    "transition-colors",
+                    isScrolled
+                      ? "text-gray-600 hover:bg-gray-100"
+                      : "text-white/80 hover:bg-white/10",
                   )}
+                >
+                  <Search className="h-5 w-5" />
                 </Button>
-              </NavbarMenuItem>
-            </>
-          ) : (
-            <>
-              {BUTTON_ITEMS?.map((row, index) => {
-                return (
-                  <NavbarMenuItem key={`${row.label}-${index}`}>
-                    <Button
-                      variant={row.variant as ButtonProps["variant"]}
-                      color={"danger"}
-                      as={Link}
-                      href={row.href}
-                      className="w-full"
+              </NavbarItem>
+
+              <NavbarItem>
+                {session.status !== "authenticated" && (
+                  <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
+                      <Button
+                        isIconOnly
+                        variant="light"
+                        className={cn(
+                          "gap-2 transition-colors",
+                          isScrolled ? "text-gray-700" : "text-white",
+                        )}
+                        startContent={<User className="h-4 w-4" />}
+                      ></Button>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="User menu actions">
+                      <DropdownItem
+                        key="login"
+                        startContent={<User className="h-4 w-4" />}
+                        href="/auth/login"
+                        as={Link}
+                      >
+                        Login
+                      </DropdownItem>
+                      <DropdownItem
+                        key="register"
+                        startContent={<Calendar className="h-4 w-4" />}
+                        href="/auth/register"
+                      >
+                        Register
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                )}
+
+                {session.status === "authenticated" && (
+                  <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
+                      <Button
+                        isIconOnly
+                        variant="light"
+                        className={cn(
+                          "gap-2 transition-colors",
+                          isScrolled ? "text-gray-700" : "text-white",
+                        )}
+                        startContent={<User className="h-4 w-4" />}
+                      ></Button>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="User menu actions">
+                      <DropdownItem
+                        key="profile"
+                        startContent={<User className="h-4 w-4" />}
+                        href="/member/profile"
+                        as={Link}
+                      >
+                        Profile
+                      </DropdownItem>
+
+                      {dataProfile?.role === "admin" ? (
+                        <DropdownItem
+                          key="admin"
+                          startContent={<LayoutDashboard className="h-4 w-4" />}
+                          href="/admin/dashboard"
+                          as={Link}
+                        >
+                          Admin
+                        </DropdownItem>
+                      ) : (
+                        <DropdownItem
+                          key="member"
+                          startContent={<LayoutDashboard className="h-4 w-4" />}
+                          href="/member/dashboard"
+                          as={Link}
+                        >
+                          Member
+                        </DropdownItem>
+                      )}
+                      {isLoading ? (
+                        <DropdownItem
+                          key="logout"
+                          startContent={<LogOutIcon className="h-4 w-4" />}
+                          onPress={handleLogout}
+                        >
+                          <Spinner size="sm" />
+                        </DropdownItem>
+                      ) : (
+                        <DropdownItem
+                          key="logout"
+                          startContent={<LogOutIcon className="h-4 w-4" />}
+                          onPress={handleLogout}
+                        >
+                          Logout
+                        </DropdownItem>
+                      )}
+                    </DropdownMenu>
+                  </Dropdown>
+                )}
+              </NavbarItem>
+
+              <NavbarItem className="hidden lg:flex">
+                <Button
+                  color="primary"
+                  variant={isScrolled ? "solid" : "bordered"}
+                  className={cn(
+                    "font-semibold transition-all",
+                    isScrolled
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600"
+                      : "border-white text-white hover:bg-white hover:text-blue-600",
+                  )}
+                  size="sm"
+                >
+                  Buat Event
+                </Button>
+              </NavbarItem>
+            </NavbarContent>
+
+            {/* Mobile Menu */}
+            <NavbarMenu className="bg-white/95 backdrop-blur-md">
+              <div className="flex flex-col gap-4 pt-6">
+                {NAV_ITEMS.map((item, index) => (
+                  <NavbarMenuItem key={item.label}>
+                    <motion.a
+                      href={item.href}
+                      className={cn(
+                        "text-lg font-medium text-gray-700 transition-colors hover:text-blue-600",
+                        {
+                          "block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent":
+                            router.pathname === item.href,
+                        },
+                      )}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      onClick={() => setIsMenuOpen(false)}
                     >
-                      {row.label}
-                    </Button>
+                      {item.label}
+                    </motion.a>
                   </NavbarMenuItem>
-                );
-              })}
-            </>
-          )}
-        </NavbarMenu>
-      </NavbarContent>
-    </NavbarUi>
+                ))}
+                <div className="mt-4 border-t border-gray-200 pt-4">
+                  <div className="flex flex-col gap-3">
+                    <Button
+                      color="primary"
+                      variant="flat"
+                      className="justify-start"
+                      startContent={<User className="h-4 w-4" />}
+                    >
+                      Masuk
+                    </Button>
+                    <Button
+                      color="primary"
+                      className="justify-start bg-gradient-to-r from-blue-600 to-purple-600"
+                      startContent={<Ticket className="h-4 w-4" />}
+                    >
+                      Buat Event
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </NavbarMenu>
+          </HeroNavbar>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

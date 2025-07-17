@@ -15,7 +15,7 @@ const LandingPageLayout = ({ title, children }: Props) => {
       {/* navbar  */}
       <Navbar />
       {/* main  */}
-      <div className="py-10 md:p-6">{children}</div>
+      {children}
       <Footer />
     </>
   );
