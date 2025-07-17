@@ -181,7 +181,7 @@ const DashboardLayoutSidebar = (props: Props) => {
               {session?.data?.user?.email}
             </p>
           </div>
-          <div className="h-2 w-2 rounded-full bg-green-400"></div>
+          <div className="h-2 w-2 animate-bounce rounded-full bg-green-400"></div>
         </div>
       </motion.div>
 

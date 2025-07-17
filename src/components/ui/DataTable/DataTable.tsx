@@ -27,9 +27,12 @@ import {
   ArrowUpDown,
   Database,
   Eye,
+  FileSpreadsheet,
 } from "lucide-react";
 import React, { Key, ReactNode, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import * as XLSX from "xlsx";
+import { convertUTCToLocal } from "@/utils/date";
 
 type Props = {
   columns: { uid: string; name: string; sort?: boolean }[];
@@ -70,11 +73,63 @@ const DataTable = ({
     direction: "ascending",
   });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Add No column to the beginning of columns array
   const columnsWithNo = useMemo(() => {
     return [{ uid: "no", name: "No", sort: false }, ...columns];
   }, [columns]);
+
+  // Export to Excel function
+  const handleExportExcel = () => {
+    setIsExporting(true);
+
+    try {
+      // Prepare data for export
+      const exportData = sortedData.map((item, index) => {
+        const row: Record<string, any> = {};
+
+        // Add row number
+        row["No"] =
+          (Number(currentPage) - 1) * Number(currentLimit) + index + 1;
+
+        // Add other columns data
+        columns.forEach((column) => {
+          const cellValue = item[column.uid];
+          // Convert complex objects to string representation
+          if (typeof cellValue === "object" && cellValue !== null) {
+            row[column.name] = JSON.stringify(cellValue);
+          } else {
+            row[column.name] = cellValue || "";
+          }
+        });
+
+        return row;
+      });
+
+      // Create workbook and worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(exportData);
+
+      // Set column widths
+      const colWidths = columnsWithNo.map((col) => ({ wch: 15 }));
+      ws["!cols"] = colWidths;
+
+      // Add worksheet to workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Data Export");
+
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString();
+      const filename = `data-export-${convertUTCToLocal(timestamp).replace("_", ":")}.xlsx`;
+
+      // Save file
+      XLSX.writeFile(wb, filename);
+    } catch (error) {
+      console.error("Export failed:", error);
+    } finally {
+      setTimeout(() => setIsExporting(false), 1000);
+    }
+  };
 
   const handleRefresh = () => {
     const defaultValue = "8";
@@ -149,7 +204,7 @@ const DataTable = ({
                   />
                 </motion.div>
 
-                <motion.div
+                {/* <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -160,7 +215,7 @@ const DataTable = ({
                   >
                     Filters
                   </Button>
-                </motion.div>
+                </motion.div> */}
               </div>
 
               {/* Action Buttons */}
@@ -188,10 +243,19 @@ const DataTable = ({
                 >
                   <Button
                     variant="flat"
-                    isIconOnly
-                    className="bg-green-50 text-green-600 transition-colors hover:bg-green-100"
+                    onPress={handleExportExcel}
+                    isLoading={isExporting}
+                    className="gap-2 bg-green-50 text-green-600 transition-colors hover:bg-green-100"
+                    startContent={
+                      !isExporting && <FileSpreadsheet className="h-4 w-4" />
+                    }
                   >
-                    <Download className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {isExporting ? "Exporting..." : "Export Excel"}
+                    </span>
+                    <span className="sm:hidden">
+                      {isExporting ? "..." : "Excel"}
+                    </span>
                   </Button>
                 </motion.div>
 
