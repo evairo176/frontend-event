@@ -121,7 +121,7 @@ const ImageTab = ({
           />
           <Button
             color="danger"
-            className="mt-2 disabled:bg-default-500"
+            className="mt-2 bg-gradient-to-r from-blue-600 to-purple-600 font-medium disabled:bg-default-500"
             type="submit"
             disabled={
               isPendingMutateUploadFile ||

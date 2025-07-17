@@ -354,7 +354,7 @@ const DataTable = ({
             }),
             table: "min-h-[400px]",
             thead:
-              "[&>tr]:first:shadow-none bg-gradient-to-r from-slate-100 via-gray-100 to-slate-100",
+              "[&>tr]:first:shadow-none from-slate-100 via-gray-100 to-slate-100",
             tbody: "divide-y divide-gray-100 bg-white",
           }}
         >
@@ -395,6 +395,10 @@ const DataTable = ({
                     // First and last column styling
                     "first:rounded-tl-lg last:rounded-tr-lg",
                     "first:border-l-0 last:border-r-0",
+                    // Prevent background overflow
+                    "relative overflow-hidden",
+                    // Prevent background overflow
+                    "relative overflow-hidden",
                   )}
                 >
                   <motion.div

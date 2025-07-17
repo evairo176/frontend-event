@@ -148,7 +148,12 @@ const AddCategoryModal = ({
             >
               Cancel
             </Button>
-            <Button color="danger" type="submit" disabled={disabledSubmit}>
+            <Button
+              className="bg-gradient-to-r from-blue-600 to-purple-600 font-medium"
+              color="danger"
+              type="submit"
+              disabled={disabledSubmit}
+            >
               {disabledSubmit ? (
                 <Spinner size="sm" color="white" />
               ) : (

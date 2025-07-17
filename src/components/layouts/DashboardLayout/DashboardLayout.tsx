@@ -21,9 +21,15 @@ const DashboardLayout = ({
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
 
+  // Auto open/close sidebar based on screen size
   useEffect(() => {
-    setOpen(!isMobile); // otomatis hide jika mobile
+    if (isMobile) {
+      setOpen(false); // Close sidebar on mobile by default
+    } else {
+      setOpen(true); // Open sidebar on desktop by default
+    }
   }, [isMobile]);
+
   return (
     <>
       <PageHead title={title} />
@@ -32,9 +38,9 @@ const DashboardLayout = ({
           sidebarItems={type === "admin" ? SIDEBAR_ADMIN : SIDEBAR_MEMBER}
           isOpen={open}
         />
-        <div className="h-screen w-full overflow-y-auto p-8">
+        <div className="h-screen w-full overflow-y-auto px-2 pt-2 lg:px-8">
           <Navbar
-            className="flex justify-between bg-transparent px-0"
+            className="mb-2 flex justify-between bg-transparent px-0 pt-2 lg:pt-0"
             isBlurred={false}
             position="static"
             classNames={{ wrapper: "p-0" }}

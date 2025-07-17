@@ -67,6 +67,7 @@ const DeleteEventModal = ({
             Cancel
           </Button>
           <Button
+            className="bg-gradient-to-r from-blue-600 to-purple-600 font-medium"
             color="danger"
             type="submit"
             disabled={isPendingMutateDeleteEvent}

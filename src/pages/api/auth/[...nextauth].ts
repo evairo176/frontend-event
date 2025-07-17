@@ -78,6 +78,7 @@ export default NextAuth({
         token.refreshToken = user.refreshToken;
         token.accessTokenExpires = user?.accessTokenExpires;
         token.role = user.role;
+        token.name = user.fullname;
       }
       // console.log({
       //   callback: {

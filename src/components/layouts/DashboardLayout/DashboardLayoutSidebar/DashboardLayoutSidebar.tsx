@@ -4,22 +4,16 @@ import { addToast, Button, Spinner, Avatar, Divider } from "@heroui/react";
 import {
   LogOut,
   ChevronDown,
-  ChevronRight,
-  Home,
-  Calendar,
-  Users,
   Settings,
-  BarChart3,
   Ticket,
-  User,
   Bell,
   HelpCircle,
 } from "lucide-react";
-import { signOut } from "next-auth/react";
-import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import React, { JSX, useState } from "react";
+import React, { JSX, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@heroui/use-is-mobile";
 
 interface SidebarSubItem {
   key: string;
@@ -43,11 +37,18 @@ type Props = {
 };
 
 const DashboardLayoutSidebar = (props: Props) => {
+  const session = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const { sidebarItems, isOpen } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const isMobile = useIsMobile();
+
+  // Determine if sidebar should be visible
+  // On desktop: always visible (ignore isOpen state)
+  // On mobile: follow isOpen state
+  const shouldShowSidebar = !isMobile || isOpen;
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -95,13 +96,22 @@ const DashboardLayoutSidebar = (props: Props) => {
 
   return (
     <motion.div
-      initial={{ x: -300 }}
-      animate={{ x: isOpen ? 0 : -300 }}
+      initial={{ x: isMobile ? -300 : 0 }}
+      animate={{
+        x: shouldShowSidebar ? 0 : -300,
+      }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={cn(
-        "fixed z-50 flex h-screen w-full max-w-[280px] flex-col border-r border-gray-200 bg-gradient-to-b from-slate-50 to-white shadow-xl lg:relative lg:translate-x-0",
-        "lg:transform-none lg:animate-none",
+        "fixed z-50 flex h-screen w-full max-w-[280px] flex-col border-r border-gray-200 bg-gradient-to-b from-slate-50 to-white shadow-xl",
+        // Desktop: always relative positioning, no transform
+        "lg:relative lg:!translate-x-0 lg:!transform-none",
+        // Mobile: fixed positioning with transform
+        "lg:shadow-none",
       )}
+      style={{
+        // Override framer-motion transform on desktop
+        transform: !isMobile ? "translateX(0px)" : undefined,
+      }}
     >
       {/* Header */}
       <div className="border-b border-gray-100 p-6">
@@ -133,18 +143,20 @@ const DashboardLayoutSidebar = (props: Props) => {
       >
         <div className="flex items-center gap-3">
           <Avatar
-            src="/images/avatar-placeholder.jpg"
-            name="Admin User"
+            name={session?.data?.user?.name as string}
             size="md"
-            alt="user"
+            alt={session?.data?.user?.name as string}
             className="ring-2 ring-blue-200"
-            fallback
+            showFallback
           />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-gray-800">
-              Admin User
+              {session?.data?.user?.name}
             </p>
-            <p className="truncate text-xs text-gray-500">admin@eventku.com</p>
+            <p className="truncate text-xs text-gray-500">
+              {" "}
+              {session?.data?.user?.email}
+            </p>
           </div>
           <div className="h-2 w-2 rounded-full bg-green-400"></div>
         </div>
@@ -258,7 +270,7 @@ const DashboardLayoutSidebar = (props: Props) => {
         </nav>
       </div>
 
-      <Divider className="mx-4" />
+      <Divider className="w-full" />
 
       {/* Footer Actions */}
       <div className="space-y-3 p-4">
