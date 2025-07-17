@@ -78,6 +78,7 @@ const TicketTab = (props: Props) => {
           totalData={dataTicket?.pagination?.total}
           emptyContent="Ticket is empty"
           data={dataTicket?.data || []}
+          refetch={refetchTicket}
         />
       )}
       <AddTicketModal refetchTicket={refetchTicket} {...addTicketModal} />
