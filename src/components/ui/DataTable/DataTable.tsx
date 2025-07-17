@@ -71,6 +71,11 @@ const DataTable = ({
   });
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // Add No column to the beginning of columns array
+  const columnsWithNo = useMemo(() => {
+    return [{ uid: "no", name: "No", sort: false }, ...columns];
+  }, [columns]);
+
   const handleRefresh = () => {
     const defaultValue = "8";
 
@@ -370,7 +375,7 @@ const DataTable = ({
             tbody: "divide-y divide-gray-100 bg-white",
           }}
         >
-          <TableHeader columns={columns}>
+          <TableHeader columns={columnsWithNo}>
             {(column) => {
               const isSortable = column.sort ?? false;
               const isCurrentSort = sortDescriptor.column === column.uid;
@@ -515,7 +520,17 @@ const DataTable = ({
                       whileHover={{ opacity: 1 }}
                       transition={{ duration: 0.2 }}
                     >
-                      {renderCell(item, columnKey)}
+                      {columnKey === "no" ? (
+                        <div className="flex items-center justify-center">
+                          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-blue-100 to-purple-100 text-xs font-bold text-blue-700">
+                            {(Number(currentPage) - 1) * Number(currentLimit) +
+                              sortedData.indexOf(item) +
+                              1}
+                          </span>
+                        </div>
+                      ) : (
+                        renderCell(item, columnKey)
+                      )}
                     </motion.div>
                   </TableCell>
                 )}
