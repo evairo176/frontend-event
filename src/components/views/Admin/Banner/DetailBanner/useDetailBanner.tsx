@@ -62,12 +62,17 @@ const useDetailBanner = () => {
     },
   });
 
-  const handleUpdateBanner = (data: IUpdateFormBanner) => {
+  const handleUpdateImageBanner = (data: IUpdateFormBanner) => {
     const payload = {
-      ...data,
+      image: String(data.image),
+    };
+    mutateUpdateBanner(payload);
+  };
+
+  const handleUpdateInfoBanner = (data: IUpdateFormBanner) => {
+    const payload = {
       title: String(data.title),
       isShow: data.isShow === "true" ? true : false,
-      image: String(data.image),
     };
     mutateUpdateBanner(payload);
   };
@@ -75,7 +80,8 @@ const useDetailBanner = () => {
   return {
     dataBanner,
 
-    handleUpdateBanner,
+    handleUpdateImageBanner,
+    handleUpdateInfoBanner,
     isPendingMutateUpdateBanner,
     isSuccessMutateUpdateBanner,
   };

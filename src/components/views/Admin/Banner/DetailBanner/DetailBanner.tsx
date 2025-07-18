@@ -10,7 +10,8 @@ const DetailBanner = (props: Props) => {
   const {
     dataBanner,
 
-    handleUpdateBanner,
+    handleUpdateImageBanner,
+    handleUpdateInfoBanner,
     isPendingMutateUpdateBanner,
     isSuccessMutateUpdateBanner,
   } = useDetailBanner();
@@ -20,7 +21,7 @@ const DetailBanner = (props: Props) => {
         <Tab key={"image"} title="Image">
           <ImageTab
             currentImage={dataBanner?.image}
-            onUpdate={handleUpdateBanner}
+            onUpdate={handleUpdateImageBanner}
             isPendingMutateUpdateBanner={isPendingMutateUpdateBanner}
             isSuccessMutateUpdateBanner={isSuccessMutateUpdateBanner}
           />
@@ -28,7 +29,7 @@ const DetailBanner = (props: Props) => {
         <Tab key={"info"} title="Info">
           <InfoTab
             dataBanner={dataBanner}
-            onUpdate={handleUpdateBanner}
+            onUpdate={handleUpdateInfoBanner}
             isPendingMutateUpdateBanner={isPendingMutateUpdateBanner}
             isSuccessMutateUpdateBanner={isSuccessMutateUpdateBanner}
           />
