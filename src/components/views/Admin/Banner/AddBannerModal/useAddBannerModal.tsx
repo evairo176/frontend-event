@@ -14,7 +14,11 @@ const schema = yup.object().shape({
   image: yup.mixed<FileList | string>().required("Please input icon"),
 });
 
-const useAddBannerModal = () => {
+interface Props {
+  callbackSuccess: () => void;
+}
+
+const useAddBannerModal = ({ callbackSuccess }: Props) => {
   const {
     control,
     handleSubmit: handleSubmitBannerForm,
@@ -88,6 +92,9 @@ const useAddBannerModal = () => {
         color: "success",
         variant: "flat",
       });
+
+      callbackSuccess();
+      reset();
     },
     onError: (error: any) => {
       const { message } = errorCallback(error);

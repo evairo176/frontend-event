@@ -35,22 +35,18 @@ const AddBannerModal = ({
     handleSubmitBannerForm,
     handleAddBanner,
     isPendingMutateAddBanner,
-    isSuccessMutateAddBanner,
-
     handleUploadIcon,
     handleDeleteIcon,
     handleOnClose,
     isPendingMutateUploadFile,
     isPendingMutateDeleteFile,
     preview,
-  } = useAddBannerModal();
-
-  useEffect(() => {
-    if (isSuccessMutateAddBanner) {
+  } = useAddBannerModal({
+    callbackSuccess: () => {
       refetchBanner();
       onClose();
-    }
-  }, [isSuccessMutateAddBanner]);
+    },
+  });
 
   const disabledSubmit = useMemo(() => {
     return (
