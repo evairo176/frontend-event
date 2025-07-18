@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
+import { formatDateTime } from "@/utils/date";
 
 type Props = {
   event: IEventHome;
@@ -48,7 +49,8 @@ const ItemCard = ({ event, index }: Props) => {
             <div className="flex items-center gap-2 text-gray-600">
               <Calendar className="h-4 w-4" />
               <span className="text-sm">
-                {event.startDate} - {event.endDate}
+                {formatDateTime(event.startDate)} -{" "}
+                {formatDateTime(event.endDate)}
               </span>
             </div>
             <div className="flex items-center gap-2 text-gray-600">
