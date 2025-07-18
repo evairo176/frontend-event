@@ -1,5 +1,5 @@
 const LIMIT_BANNER = 5;
-const LIMIT_EVENT = 4;
+const LIMIT_EVENT = 3;
 const LIMIT_CATEGORY = 8;
 const DEFAULT_PAGE = 1;
 

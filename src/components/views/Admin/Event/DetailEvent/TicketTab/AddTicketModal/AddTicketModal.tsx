@@ -34,14 +34,12 @@ const AddTicketModal = ({
     isPendingMutateAddTicket,
     isSuccessMutateAddTicket,
     handleOnClose,
-  } = useAddTicketModal();
-
-  useEffect(() => {
-    if (isSuccessMutateAddTicket) {
+  } = useAddTicketModal({
+    callbackSuccess: () => {
       onClose();
       refetchTicket();
-    }
-  }, [isSuccessMutateAddTicket]);
+    },
+  });
 
   const disabledSubmit = useMemo(() => {
     return isPendingMutateAddTicket;

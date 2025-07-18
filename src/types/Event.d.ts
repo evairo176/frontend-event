@@ -1,3 +1,6 @@
+import { ICategory } from "./Category";
+import { ITicket } from "./Ticket";
+
 export interface IEvent {
   name: string;
   categoryId: string;
@@ -12,6 +15,29 @@ export interface IEvent {
   latitude: string;
   longitude: string;
   address: string;
+}
+
+export interface IEventHome {
+  id?: string;
+  name: string;
+  categoryId: string;
+  startDate: string | DateValue;
+  endDate: string | DateValue;
+  banner: FileList | string;
+  description: string;
+  isPublished: string;
+  isFeatured: string;
+  isOnline: string;
+  regionId: string;
+  latitude: string;
+  longitude: string;
+  address: string;
+  category: ICategory;
+  city: {
+    name: string;
+  };
+  cheapestTicket: ITicket;
+  totalAudience: number;
 }
 
 export interface IEventUpdate {

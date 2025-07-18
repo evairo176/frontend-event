@@ -15,7 +15,11 @@ const schema = yup.object().shape({
   quantity: yup.string().required("Please input quantity"),
 });
 
-const useAddTicketModal = () => {
+interface Props {
+  callbackSuccess: () => void;
+}
+
+const useAddTicketModal = ({ callbackSuccess }: Props) => {
   const { query } = useRouter();
   const {
     control,
@@ -52,6 +56,9 @@ const useAddTicketModal = () => {
         color: "success",
         variant: "flat",
       });
+
+      callbackSuccess();
+      reset();
     },
     onError: (error: any) => {
       const { message } = errorCallback(error);

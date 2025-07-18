@@ -23,6 +23,7 @@ import { motion } from "framer-motion";
 import HomeSlider from "./HomeSlider/HomeSlider";
 import useHome from "./useHome";
 import { ICreateBackendBanner } from "@/types/Banner";
+import HomeList from "./HomeList";
 
 const categories = [
   { key: "music", label: "Musik", icon: "🎵" },
@@ -33,39 +34,25 @@ const categories = [
   { key: "food", label: "Kuliner", icon: "🍽️" },
 ];
 
-const popularEvents = [
+// Fallback dummy data if API is not available
+const fallbackBanners: ICreateBackendBanner[] = [
   {
-    id: 1,
-    title: "Jakarta Music Festival 2025",
-    location: "Jakarta Convention Center",
-    date: "15 Feb 2025",
-    price: "Rp 250.000",
-    image: "/images/event1.jpg",
-    rating: 4.8,
-    attendees: 1200,
-    category: "Musik",
+    title: "Discover Amazing Events Near You",
+    isShow: true,
+    image:
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
   },
   {
-    id: 2,
-    title: "Tech Summit Indonesia",
-    location: "Bali International Convention Centre",
-    date: "22 Mar 2025",
-    price: "Rp 500.000",
-    image: "/images/event2.jpg",
-    rating: 4.9,
-    attendees: 800,
-    category: "Teknologi",
+    title: "Join Thousands of Event Enthusiasts",
+    isShow: true,
+    image:
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
   },
   {
-    id: 3,
-    title: "Food & Beverage Expo",
-    location: "Surabaya Convention Hall",
-    date: "10 Apr 2025",
-    price: "Rp 150.000",
-    image: "/images/event3.jpg",
-    rating: 4.7,
-    attendees: 950,
-    category: "Kuliner",
+    title: "Create Unforgettable Memories",
+    isShow: true,
+    image:
+      "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
   },
 ];
 
@@ -76,29 +63,7 @@ const Home = (props: Props) => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const { dataBanner, isLoadingBanner } = useHome();
-
-  // Fallback dummy data if API is not available
-  const fallbackBanners: ICreateBackendBanner[] = [
-    {
-      title: "Discover Amazing Events Near You",
-      isShow: true,
-      image:
-        "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    },
-    {
-      title: "Join Thousands of Event Enthusiasts",
-      isShow: true,
-      image:
-        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    },
-    {
-      title: "Create Unforgettable Memories",
-      isShow: true,
-      image:
-        "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    },
-  ];
+  const { dataBanner, isLoadingBanner, dataEvent, isLoadingEvent } = useHome();
 
   // Use API data if available, otherwise use fallback
   const bannersToShow = dataBanner?.data || fallbackBanners;
@@ -348,34 +313,10 @@ const Home = (props: Props) => {
       </section>
 
       {/* Banner Slider Section */}
-      <section className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-8 text-center"
-        >
-          <h2 className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
-            Event Unggulan
-          </h2>
-          <p className="text-lg text-gray-600">
-            Jangan lewatkan event-event menarik yang sedang trending
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <HomeSlider
-            banners={bannersToShow}
-            isLoadingBanners={isLoadingBanner}
-          />
-        </motion.div>
-      </section>
+      <HomeSlider
+        banners={bannersToShow || []}
+        isLoadingBanners={isLoadingBanner}
+      />
 
       {/* Categories Section */}
       <section className="container mx-auto px-4 py-16">
@@ -419,105 +360,10 @@ const Home = (props: Props) => {
       </section>
 
       {/* Popular Events Section */}
-      <section className="bg-gray-50 py-16">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <h2 className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
-              Event Populer
-            </h2>
-            <p className="text-lg text-gray-600">
-              Event terpopuler yang tidak boleh kamu lewatkan
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {popularEvents.map((event, index) => (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-              >
-                <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl">
-                  <div className="relative h-48 bg-gradient-to-r from-blue-400 to-purple-500">
-                    <div className="absolute inset-0 bg-black/20" />
-                    <div className="absolute left-4 top-4">
-                      <Chip color="primary" variant="solid" size="sm">
-                        {event.category}
-                      </Chip>
-                    </div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <div className="mb-2 flex items-center gap-2">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">
-                          {event.rating}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <CardBody className="p-6">
-                    <h3 className="mb-2 line-clamp-2 text-xl font-bold text-gray-800">
-                      {event.title}
-                    </h3>
-                    <div className="mb-4 space-y-2">
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <MapPin className="h-4 w-4" />
-                        <span className="text-sm">{event.location}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <Calendar className="h-4 w-4" />
-                        <span className="text-sm">{event.date}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <Users className="h-4 w-4" />
-                        <span className="text-sm">
-                          {event.attendees} peserta
-                        </span>
-                      </div>
-                    </div>
-                    <Divider className="my-4" />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-gray-500">Mulai dari</p>
-                        <p className="text-xl font-bold text-blue-600">
-                          {event.price}
-                        </p>
-                      </div>
-                      <Button
-                        color="primary"
-                        variant="flat"
-                        endContent={<ArrowRight className="h-4 w-4" />}
-                      >
-                        Lihat Detail
-                      </Button>
-                    </div>
-                  </CardBody>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <Button
-              size="lg"
-              color="primary"
-              variant="bordered"
-              className="font-semibold"
-              endContent={<ArrowRight className="h-4 w-4" />}
-            >
-              Lihat Semua Event
-            </Button>
-          </div>
-        </div>
-      </section>
+      <HomeList
+        events={dataEvent?.data || []}
+        isLoadingEvent={isLoadingEvent}
+      />
 
       {/* Stats Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 text-white">
