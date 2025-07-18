@@ -14,7 +14,11 @@ const schema = yup.object().shape({
   icon: yup.mixed<FileList | string>().required("Please input icon"),
 });
 
-const useAddCategoryModal = () => {
+interface Props {
+  callbackSuccess: () => void;
+}
+
+const useAddCategoryModal = ({ callbackSuccess }: Props) => {
   const {
     control,
     handleSubmit: handleSubmitCategoryForm,
@@ -88,6 +92,9 @@ const useAddCategoryModal = () => {
         color: "success",
         variant: "flat",
       });
+
+      callbackSuccess();
+      reset();
     },
     onError: (error: any) => {
       const { message } = errorCallback(error);

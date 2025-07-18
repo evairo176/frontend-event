@@ -32,7 +32,11 @@ const schema = yup.object().shape({
   address: yup.string().required("Please input address"),
 });
 
-const useAddEventModal = () => {
+interface Props {
+  callbackSuccess: () => void;
+}
+
+const useAddEventModal = ({ callbackSuccess }: Props) => {
   const router = useRouter();
   const {
     control,
@@ -111,6 +115,8 @@ const useAddEventModal = () => {
         color: "success",
         variant: "flat",
       });
+      callbackSuccess();
+      reset();
     },
     onError: (error: any) => {
       const { message } = errorCallback(error);

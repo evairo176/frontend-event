@@ -56,14 +56,12 @@ const AddEventModal = ({
     dataRegionId,
     isLoadingRegionId,
     handleSearchRegionId,
-  } = useAddEventModal();
-
-  useEffect(() => {
-    if (isSuccessMutateAddEvent) {
+  } = useAddEventModal({
+    callbackSuccess: () => {
       onClose();
       refetchEvent();
-    }
-  }, [isSuccessMutateAddEvent]);
+    },
+  });
 
   const disabledSubmit = useMemo(() => {
     return (

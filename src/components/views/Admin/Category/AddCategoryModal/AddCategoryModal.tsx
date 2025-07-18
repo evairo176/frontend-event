@@ -41,14 +41,12 @@ const AddCategoryModal = ({
     isPendingMutateUploadFile,
     isPendingMutateDeleteFile,
     preview,
-  } = useAddCategoryModal();
-
-  useEffect(() => {
-    if (isSuccessMutateAddCategory) {
+  } = useAddCategoryModal({
+    callbackSuccess: () => {
       onClose();
       refetchCategory();
-    }
-  }, [isSuccessMutateAddCategory]);
+    },
+  });
 
   const disabledSubmit = useMemo(() => {
     return (
