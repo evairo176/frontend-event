@@ -1,5 +1,5 @@
 import { IEventHome } from "@/types/Event";
-import { Button, Card, CardBody, Chip, Divider } from "@heroui/react";
+import { Button, Card, CardBody, Chip, Divider, Skeleton } from "@heroui/react";
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Users } from "lucide-react";
@@ -8,11 +8,65 @@ import { convertIDR } from "@/utils/currency";
 import { formatDateTime } from "@/utils/date";
 
 type Props = {
-  event: IEventHome;
+  event?: IEventHome;
   index: number;
+  isLoading?: boolean;
 };
 
-const ItemCard = ({ event, index }: Props) => {
+const ItemCardSkeleton = ({ index }: { index: number }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      viewport={{ once: true }}
+    >
+      <Card className="overflow-hidden">
+        <div className="relative h-48">
+          <Skeleton className="h-full w-full rounded-none" />
+          <div className="absolute left-4 top-4">
+            <Skeleton className="h-6 w-16 rounded-full" />
+          </div>
+        </div>
+        <CardBody className="p-6">
+          <Skeleton className="mb-2 h-6 w-3/4 rounded-lg" />
+          <Skeleton className="mb-4 h-4 w-1/2 rounded-lg" />
+
+          <div className="mb-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4 rounded" />
+              <Skeleton className="h-4 w-24 rounded" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4 rounded" />
+              <Skeleton className="h-4 w-32 rounded" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4 rounded" />
+              <Skeleton className="h-4 w-20 rounded" />
+            </div>
+          </div>
+
+          <Divider className="my-4" />
+
+          <div className="flex items-center justify-between">
+            <div>
+              <Skeleton className="mb-1 h-3 w-16 rounded" />
+              <Skeleton className="h-6 w-24 rounded" />
+            </div>
+            <Skeleton className="h-10 w-28 rounded-lg" />
+          </div>
+        </CardBody>
+      </Card>
+    </motion.div>
+  );
+};
+
+const ItemCard = ({ event, index, isLoading = false }: Props) => {
+  if (isLoading || !event) {
+    return <ItemCardSkeleton index={index} />;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
