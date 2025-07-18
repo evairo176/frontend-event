@@ -1,14 +1,13 @@
 import {
+  BanknoteArrowDown,
   Blocks,
   Calendar,
-  Disc,
   Grid,
-  Monitor,
+  LayoutDashboard,
   Newspaper,
   Settings,
   ShoppingBag,
   Tv,
-  View,
 } from "lucide-react";
 
 const SIDEBAR_ADMIN = [
@@ -16,13 +15,13 @@ const SIDEBAR_ADMIN = [
     key: "dashboard",
     label: "Dashboard",
     href: "/admin/dashboard",
-    icon: <Grid />,
+    icon: <LayoutDashboard />,
   },
   {
     key: "event",
     label: "Event",
     href: "/admin/event",
-    icon: <Monitor />,
+    icon: <Calendar />,
   },
   {
     key: "category",
@@ -40,7 +39,7 @@ const SIDEBAR_ADMIN = [
     key: "transaction",
     label: "Transaction",
     href: "/admin/transaction",
-    icon: <ShoppingBag />,
+    icon: <BanknoteArrowDown />,
   },
   {
     key: "blog",
