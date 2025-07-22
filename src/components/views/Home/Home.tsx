@@ -8,22 +8,14 @@ import {
   Select,
   SelectItem,
   Chip,
-  Divider,
 } from "@heroui/react";
-import {
-  Search,
-  Calendar,
-  MapPin,
-  Users,
-  Star,
-  ArrowRight,
-  Ticket,
-} from "lucide-react";
+import { Search, Calendar, MapPin, ArrowRight, Ticket } from "lucide-react";
 import { motion } from "framer-motion";
 import HomeSlider from "./HomeSlider/HomeSlider";
 import useHome from "./useHome";
 import { ICreateBackendBanner } from "@/types/Banner";
 import HomeList from "./HomeList";
+import HomeCategoryList from "./HomeCategoryList/HomeCategoryList";
 
 const categories = [
   { key: "music", label: "Musik", icon: "🎵" },
@@ -34,28 +26,6 @@ const categories = [
   { key: "food", label: "Kuliner", icon: "🍽️" },
 ];
 
-// Fallback dummy data if API is not available
-const fallbackBanners: ICreateBackendBanner[] = [
-  {
-    title: "Discover Amazing Events Near You",
-    isShow: true,
-    image:
-      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-  },
-  {
-    title: "Join Thousands of Event Enthusiasts",
-    isShow: true,
-    image:
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-  },
-  {
-    title: "Create Unforgettable Memories",
-    isShow: true,
-    image:
-      "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-  },
-];
-
 type Props = {};
 
 const Home = (props: Props) => {
@@ -63,10 +33,14 @@ const Home = (props: Props) => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const { dataBanner, isLoadingBanner, dataEvent, isLoadingEvent } = useHome();
-
-  // Use API data if available, otherwise use fallback
-  const bannersToShow = dataBanner?.data || fallbackBanners;
+  const {
+    dataBanner,
+    isLoadingBanner,
+    dataEvent,
+    isLoadingEvent,
+    dataCategory,
+    isLoadingCategory,
+  } = useHome();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -314,50 +288,15 @@ const Home = (props: Props) => {
 
       {/* Banner Slider Section */}
       <HomeSlider
-        banners={bannersToShow || []}
+        banners={dataBanner?.data || []}
         isLoadingBanners={isLoadingBanner}
       />
 
       {/* Categories Section */}
-      <section className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-12 text-center"
-        >
-          <h2 className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
-            Kategori Event Populer
-          </h2>
-          <p className="text-lg text-gray-600">
-            Pilih kategori yang sesuai dengan minatmu
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.key}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Card className="cursor-pointer bg-gradient-to-br from-white to-gray-50 transition-all duration-300 hover:shadow-lg">
-                <CardBody className="p-6 text-center">
-                  <div className="mb-3 text-4xl">{category.icon}</div>
-                  <h3 className="font-semibold text-gray-800">
-                    {category.label}
-                  </h3>
-                </CardBody>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <HomeCategoryList
+        dataCategory={dataCategory?.data || []}
+        isLoadingCategory={isLoadingCategory}
+      />
 
       {/* Popular Events Section */}
       <HomeList

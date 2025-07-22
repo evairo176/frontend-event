@@ -15,6 +15,7 @@ import React, { useEffect, useMemo } from "react";
 import useAddBannerModal from "./useAddBannerModal";
 import { Controller } from "react-hook-form";
 import InputFile from "@/components/ui/InputFile";
+import CategoryIconPicker from "@/components/ui/CategoryIcon/CategoryIconPicker";
 
 type Props = {
   isOpen?: boolean;

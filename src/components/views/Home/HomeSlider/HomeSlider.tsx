@@ -48,29 +48,14 @@ const HomeSlider = ({ banners, isLoadingBanners }: Props) => {
     setIsAutoPlay(!isAutoPlay);
   };
 
-  // Prevent hydration mismatch
-  if (!isMounted) {
-    return (
-      <div className="relative h-[400px] w-full overflow-hidden rounded-2xl md:h-[500px] lg:h-[600px]">
-        <Skeleton className="h-full w-full" />
-      </div>
-    );
-  }
-
   return (
     <>
-      {!banners ||
-        (banners.length === 0 && (
-          <div className="relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-gray-100 to-gray-200 md:h-[500px] lg:h-[600px]">
-            <p className="text-lg text-gray-500">No banners available</p>
-          </div>
-        ))}
-      {isLoadingBanners && (
+      {isLoadingBanners && isMounted && (
         <div className="relative h-[400px] w-full overflow-hidden rounded-2xl md:h-[500px] lg:h-[600px]">
           <Skeleton className="h-full w-full" />
         </div>
       )}
-      {banners?.length > 0 && !isLoadingBanners && (
+      {banners?.length > 0 && (
         <section className="container mx-auto px-4 py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

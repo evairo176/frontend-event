@@ -1,7 +1,7 @@
 import { IEventHome } from "@/types/Event";
-import { Button, Card, CardBody, Chip, Divider } from "@heroui/react";
-import { ArrowRight, Calendar, MapPin, Star, Users } from "lucide-react";
-import React from "react";
+import { Button, Skeleton } from "@heroui/react";
+import { ArrowRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ItemCard from "./ItemCard";
 
@@ -11,6 +11,12 @@ type Props = {
 };
 
 const HomeList = ({ events, isLoadingEvent }: Props) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Fix hydration issue
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
     <section className="bg-gray-50 py-16">
       <div className="container mx-auto px-4">
@@ -30,23 +36,38 @@ const HomeList = ({ events, isLoadingEvent }: Props) => {
         </motion.div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {events &&
-            !isLoadingEvent &&
-            events?.map((event, index) => (
-              <ItemCard key={event.id} event={event} index={index} />
-            ))}
+          {isLoadingEvent
+            ? // Show skeleton when loading
+              Array.from({ length: 3 }).map((_, index) => (
+                <ItemCard
+                  key={`skeleton-${index}`}
+                  index={index}
+                  isLoading={true}
+                />
+              ))
+            : // Show actual data when loaded
+              events &&
+              events?.map((event, index) => (
+                <ItemCard key={event.id} event={event} index={index} />
+              ))}
         </div>
 
         <div className="mt-12 text-center">
-          <Button
-            size="lg"
-            color="primary"
-            variant="bordered"
-            className="font-semibold"
-            endContent={<ArrowRight className="h-4 w-4" />}
-          >
-            Lihat Semua Event
-          </Button>
+          {isLoadingEvent && isMounted ? (
+            <>
+              <Skeleton className="mx-auto h-12 w-40 rounded-lg" />
+            </>
+          ) : (
+            <Button
+              size="lg"
+              color="primary"
+              variant="bordered"
+              className="font-semibold"
+              endContent={<ArrowRight className="h-4 w-4" />}
+            >
+              Lihat Semua Event
+            </Button>
+          )}
         </div>
       </div>
     </section>
