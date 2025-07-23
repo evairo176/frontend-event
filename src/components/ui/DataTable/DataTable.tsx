@@ -331,7 +331,9 @@ const DataTable = ({
                     selectionMode="single"
                     onChange={handleChangeLimit}
                     startContent={
-                      <p className="text-small font-medium">Show:</p>
+                      <p className="text-small font-medium">
+                        Show: {currentLimit}
+                      </p>
                     }
                     disallowEmptySelection
                     classNames={{
@@ -375,7 +377,7 @@ const DataTable = ({
               </div>
 
               {/* Right Section - Pagination */}
-              {totalPages > 0 && (
+              {totalPages > 1 && (
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}

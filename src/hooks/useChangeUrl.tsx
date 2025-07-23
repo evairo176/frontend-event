@@ -12,10 +12,18 @@ const useChangeUrl = () => {
   const currentLimit = router.query.limit;
   const currentPage = router.query.page;
   const currentSearch = router.query.search;
+  const currentCategory = router.query.category;
+  const currentIsOnline = router.query.isOnline;
+  const currentIsFeatured = router.query.isFeatured;
   const debounce = useDebounce();
 
   useEffect(() => {
     if (router.isReady) {
+      const ExplorePathName = router.pathname === "/event" && {
+        category: currentCategory || "",
+        isOnline: currentIsOnline || "",
+        isFeatured: currentIsFeatured || "",
+      };
       router.replace(
         {
           pathname: router.pathname, // tetap gunakan path dinamis seperti /admin/event/[id]
@@ -24,6 +32,7 @@ const useChangeUrl = () => {
             limit: currentLimit || LIMIT_DEFAULT,
             page: currentPage || PAGE_DEFAULT,
             search: currentSearch || "",
+            ...ExplorePathName,
           },
         },
         undefined,
@@ -73,14 +82,64 @@ const useChangeUrl = () => {
       },
     });
   };
+
+  const handleChangeCategory = (category: string) => {
+    router.push({
+      query: {
+        ...router.query,
+        category,
+        page: PAGE_DEFAULT,
+      },
+    });
+  };
+
+  const handleChangeIsOnline = (isOnline: string) => {
+    router.push({
+      query: {
+        ...router.query,
+        isOnline,
+        page: PAGE_DEFAULT,
+      },
+    });
+  };
+
+  const handleChangeIsFeatured = (isFeatured: string) => {
+    router.push({
+      query: {
+        ...router.query,
+        isFeatured,
+        page: PAGE_DEFAULT,
+      },
+    });
+  };
+
+  const resetFilterExplore = () => {
+    router.push({
+      query: {
+        category: "",
+        isOnline: "",
+        isFeatured: "",
+        limit: LIMIT_DEFAULT,
+        page: PAGE_DEFAULT,
+        search: "",
+      },
+    });
+  };
   return {
     handleChangePage,
     handleChangeLimit,
     handleSearch,
     handleClearSearch,
+    handleChangeCategory,
+    handleChangeIsOnline,
+    handleChangeIsFeatured,
     currentLimit,
     currentPage,
     currentSearch,
+    currentCategory,
+    currentIsOnline,
+    currentIsFeatured,
+    resetFilterExplore,
   };
 };
 

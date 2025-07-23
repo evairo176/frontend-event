@@ -93,7 +93,7 @@ const ItemCard = ({ event, index, isLoading = false }: Props) => {
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute left-4 top-4">
             <Chip color="primary" variant="solid" size="sm">
-              {event?.category.name}
+              {event?.category?.name}
             </Chip>
           </div>
         </div>

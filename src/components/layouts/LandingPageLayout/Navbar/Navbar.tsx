@@ -47,6 +47,8 @@ const Navbar = () => {
   const { dataProfile } = useNavbar();
   const [isLoading, setIsLoading] = useState(false);
 
+  const isHome = router.pathname === "/";
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -151,10 +153,12 @@ const Navbar = () => {
                     href={item.href}
                     className={cn(
                       "relative font-medium transition-colors hover:text-blue-600",
-                      isScrolled ? "text-gray-700" : "text-white/90",
+                      isHome ? "text-white/90" : "text-gray-700",
                       {
                         "block bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent":
                           router.pathname === item.href,
+                        "text-gray-700":
+                          isScrolled && router.pathname !== item.href,
                       },
                     )}
                     whileHover={{ scale: 1.05 }}
@@ -179,9 +183,10 @@ const Navbar = () => {
                   variant="light"
                   className={cn(
                     "transition-colors",
-                    isScrolled
-                      ? "text-gray-600 hover:bg-gray-100"
-                      : "text-white/80 hover:bg-white/10",
+                    isHome ? "text-white/90" : "text-gray-700",
+                    // isScrolled
+                    //   ? "text-gray-600 hover:bg-gray-100"
+                    //   : "text-white/80 hover:bg-white/10",
                   )}
                 >
                   <Search className="h-5 w-5" />
@@ -197,7 +202,7 @@ const Navbar = () => {
                         variant="light"
                         className={cn(
                           "gap-2 transition-colors",
-                          isScrolled ? "text-gray-700" : "text-white",
+                          isHome ? "text-white/90" : "text-gray-700",
                         )}
                         startContent={<User className="h-4 w-4" />}
                       ></Button>
@@ -230,7 +235,7 @@ const Navbar = () => {
                         variant="light"
                         className={cn(
                           "gap-2 transition-colors",
-                          isScrolled ? "text-gray-700" : "text-white",
+                          isHome ? "text-white/90" : "text-gray-700",
                         )}
                         startContent={<User className="h-4 w-4" />}
                       ></Button>
@@ -291,10 +296,10 @@ const Navbar = () => {
                   color="primary"
                   variant={isScrolled ? "solid" : "bordered"}
                   className={cn(
-                    "font-semibold transition-all",
-                    isScrolled
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600"
-                      : "border-white text-white hover:bg-white hover:text-blue-600",
+                    "bg-gradient-to-r from-blue-600 to-purple-600 font-semibold text-white transition-all",
+                    // isScrolled
+                    //   ? "bg-gradient-to-r from-blue-600 to-purple-600"
+                    //   : "border-white text-white hover:bg-white hover:text-blue-600",
                   )}
                   size="sm"
                 >
