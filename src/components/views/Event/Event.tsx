@@ -19,7 +19,7 @@ const Event = (props: Props) => {
             totalSkeleton={6}
             explore
             events={dataEvent?.data || []}
-            isLoadingEvent={!isLoadingEvent}
+            isLoadingEvent={isLoadingEvent}
           />
           {!isLoadingEvent && dataEvent?.data?.length > 0 && (
             <EventFooter
