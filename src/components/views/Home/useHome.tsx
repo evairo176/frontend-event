@@ -69,7 +69,7 @@ const useHome = () => {
     let params = `limit=${LIMIT_EVENT}&page=${DEFAULT_PAGE}&isPublished=true`;
 
     if (search) {
-      params += `?search=${search}`;
+      params += `&search=${search}`;
     }
     const res = await eventServices.getEvents(params);
 

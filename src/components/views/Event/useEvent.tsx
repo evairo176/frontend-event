@@ -16,7 +16,7 @@ const useEvent = () => {
   } = useChangeUrl();
 
   const getEvents = async () => {
-    let params = `limit=${currentLimit}&page=${currentPage}`;
+    let params = `limit=${currentLimit}&page=${currentPage}&isPublished=true`;
     if (currentSearch) {
       params += `&search=${currentSearch}`;
     }
