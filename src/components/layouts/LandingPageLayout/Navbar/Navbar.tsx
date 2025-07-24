@@ -79,7 +79,6 @@ const Navbar = () => {
       await authServices.logout();
       signOut();
     } catch (error) {
-      console.log(error);
       addToast({
         title: "Failed",
         description: "Gagal logout",
@@ -118,8 +117,9 @@ const Navbar = () => {
               <NavbarContent>
                 <NavbarMenuToggle
                   aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                  className={cn("text-white sm:hidden", {
-                    "text-black": isScrolled,
+                  className={cn("text-gray-800 sm:hidden", {
+                    // "text-black": isScrolled,
+                    "text-white/90": isHome && !isScrolled,
                   })}
                   icon={
                     isMenuOpen ? (
@@ -135,12 +135,18 @@ const Navbar = () => {
                     className="flex items-center gap-2"
                   >
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-purple-600">
-                      <Ticket className="h-5 w-5 text-white" />
+                      <Ticket
+                        className={cn("h-5 w-5 text-white", {
+                          "text-white": isHome,
+                        })}
+                      />
                     </div>
                     <span
                       className={cn(
-                        "text-xl font-bold transition-colors",
-                        isScrolled ? "text-gray-800" : "text-white",
+                        "text-xl font-bold text-gray-800 transition-colors",
+                        {
+                          "text-white/90": isHome && !isScrolled,
+                        },
                       )}
                     >
                       EventKu
@@ -182,7 +188,7 @@ const Navbar = () => {
               {/* Right Content */}
               <NavbarContent justify="end">
                 {router.pathname !== "/" && (
-                  <NavbarItem className="hidden lg:flex">
+                  <NavbarItem className="flex">
                     <Button
                       onPress={() => searchEventModal.onOpen()}
                       isIconOnly
@@ -208,8 +214,10 @@ const Navbar = () => {
                           isIconOnly
                           variant="light"
                           className={cn(
-                            "gap-2 transition-colors",
-                            isHome ? "text-white/90" : "text-gray-700",
+                            "gap-2 text-gray-800 transition-colors",
+                            {
+                              "text-white/90": isHome && !isScrolled,
+                            },
                           )}
                           startContent={<User className="h-4 w-4" />}
                         ></Button>
@@ -241,8 +249,10 @@ const Navbar = () => {
                           isIconOnly
                           variant="light"
                           className={cn(
-                            "gap-2 transition-colors",
-                            isHome ? "text-white/90" : "text-gray-700",
+                            "gap-2 text-gray-800 transition-colors",
+                            {
+                              "text-white/90": isHome && !isScrolled,
+                            },
                           )}
                           startContent={<User className="h-4 w-4" />}
                         ></Button>
