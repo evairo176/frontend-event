@@ -9,14 +9,21 @@ import {
   Skeleton,
   Spinner,
 } from "@heroui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import useEventFilter from "./useEventFilter";
 import useChangeUrl from "@/hooks/useChangeUrl";
+import Image from "next/image";
 
 type Props = {};
 
 const EventFilter = (props: Props) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Fix hydration issue
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const {
     control,
     setValue,
@@ -47,7 +54,7 @@ const EventFilter = (props: Props) => {
     <div className="h-fit w-full rounded-xl border p-4 lg:sticky lg:top-20 lg:w-80">
       <h4 className="text-xl font-semibold">Filter</h4>
       <div className="mt-4 flex flex-col gap-4">
-        <Skeleton className="rounded-md" isLoaded={isSuccessCategory}>
+        <Skeleton className="rounded-md" isLoaded={!isLoadingCategory}>
           <Controller
             name="categoryId"
             control={control}
@@ -55,8 +62,6 @@ const EventFilter = (props: Props) => {
               return (
                 <Autocomplete
                   {...field}
-                  isLoading={isLoadingCategory}
-                  disabled={isLoadingCategory}
                   defaultItems={dataCategory?.data?.data || []}
                   label="Category"
                   placeholder="Search Category here"
@@ -70,7 +75,18 @@ const EventFilter = (props: Props) => {
                 >
                   {(category: ICategory) => {
                     return (
-                      <AutocompleteItem key={`${category.id}`}>
+                      <AutocompleteItem
+                        key={`${category.id}`}
+                        startContent={
+                          <Image
+                            src={`${category?.icon}`}
+                            width={20}
+                            height={20}
+                            alt={`${category.name}`}
+                            className="mr-3 h-[20] w-[20] object-cover"
+                          />
+                        }
+                      >
                         {category.name}
                       </AutocompleteItem>
                     );
@@ -80,7 +96,7 @@ const EventFilter = (props: Props) => {
             }}
           />
         </Skeleton>
-        <Skeleton className="rounded-md" isLoaded={isSuccessCategory}>
+        <Skeleton className="rounded-md" isLoaded={!isLoadingCategory}>
           <Controller
             name="isFeatured"
             control={control}
@@ -109,7 +125,7 @@ const EventFilter = (props: Props) => {
           />
         </Skeleton>
 
-        <Skeleton className="rounded-md" isLoaded={isSuccessCategory}>
+        <Skeleton className="rounded-md" isLoaded={!isLoadingCategory}>
           <Controller
             name="isOnline"
             control={control}
@@ -137,16 +153,18 @@ const EventFilter = (props: Props) => {
             }}
           />
         </Skeleton>
-        <Button
-          onPress={() => {
-            resetFilterExplore();
-            reset();
-          }}
-          disabled={isLoadingCategory}
-        >
-          {isLoadingCategory && <Spinner size="sm" color="white" />} Reset
-          Filter
-        </Button>
+        {isMounted && (
+          <Button
+            onPress={() => {
+              resetFilterExplore();
+              reset();
+            }}
+            disabled={isLoadingCategory}
+          >
+            {isLoadingCategory && <Spinner size="sm" color="white" />} Reset
+            Filter
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -65,7 +65,7 @@ const useHome = () => {
     enabled: router.isReady && !!LIMIT_CATEGORY && !!DEFAULT_PAGE,
   });
 
-  const getEventSearchs = async () => {
+  const getEventSearch = async () => {
     let params = `limit=${LIMIT_EVENT}&page=${DEFAULT_PAGE}&isPublished=true`;
 
     if (search) {
@@ -84,12 +84,11 @@ const useHome = () => {
     isRefetching: isRefetchingEventSearch,
   } = useQuery({
     queryKey: ["events-search", search],
-    queryFn: getEventSearchs,
+    queryFn: getEventSearch,
     enabled: router.isReady && !!search,
   });
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     debounce(() => {
       const searchValue = e.target.value;
       setSearch(searchValue);

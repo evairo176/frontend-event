@@ -24,6 +24,7 @@ import {
 } from "@/components/constants/list.constants";
 import { IEvent, IEventHome } from "@/types/Event";
 import Image from "next/image";
+import HomeEventSearch from "./HomeEventSearch";
 
 type Props = {};
 
@@ -53,19 +54,6 @@ const Home = (props: Props) => {
     search,
     setSearch,
   } = useHome();
-
-  const handleSearchPath = (value: string, url: string) => {
-    const search = value;
-    router.push({
-      pathname: url,
-      query: {
-        ...router.query,
-        search,
-        page: PAGE_DEFAULT,
-        limit: LIMIT_DEFAULT,
-      },
-    });
-  };
 
   const handleFastFilterIsOnline = (value: string, url: string) => {
     const isOnline = value;
@@ -104,127 +92,16 @@ const Home = (props: Props) => {
             </p>
 
             {/* Search Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mx-auto w-full max-w-6xl"
-            >
-              <Card className="border border-white/20 bg-white/95 shadow-2xl backdrop-blur-sm">
-                <CardBody className="overflow-hidden p-8">
-                  {/* Search Title */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="mb-6 text-center"
-                  >
-                    <h3 className="mb-2 text-2xl font-bold text-gray-800">
-                      Cari Event Favoritmu
-                    </h3>
-                    <p className="text-gray-600">
-                      Temukan event yang sesuai dengan minat dan lokasimu
-                    </p>
-                  </motion.div>
-
-                  {/* Horizontal Search Form */}
-                  <div className="relative flex flex-col items-stretch gap-4 lg:flex-row">
-                    {/* Search Input */}
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 0.5 }}
-                      className="flex-1"
-                    >
-                      <Input
-                        placeholder="Cari nama event, artis, atau penyelenggara..."
-                        onChange={(e) => handleSearch(e)}
-                        onClear={() => setSearch("")}
-                        startContent={
-                          <Search className="h-5 w-5 text-gray-400" />
-                        }
-                        size="lg"
-                        classNames={{
-                          input: "text-gray-700 text-base",
-                          inputWrapper:
-                            "bg-gray-50 border-gray-200 hover:border-blue-300 focus-within:border-blue-500 transition-colors h-14",
-                        }}
-                      />
-                    </motion.div>
-                  </div>
-                  {search !== "" && (
-                    <Listbox
-                      className="mt-3 rounded-xl border bg-white"
-                      items={dataEventSearch?.data || []}
-                    >
-                      {!isRefetchingEventSearch && !isLoadingEventSearch ? (
-                        (item: IEventHome) => (
-                          <ListboxItem
-                            key={item.id}
-                            href={`/event/${item.slug}`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <Image
-                                alt={`${item.name}`}
-                                src={`${item.banner}`}
-                                width={100}
-                                height={50}
-                                className="h-12 w-20 rounded-lg object-cover"
-                              />
-                              <p className="line-clamp-2 flex-1 text-wrap">
-                                {item.name}
-                              </p>
-                            </div>
-                          </ListboxItem>
-                        )
-                      ) : (
-                        <ListboxItem key={"loading-item"}>
-                          <div className="flex justify-center py-2">
-                            <Spinner color="primary" size="sm" />
-                          </div>
-                        </ListboxItem>
-                      )}
-                    </Listbox>
-                  )}
-                  {/* Quick Filters */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.9 }}
-                    className="mt-6 border-t border-gray-200 pt-6"
-                  >
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="text-sm font-medium text-gray-600">
-                        Filter Cepat:
-                      </span>
-                      {fastFilter?.map((filter, index) => (
-                        <motion.div
-                          key={filter.label}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.3, delay: 1 + index * 0.1 }}
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <Chip
-                            onClick={() =>
-                              handleFastFilterIsOnline(filter.filter, "/event")
-                            }
-                            variant="flat"
-                            className="cursor-pointer transition-colors hover:bg-blue-100"
-                            startContent={
-                              <span className="text-xs">{filter.icon}</span>
-                            }
-                          >
-                            {filter.label}
-                          </Chip>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
-                </CardBody>
-              </Card>
-            </motion.div>
+            <HomeEventSearch
+              dataEventSearch={dataEventSearch?.data || []}
+              isLoadingEventSearch={isLoadingEventSearch}
+              isRefetchingEventSearch={isRefetchingEventSearch}
+              search={search}
+              setSearch={setSearch}
+              handleSearch={handleSearch}
+              handleFastFilterIsOnline={handleFastFilterIsOnline}
+              fastFilter={fastFilter}
+            />
           </motion.div>
         </div>
 
