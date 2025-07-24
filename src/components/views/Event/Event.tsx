@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useEvent from "./useEvent";
 
 import HomeList from "../Home/HomeList";

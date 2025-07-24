@@ -12,11 +12,14 @@ const useEvent = () => {
     currentCategory,
     currentIsOnline,
     currentIsFeatured,
+    currentSearch,
   } = useChangeUrl();
 
   const getEvents = async () => {
     let params = `limit=${currentLimit}&page=${currentPage}`;
-
+    if (currentSearch) {
+      params += `&search=${currentSearch}`;
+    }
     if (currentCategory) {
       params += `&category=${currentCategory}`;
     }

@@ -1,38 +1,33 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Button,
-  Card,
-  CardBody,
-  Input,
-  Select,
-  SelectItem,
-  Chip,
-} from "@heroui/react";
-import { Search, Calendar, MapPin, ArrowRight, Ticket } from "lucide-react";
+import { Button, Card, CardBody, Input, Chip } from "@heroui/react";
+import { Search, Calendar, ArrowRight, Ticket } from "lucide-react";
 import { motion } from "framer-motion";
 import HomeSlider from "./HomeSlider/HomeSlider";
 import useHome from "./useHome";
-import { ICreateBackendBanner } from "@/types/Banner";
+
 import HomeList from "./HomeList";
 import HomeCategoryList from "./HomeCategoryList/HomeCategoryList";
-
-const categories = [
-  { key: "music", label: "Musik", icon: "🎵" },
-  { key: "sports", label: "Olahraga", icon: "⚽" },
-  { key: "business", label: "Bisnis", icon: "💼" },
-  { key: "technology", label: "Teknologi", icon: "💻" },
-  { key: "art", label: "Seni", icon: "🎨" },
-  { key: "food", label: "Kuliner", icon: "🍽️" },
-];
+import { useRouter } from "next/router";
+import {
+  LIMIT_DEFAULT,
+  PAGE_DEFAULT,
+} from "@/components/constants/list.constants";
 
 type Props = {};
 
+const fastFilter = [
+  // { label: "Hari Ini", icon: "📅" },
+  // { label: "Gratis", icon: "🆓" },
+  { label: "Online", icon: "💻", filter: "true" },
+  { label: "Offline", icon: "📍", filter: "false" },
+  // { label: "Trending", icon: "🔥" },
+  // { label: "Terdekat", icon: "📍" },
+];
+
 const Home = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-
+  const router = useRouter();
   const {
     dataBanner,
     isLoadingBanner,
@@ -41,6 +36,32 @@ const Home = (props: Props) => {
     dataCategory,
     isLoadingCategory,
   } = useHome();
+
+  const handleSearchPath = (value: string, url: string) => {
+    const search = value;
+    router.push({
+      pathname: url,
+      query: {
+        ...router.query,
+        search,
+        page: PAGE_DEFAULT,
+        limit: LIMIT_DEFAULT,
+      },
+    });
+  };
+
+  const handleFastFilterIsOnline = (value: string, url: string) => {
+    const isOnline = value;
+    router.push({
+      pathname: url,
+      query: {
+        ...router.query,
+        isOnline,
+        page: PAGE_DEFAULT,
+        limit: LIMIT_DEFAULT,
+      },
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -114,92 +135,6 @@ const Home = (props: Props) => {
                       />
                     </motion.div>
 
-                    {/* Location Select */}
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 0.6 }}
-                      className="lg:w-48"
-                    >
-                      <Select
-                        placeholder="Pilih Kota"
-                        value={selectedLocation}
-                        onChange={(e) => setSelectedLocation(e.target.value)}
-                        startContent={
-                          <MapPin className="h-5 w-5 text-gray-400" />
-                        }
-                        size="lg"
-                        classNames={{
-                          trigger:
-                            "bg-gray-50 border-gray-200 hover:border-blue-300 h-14",
-                          value: "text-gray-700",
-                        }}
-                      >
-                        <SelectItem key="jakarta" textValue="jakarta">
-                          <div className="flex items-center gap-2">
-                            <span>🏙️</span>
-                            <span>Jakarta</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem key="bandung" textValue="bandung">
-                          <div className="flex items-center gap-2">
-                            <span>🏔️</span>
-                            <span>Bandung</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem key="surabaya" textValue="surabaya">
-                          <div className="flex items-center gap-2">
-                            <span>🏭</span>
-                            <span>Surabaya</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem key="bali" textValue="bali">
-                          <div className="flex items-center gap-2">
-                            <span>🏝️</span>
-                            <span>Bali</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem key="yogyakarta" textValue="yogyakarta">
-                          <div className="flex items-center gap-2">
-                            <span>🏛️</span>
-                            <span>Yogyakarta</span>
-                          </div>
-                        </SelectItem>
-                      </Select>
-                    </motion.div>
-
-                    {/* Category Select */}
-                    <motion.div
-                      initial={{ opacity: 0, x: 0 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 0.7 }}
-                      className="lg:w-48"
-                    >
-                      <Select
-                        placeholder="Kategori"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        size="lg"
-                        classNames={{
-                          trigger:
-                            "bg-gray-50 border-gray-200 hover:border-blue-300 h-14",
-                          value: "text-gray-700",
-                        }}
-                      >
-                        {categories.map((category) => (
-                          <SelectItem
-                            key={category.key}
-                            textValue={category.key}
-                          >
-                            <div className="flex items-center gap-2">
-                              <span>{category.icon}</span>
-                              <span>{category.label}</span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    </motion.div>
-
                     {/* Search Button */}
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
@@ -209,6 +144,7 @@ const Home = (props: Props) => {
                       whileTap={{ scale: 0.98 }}
                     >
                       <Button
+                        onPress={() => handleSearchPath(searchQuery, "/event")}
                         color="primary"
                         size="lg"
                         className="h-14 bg-gradient-to-r from-blue-600 to-purple-600 px-8 font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
@@ -231,13 +167,7 @@ const Home = (props: Props) => {
                       <span className="text-sm font-medium text-gray-600">
                         Filter Cepat:
                       </span>
-                      {[
-                        { label: "Hari Ini", icon: "📅" },
-                        { label: "Gratis", icon: "🆓" },
-                        { label: "Online", icon: "💻" },
-                        { label: "Trending", icon: "🔥" },
-                        { label: "Terdekat", icon: "📍" },
-                      ].map((filter, index) => (
+                      {fastFilter?.map((filter, index) => (
                         <motion.div
                           key={filter.label}
                           initial={{ opacity: 0, scale: 0.8 }}
@@ -247,6 +177,9 @@ const Home = (props: Props) => {
                           whileTap={{ scale: 0.95 }}
                         >
                           <Chip
+                            onClick={() =>
+                              handleFastFilterIsOnline(filter.filter, "/event")
+                            }
                             variant="flat"
                             className="cursor-pointer transition-colors hover:bg-blue-100"
                             startContent={

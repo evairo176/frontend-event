@@ -331,9 +331,7 @@ const DataTable = ({
                     selectionMode="single"
                     onChange={handleChangeLimit}
                     startContent={
-                      <p className="text-small font-medium">
-                        Show: {currentLimit}
-                      </p>
+                      <p className="text-small font-medium">Show:</p>
                     }
                     disallowEmptySelection
                     classNames={{

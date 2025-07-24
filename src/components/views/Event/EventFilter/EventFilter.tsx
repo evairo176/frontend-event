@@ -47,37 +47,39 @@ const EventFilter = (props: Props) => {
     <div className="h-fit w-full rounded-xl border p-4 lg:sticky lg:top-20 lg:w-80">
       <h4 className="text-xl font-semibold">Filter</h4>
       <div className="mt-4 flex flex-col gap-4">
-        <Controller
-          name="categoryId"
-          control={control}
-          render={({ field: { onChange, ...field } }) => {
-            return (
-              <Autocomplete
-                {...field}
-                isLoading={isLoadingCategory}
-                disabled={isLoadingCategory}
-                defaultItems={dataCategory?.data?.data || []}
-                label="Category"
-                placeholder="Search Category here"
-                variant="underlined"
-                onSelectionChange={(value) => {
-                  onChange(value);
-                  handleChangeCategory(value as string);
-                }}
-                allowsEmptyCollection
-                selectedKey={currentCategory as string}
-              >
-                {(category: ICategory) => {
-                  return (
-                    <AutocompleteItem key={`${category.id}`}>
-                      {category.name}
-                    </AutocompleteItem>
-                  );
-                }}
-              </Autocomplete>
-            );
-          }}
-        />
+        <Skeleton className="rounded-md" isLoaded={isSuccessCategory}>
+          <Controller
+            name="categoryId"
+            control={control}
+            render={({ field: { onChange, ...field } }) => {
+              return (
+                <Autocomplete
+                  {...field}
+                  isLoading={isLoadingCategory}
+                  disabled={isLoadingCategory}
+                  defaultItems={dataCategory?.data?.data || []}
+                  label="Category"
+                  placeholder="Search Category here"
+                  variant="underlined"
+                  onSelectionChange={(value) => {
+                    onChange(value);
+                    handleChangeCategory(value as string);
+                  }}
+                  allowsEmptyCollection
+                  selectedKey={currentCategory as string}
+                >
+                  {(category: ICategory) => {
+                    return (
+                      <AutocompleteItem key={`${category.id}`}>
+                        {category.name}
+                      </AutocompleteItem>
+                    );
+                  }}
+                </Autocomplete>
+              );
+            }}
+          />
+        </Skeleton>
         <Skeleton className="rounded-md" isLoaded={isSuccessCategory}>
           <Controller
             name="isFeatured"

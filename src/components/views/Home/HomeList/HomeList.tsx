@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import ItemCard from "./ItemCard";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   events: IEventHome[];
@@ -50,29 +51,46 @@ const HomeList = ({
           </motion.div>
         )}
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {isMounted && isLoadingEvent ? (
-            // Show skeleton when loading
-            Array.from({ length: totalSkeleton }).map((_, index) => (
+        {isMounted && isLoadingEvent ? (
+          // Show skeleton when loading
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: totalSkeleton }).map((_, index) => (
               <ItemCard
                 key={`skeleton-${index}`}
                 index={index}
                 isLoading={true}
               />
-            ))
-          ) : // Show actual data when loaded
-          events?.length > 0 ? (
-            events?.map((event, index) => (
-              <ItemCard key={event.id} event={event} index={index} />
-            ))
-          ) : (
-            <div>Data tidak ada</div>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          // Show actual data when loaded
+          events?.length > 0 && (
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {events?.map((event, index) => (
+                <ItemCard key={event.id} event={event} index={index} />
+              ))}
+            </div>
+          )
+        )}
 
-        {!explore && (
+        {isMounted && events?.length < 1 && (
+          <div className="flex h-full min-h-screen flex-col items-center justify-center gap-4 py-20">
+            <Image
+              src={"/images/illustration/no-data.svg"}
+              alt="image not found"
+              width={200}
+              height={200}
+              className="rounded-none"
+            />
+            <h2 className="text-center text-2xl font-bold text-danger">
+              Event is empty
+            </h2>
+          </div>
+        )}
+
+        {isMounted && !explore && (
           <div className="mt-12 text-center">
-            {isLoadingEvent && isMounted ? (
+            {isLoadingEvent ? (
               <>
                 <Skeleton className="mx-auto h-12 w-40 rounded-lg" />
               </>
