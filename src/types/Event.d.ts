@@ -38,6 +38,7 @@ export interface IEventHome {
   };
   cheapestTicket: ITicket;
   totalAudience: number;
+  slug: string;
 }
 
 export interface IEventUpdate {

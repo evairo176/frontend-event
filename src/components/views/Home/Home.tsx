@@ -1,6 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Card, CardBody, Input, Chip } from "@heroui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Input,
+  Chip,
+  Listbox,
+  ListboxItem,
+  Spinner,
+} from "@heroui/react";
 import { Search, Calendar, ArrowRight, Ticket } from "lucide-react";
 import { motion } from "framer-motion";
 import HomeSlider from "./HomeSlider/HomeSlider";
@@ -13,6 +22,8 @@ import {
   LIMIT_DEFAULT,
   PAGE_DEFAULT,
 } from "@/components/constants/list.constants";
+import { IEvent, IEventHome } from "@/types/Event";
+import Image from "next/image";
 
 type Props = {};
 
@@ -26,7 +37,6 @@ const fastFilter = [
 ];
 
 const Home = (props: Props) => {
-  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const {
     dataBanner,
@@ -35,6 +45,13 @@ const Home = (props: Props) => {
     isLoadingEvent,
     dataCategory,
     isLoadingCategory,
+
+    dataEventSearch,
+    isLoadingEventSearch,
+    isRefetchingEventSearch,
+    handleSearch,
+    search,
+    setSearch,
   } = useHome();
 
   const handleSearchPath = (value: string, url: string) => {
@@ -94,7 +111,7 @@ const Home = (props: Props) => {
               className="mx-auto w-full max-w-6xl"
             >
               <Card className="border border-white/20 bg-white/95 shadow-2xl backdrop-blur-sm">
-                <CardBody className="p-8">
+                <CardBody className="overflow-hidden p-8">
                   {/* Search Title */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -111,7 +128,7 @@ const Home = (props: Props) => {
                   </motion.div>
 
                   {/* Horizontal Search Form */}
-                  <div className="flex flex-col items-stretch gap-4 lg:flex-row">
+                  <div className="relative flex flex-col items-stretch gap-4 lg:flex-row">
                     {/* Search Input */}
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
@@ -121,8 +138,8 @@ const Home = (props: Props) => {
                     >
                       <Input
                         placeholder="Cari nama event, artis, atau penyelenggara..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => handleSearch(e)}
+                        onClear={() => setSearch("")}
                         startContent={
                           <Search className="h-5 w-5 text-gray-400" />
                         }
@@ -134,28 +151,41 @@ const Home = (props: Props) => {
                         }}
                       />
                     </motion.div>
-
-                    {/* Search Button */}
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: 0.8 }}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Button
-                        onPress={() => handleSearchPath(searchQuery, "/event")}
-                        color="primary"
-                        size="lg"
-                        className="h-14 bg-gradient-to-r from-blue-600 to-purple-600 px-8 font-semibold shadow-lg transition-all duration-300 hover:shadow-xl"
-                        endContent={<Search className="h-5 w-5" />}
-                      >
-                        <span className="hidden sm:inline">Cari Event</span>
-                        <span className="sm:hidden">Cari</span>
-                      </Button>
-                    </motion.div>
                   </div>
-
+                  {search !== "" && (
+                    <Listbox
+                      className="mt-3 rounded-xl border bg-white"
+                      items={dataEventSearch?.data || []}
+                    >
+                      {!isRefetchingEventSearch && !isLoadingEventSearch ? (
+                        (item: IEventHome) => (
+                          <ListboxItem
+                            key={item.id}
+                            href={`/event/${item.slug}`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <Image
+                                alt={`${item.name}`}
+                                src={`${item.banner}`}
+                                width={100}
+                                height={50}
+                                className="h-12 w-20 rounded-lg object-cover"
+                              />
+                              <p className="line-clamp-2 flex-1 text-wrap">
+                                {item.name}
+                              </p>
+                            </div>
+                          </ListboxItem>
+                        )
+                      ) : (
+                        <ListboxItem key={"loading-item"}>
+                          <div className="flex justify-center py-2">
+                            <Spinner color="primary" size="sm" />
+                          </div>
+                        </ListboxItem>
+                      )}
+                    </Listbox>
+                  )}
                   {/* Quick Filters */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
