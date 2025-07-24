@@ -73,7 +73,7 @@ const HomeList = ({
           )
         )}
 
-        {isMounted && events?.length < 1 && (
+        {isMounted && events?.length < 1 && !isLoadingEvent && (
           <div className="flex h-full min-h-screen flex-col items-center justify-center gap-4 py-20">
             <Image
               src={"/images/illustration/no-data.svg"}

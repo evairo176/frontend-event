@@ -2,12 +2,12 @@ import useChangeUrl from "@/hooks/useChangeUrl";
 import eventServices from "@/services/event.service";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { LIMIT_EVENT } from "./Event.constants";
 
 const useEvent = () => {
   const router = useRouter();
 
   const {
-    currentLimit,
     currentPage,
     currentCategory,
     currentIsOnline,
@@ -16,7 +16,7 @@ const useEvent = () => {
   } = useChangeUrl();
 
   const getEvents = async () => {
-    let params = `limit=${currentLimit}&page=${currentPage}&isPublished=true`;
+    let params = `limit=${LIMIT_EVENT}&page=${currentPage}&isPublished=true`;
     if (currentSearch) {
       params += `&search=${currentSearch}`;
     }
@@ -48,13 +48,13 @@ const useEvent = () => {
     queryKey: [
       "explore-events",
       currentPage,
-      currentLimit,
+      LIMIT_EVENT,
       currentCategory,
       currentIsOnline,
       currentIsFeatured,
     ],
     queryFn: getEvents,
-    enabled: router.isReady && !!currentLimit && !!currentPage,
+    enabled: router.isReady && !!LIMIT_EVENT && !!currentPage,
   });
 
   return {
