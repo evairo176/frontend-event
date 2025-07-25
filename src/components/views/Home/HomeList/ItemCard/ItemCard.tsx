@@ -6,6 +6,7 @@ import { ArrowRight, Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
 import { formatDateTime } from "@/utils/date";
+import Link from "next/link";
 
 type Props = {
   event?: IEventHome;
@@ -137,6 +138,8 @@ const ItemCard = ({ event, index, isLoading = false }: Props) => {
               color="primary"
               variant="flat"
               endContent={<ArrowRight className="h-4 w-4" />}
+              href={`/event/${event?.slug}`}
+              as={Link}
             >
               Lihat Detail
             </Button>
