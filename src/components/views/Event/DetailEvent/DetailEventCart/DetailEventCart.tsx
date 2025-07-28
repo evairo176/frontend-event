@@ -18,7 +18,6 @@ const DetailEventCart = ({
   getTicketDataInCart,
   handleChangeQuantity,
 }: Props) => {
-  console.log(carts);
   return (
     <Card radius="lg" className="border-none p-6 lg:sticky lg:top-[80px]">
       <CardBody className="gap-2">
