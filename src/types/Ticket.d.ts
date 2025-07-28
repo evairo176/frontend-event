@@ -21,3 +21,9 @@ export interface ITicketUpdate {
   description?: string;
   eventId?: string;
 }
+
+export interface ICart {
+  events: string;
+  ticket: string;
+  quantity: number;
+}
