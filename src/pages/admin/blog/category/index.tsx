@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import Dashboard from "@/components/views/Admin/Dashbord";
+
 import React from "react";
 
 type Props = {};
@@ -11,7 +11,7 @@ const AdminBlogCategoryPage = (props: Props) => {
       title="Blog Category"
       description="Blog Category admin"
     >
-      <Dashboard />
+      ABDW
     </DashboardLayout>
   );
 };
