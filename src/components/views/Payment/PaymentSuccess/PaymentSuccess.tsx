@@ -6,7 +6,7 @@ import React from "react";
 type Props = {};
 
 const PaymentSuccess = (props: Props) => {
-  const router = useRouter();
+  const { push, query } = useRouter();
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-10 p-4">
       <div className="flex flex-col items-center justify-center gap-10">
@@ -26,15 +26,15 @@ const PaymentSuccess = (props: Props) => {
       <div className="flex flex-col items-center text-center">
         <h1 className="text-3xl font-bold text-danger-500">Payment success</h1>
         <p className="text-xl font-bold text-gray-400">
-          You can repeat order or back to home
+          Check detail your order
         </p>
         <Button
-          onPress={() => router.replace("/")}
+          onPress={() => push(`/member/transaction/${query.order_id}`)}
           className="mt-4 w-fit"
           variant="bordered"
           color="danger"
         >
-          Back to home
+          Detail
         </Button>
       </div>
     </div>

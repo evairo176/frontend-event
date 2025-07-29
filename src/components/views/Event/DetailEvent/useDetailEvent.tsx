@@ -13,11 +13,6 @@ const useDetailEvent = () => {
     return data?.data;
   };
 
-  // const getTicketByEventId = async (eventId: string) => {
-  //   const { data } = await ticketServices.getTicketsByEvent(eventId);
-  //   return data?.data;
-  // };
-
   const { data: dataDetailEvent, isLoading: isLoadingDetailEvent } = useQuery({
     queryKey: ["detailEventBySlug", router.query?.slug as string],
     queryFn: () => getEventBySlug(router.query?.slug as string),
@@ -84,12 +79,6 @@ const useDetailEvent = () => {
       }),
     );
   };
-
-  //   const { data: dataTicket, isLoading: isLoadingTicket } = useQuery({
-  //     queryKey: ["ticketByEventId", router.query?.eventId as string],
-  //     queryFn: () => getTicketByEventId(router.query?.eventId as string),
-  //     enabled: router.isReady,
-  //   });
 
   return {
     dataDetailEvent,

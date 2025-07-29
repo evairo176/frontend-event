@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const useMemberTransaction = () => {
+const useTransaction = () => {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState<string>("");
   const { currentLimit, currentPage, currentSearch } = useChangeUrl();
@@ -43,4 +43,4 @@ const useMemberTransaction = () => {
   };
 };
 
-export default useMemberTransaction;
+export default useTransaction;

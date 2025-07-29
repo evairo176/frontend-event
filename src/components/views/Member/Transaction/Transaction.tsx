@@ -1,19 +1,19 @@
 import DataTable from "@/components/ui/DataTable";
 
 import React, { Key, ReactNode, useCallback } from "react";
-import { COLUMN_LIST_TRANSACTION } from "./MemberTransaction.constants";
+import { COLUMN_LIST_TRANSACTION } from "./Transaction.constants";
 
 import { useRouter } from "next/router";
 
 import { convertUTCToLocal } from "@/utils/date";
-import useMemberTransaction from "./useMemberTransaction";
+import useTransaction from "./useTransaction";
 import { convertIDR } from "@/utils/currency";
 import { Chip } from "@heroui/react";
 import ButtonAction from "@/components/commons/ButtonAction";
 
 type Props = {};
 
-const MemberTransaction = (props: Props) => {
+const Transaction = (props: Props) => {
   const { push, query } = useRouter();
 
   const {
@@ -23,11 +23,11 @@ const MemberTransaction = (props: Props) => {
     refetchTransaction,
     selectedId,
     setSelectedId,
-  } = useMemberTransaction();
+  } = useTransaction();
 
   const renderCell = useCallback(
-    (category: Record<string, unknown>, columnKey: Key) => {
-      const cellValue = category[columnKey as keyof typeof category];
+    (transaction: Record<string, unknown>, columnKey: Key) => {
+      const cellValue = transaction[columnKey as keyof typeof transaction];
 
       switch (columnKey) {
         case "orderId":
@@ -61,7 +61,13 @@ const MemberTransaction = (props: Props) => {
         case "updatedAt":
           return `${convertUTCToLocal(cellValue as string)}`;
         case "actions":
-          return <ButtonAction onPressButtonDelete={() => {}} />;
+          return (
+            <ButtonAction
+              onPressButtonDetail={() =>
+                push(`/member/transaction/${transaction.orderId}`)
+              }
+            />
+          );
 
         default:
           return cellValue as ReactNode;
@@ -89,4 +95,4 @@ const MemberTransaction = (props: Props) => {
   );
 };
 
-export default MemberTransaction;
+export default Transaction;

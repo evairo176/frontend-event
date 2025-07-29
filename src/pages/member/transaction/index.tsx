@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
-import MemberTransaction from "@/components/views/Member/MemberTransaction";
+import Transaction from "@/components/views/Member/Transaction";
 
 import React from "react";
 
@@ -12,7 +12,7 @@ const MemberTransactionPage = (props: Props) => {
       title="Transaction"
       description="Transaction member"
     >
-      <MemberTransaction />
+      <Transaction />
     </DashboardLayout>
   );
 };
