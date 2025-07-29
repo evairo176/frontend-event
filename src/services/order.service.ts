@@ -8,6 +8,8 @@ const orderServices = {
     instance.get(`${endpoint.ORDER}?${params}`),
   getTransactionByOrderId: async (orderId: string) =>
     instance.get(`${endpoint.ORDER}/${orderId}`),
+  getDashboardTransactionChart: async () =>
+    instance.get(`${endpoint.ORDER}-dashboard/chart`),
 };
 
 export default orderServices;

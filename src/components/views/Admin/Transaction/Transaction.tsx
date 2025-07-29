@@ -26,8 +26,8 @@ const Transaction = (props: Props) => {
   } = useTransaction();
 
   const renderCell = useCallback(
-    (category: Record<string, unknown>, columnKey: Key) => {
-      const cellValue = category[columnKey as keyof typeof category];
+    (transaction: Record<string, unknown>, columnKey: Key) => {
+      const cellValue = transaction[columnKey as keyof typeof transaction];
 
       switch (columnKey) {
         case "orderId":
@@ -61,7 +61,14 @@ const Transaction = (props: Props) => {
         case "updatedAt":
           return `${convertUTCToLocal(cellValue as string)}`;
         case "actions":
-          return <ButtonAction onPressButtonDelete={() => {}} />;
+          return (
+            <ButtonAction
+              onPressButtonDelete={() => {}}
+              onPressButtonDetail={() =>
+                push(`/admin/transaction/${transaction?.orderId}`)
+              }
+            />
+          );
 
         default:
           return cellValue as ReactNode;

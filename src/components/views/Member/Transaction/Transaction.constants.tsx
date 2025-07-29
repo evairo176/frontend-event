@@ -10,6 +10,11 @@ const COLUMN_LIST_TRANSACTION = [
     sort: true,
   },
   {
+    name: "PAYMENT",
+    uid: "paymentType",
+    sort: true,
+  },
+  {
     name: "STATUS",
     uid: "status",
     sort: true,

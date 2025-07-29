@@ -7,6 +7,10 @@ const nextConfig = {
         hostname: "res.cloudinary.com",
         protocol: "https",
       },
+      {
+        hostname: "api.qrserver.com",
+        protocol: "https",
+      },
     ],
   },
 };

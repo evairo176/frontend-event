@@ -415,17 +415,6 @@ const DetailTransaction = (props: Props) => {
                         ? formatDateTime(dataTransaction?.paymentDate)
                         : // ? formatDateTime(dataTransaction?.updatedAt)
                           "Menunggu pembayaran"}
-                      {dataTransaction?.payment?.redirect_url &&
-                        dataTransaction?.status === "PENDING" && (
-                          <Link
-                            href={
-                              dataTransaction?.payment?.redirect_url as string
-                            }
-                            className="ml-2 font-semibold text-blue-500"
-                          >
-                            Bayar Sekarang
-                          </Link>
-                        )}
                     </p>
                   </div>
                 </div>
