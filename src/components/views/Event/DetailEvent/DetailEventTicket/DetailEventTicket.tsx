@@ -60,7 +60,7 @@ const DetailEventTicket = ({ tickets, handleAddToCart, carts }: Props) => {
                       className="font-bold text-warning-500 disabled:opacity-20"
                       onPress={() => handleAddToCart(`${row.id}`)}
                       disabled={carts
-                        ?.map((cart: ICart) => cart?.ticket)
+                        ?.map((cart: ICart) => cart?.ticketId)
                         ?.includes(`${row.id}`)}
                     >
                       Add to cart{" "}
