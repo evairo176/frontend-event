@@ -6,8 +6,7 @@ import useDashboard from "./useDashboard";
 type Props = {};
 
 const Dashboard = (props: Props) => {
-  const { dataTransaction, isLoadingTransaction, refetchTransaction } =
-    useDashboard();
+  const { dataTransaction, isLoadingTransaction } = useDashboard();
   return (
     <div className="min-h-screen">
       <DailyChart
@@ -23,7 +22,6 @@ const Dashboard = (props: Props) => {
         previousMonthlyData={dataTransaction?.data?.prevMonthly || []}
         previousYearlyData={dataTransaction?.data?.prevYearly || []}
         isLoading={isLoadingTransaction}
-        refreshChart={refetchTransaction}
       />
     </div>
   );

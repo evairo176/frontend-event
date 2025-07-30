@@ -14,6 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { JSX, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@heroui/use-is-mobile";
+import useProfile from "@/components/views/Member/Profile/useProfile";
 
 interface SidebarSubItem {
   key: string;
@@ -37,7 +38,7 @@ type Props = {
 };
 
 const DashboardLayoutSidebar = (props: Props) => {
-  const session = useSession();
+  const { dataProfile } = useProfile();
   const router = useRouter();
   const pathname = usePathname();
   const { sidebarItems, isOpen } = props;
@@ -166,19 +167,27 @@ const DashboardLayoutSidebar = (props: Props) => {
       >
         <div className="flex items-center gap-3">
           <Avatar
-            name={session?.data?.user?.name as string}
+            name={dataProfile?.profilePicture as string}
+            src={
+              ["user.jpg", "nana.jpg"].includes(
+                dataProfile?.profilePicture as string,
+              )
+                ? "/images/user/user.png"
+                : (dataProfile?.profilePicture as string)
+            }
             size="md"
-            alt={session?.data?.user?.name as string}
-            className="ring-2 ring-blue-200"
+            alt={dataProfile?.profilePicture as string}
+            className="cursor-pointer ring-2 ring-blue-200"
             showFallback
+            onClick={() => router.push("/member/profile")}
           />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-gray-800">
-              {session?.data?.user?.name}
+              {dataProfile?.fullname}
             </p>
             <p className="truncate text-xs text-gray-500">
               {" "}
-              {session?.data?.user?.email}
+              {dataProfile?.email}
             </p>
           </div>
           <div className="h-2 w-2 animate-bounce rounded-full bg-green-400"></div>

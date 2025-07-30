@@ -14,11 +14,7 @@ const useDashboard = () => {
     return data;
   };
 
-  const {
-    data: dataTransaction,
-    isLoading: isLoadingTransaction,
-    refetch: refetchTransaction,
-  } = useQuery({
+  const { data: dataTransaction, isLoading: isLoadingTransaction } = useQuery({
     queryKey: ["dashboard-chart"],
     queryFn: getTransaction,
     enabled: router.isReady,
@@ -27,7 +23,6 @@ const useDashboard = () => {
   return {
     dataTransaction,
     isLoadingTransaction,
-    refetchTransaction,
   };
 };
 

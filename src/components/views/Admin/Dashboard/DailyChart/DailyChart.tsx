@@ -10,6 +10,7 @@ import {
   DatePicker,
   Chip,
   Skeleton,
+  addToast,
 } from "@heroui/react";
 import {
   BarChart,
@@ -36,6 +37,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { convertIDR } from "@/utils/currency";
+import { useRouter } from "next/router";
 
 type ChartData = {
   date: string;
@@ -57,7 +59,6 @@ type Props = {
   previousMonthlyData?: ChartData[];
   previousYearlyData?: ChartData[];
   isLoading?: boolean;
-  refreshChart?: () => void;
 };
 
 type FilterPeriod =
@@ -83,12 +84,12 @@ const DailyChart = ({
   previousMonthlyData = [],
   previousYearlyData = [],
   isLoading = false,
-  refreshChart,
 }: Props) => {
   const [selectedPeriod, setSelectedPeriod] = useState<FilterPeriod>("monthly");
   const [chartType, setChartType] = useState<ChartType>("bar");
   const [chartMode, setChartMode] = useState<ChartMode>("current");
   const [mount, setMount] = useState(false);
+  const { reload } = useRouter();
 
   useEffect(() => {
     setMount(true);
@@ -802,7 +803,15 @@ const DailyChart = ({
                   size="sm"
                   variant="bordered"
                   startContent={<RefreshCw className="h-3 w-3" />}
-                  onPress={refreshChart}
+                  onPress={() => {
+                    reload();
+                    addToast({
+                      title: "Success",
+                      description: "Successfully refreshed chart data",
+                      color: "success",
+                      variant: "flat",
+                    });
+                  }}
                   disabled={isLoading}
                 >
                   Refresh

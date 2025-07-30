@@ -41,6 +41,42 @@ const registerSchema = yup.object().shape({
     )
     .max(50),
 });
+
+const registerCompanySchema = yup.object().shape({
+  isCompany: yup.boolean().required(),
+  fullname: yup.string().required("Fullname is required").max(100),
+  username: yup.string().required("Username is required").max(50),
+  companyName: yup
+    .string()
+    .required("Fullname is required")
+    .max(100)
+    .optional(),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .max(50)
+    .matches(
+      capitalLetterRegex,
+      "Password harus mengandung minimal 1 huruf kapital",
+    ),
+  confirmPassword: yup
+    .string()
+    .required("Password confirmation is required")
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .test(
+      "has-capital",
+      "Password harus mengandung minimal 1 huruf kapital",
+      function (value) {
+        return capitalLetterRegex.test(value || "");
+      },
+    )
+    .max(50),
+});
 const useRegister = () => {
   const router = useRouter();
   const [visiblePassword, setVisiblePassword] = useState({

@@ -40,7 +40,7 @@ const DashboardLayout = ({
         />
         <div className="h-screen w-full overflow-y-auto px-2 pt-2 lg:px-8">
           <Navbar
-            className="mb-2 flex justify-between bg-transparent px-0 pt-2 lg:pt-0"
+            className="mb-2 flex justify-between bg-transparent px-3 pt-2 lg:pt-0"
             isBlurred={false}
             position="static"
             classNames={{ wrapper: "p-0" }}

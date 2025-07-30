@@ -354,14 +354,16 @@ const Navbar = () => {
                   ))}
                   <div className="mt-4 border-t border-gray-200 pt-4">
                     <div className="flex flex-col gap-3">
-                      <Button
-                        color="primary"
-                        variant="flat"
-                        className="justify-start"
-                        startContent={<User className="h-4 w-4" />}
-                      >
-                        Masuk
-                      </Button>
+                      {session?.status !== "authenticated" && (
+                        <Button
+                          color="primary"
+                          variant="flat"
+                          className="justify-start"
+                          startContent={<User className="h-4 w-4" />}
+                        >
+                          Masuk
+                        </Button>
+                      )}
                       <Button
                         color="primary"
                         className="justify-start bg-gradient-to-r from-blue-600 to-purple-600"

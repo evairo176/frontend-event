@@ -38,6 +38,17 @@ interface IJWTExtended extends JWT {
   user?: IUserExtended;
 }
 
+interface IUpdateProfile {
+  fullname?: string;
+  profilePicture?: string | FileList;
+}
+
+interface IUpdatePassword {
+  oldPassword?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
 export type {
   ILogin,
   IRegister,
@@ -46,4 +57,6 @@ export type {
   ISessionExtended,
   IJWTExtended,
   IRefreshToken,
+  IUpdateProfile,
+  IUpdatePassword,
 };
