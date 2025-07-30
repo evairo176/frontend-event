@@ -14,6 +14,8 @@ import Image from "next/image";
 import DetailEventTicket from "./DetailEventTicket";
 import { IEvent } from "@/types/Event";
 import DetailEventCart from "./DetailEventCart";
+import Script from "next/script";
+import environment from "@/config/environment";
 
 type Props = {
   serverEventData?: IEvent | null;
@@ -28,14 +30,23 @@ const DetailEvent = ({ serverEventData }: Props) => {
     getTicketDataInCart,
     handleAddToCart,
     handleChangeQuantity,
+
+    mutateCreateOrder,
+    isPendingMutateCreateOrder,
   } = useDetailEvent();
 
   // Use server data if available, otherwise use client-side data
   const eventData = serverEventData || dataDetailEvent;
   const isLoading = !serverEventData && isLoadingDetailEvent;
+  console.log(environment.MIDTRANS_SNAP_URL);
   return (
     <>
       <div className="mt-20 min-h-screen px-6">
+        <Script
+          src={environment.MIDTRANS_SNAP_URL}
+          data-client-key={environment.MIDTRANS_CLIENT_KEY}
+          strategy="lazyOnload"
+        />
         {isLoading && (
           <div className="animate-pulse">
             {/* Breadcrumb Skeleton */}
@@ -233,6 +244,8 @@ const DetailEvent = ({ serverEventData }: Props) => {
                   carts={carts}
                   getTicketDataInCart={getTicketDataInCart}
                   handleChangeQuantity={handleChangeQuantity}
+                  onCreateOrder={mutateCreateOrder}
+                  isLoadingCreateOrder={isPendingMutateCreateOrder}
                 />
               </div>
             </section>

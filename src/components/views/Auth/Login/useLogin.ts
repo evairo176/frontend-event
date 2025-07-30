@@ -23,7 +23,7 @@ const useLogin = () => {
   // Next.js App Router (app directory) does not provide `query` on `useRouter`.
   // To get query params, use `useSearchParams` from 'next/navigation'.
   const searchParams = useSearchParams();
-  const callbackUrl: string = searchParams.get("callBackUrl") || "/";
+  const callbackUrl: string = searchParams.get("callbackUrl") || "/";
 
   const {
     control,
@@ -66,7 +66,7 @@ const useLogin = () => {
       //   message: error?.message,
       // });
     },
-    onSuccess: async () => {
+    onSuccess: async (response) => {
       const session = (await getSession()) as ISessionExtended | null;
       // const message = response?.message;
       const role = session?.user?.role;
@@ -79,12 +79,13 @@ const useLogin = () => {
           variant: "flat",
         });
 
-        if (role === "admin") {
-          router.push("/admin");
-        }
-        if (role === "member") {
-          router.push("/member");
-        }
+        router.push(callbackUrl);
+        // if (role === "admin") {
+        //   router.push("/admin");
+        // }
+        // if (role === "member") {
+        //   router.push("/member");
+        // }
       }
 
       reset();

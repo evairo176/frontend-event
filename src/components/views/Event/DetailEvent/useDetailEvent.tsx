@@ -1,10 +1,13 @@
 import eventServices from "@/services/event.service";
 import ticketServices from "@/services/ticket.service";
 import { ICart, ITicket } from "@/types/Ticket";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { DEFAULT_CART } from "./DetailEvent.constants";
+import orderServices from "@/services/order.service";
+import { errorCallback, successCallback } from "@/utils/tanstack-callback";
+import { addToast } from "@heroui/react";
 
 const useDetailEvent = () => {
   const router = useRouter();
@@ -28,7 +31,7 @@ const useDetailEvent = () => {
   };
 
   const handleAddToCart = (ticket: string) => {
-    const existingIndex = carts.findIndex((cart) => cart.ticket === ticket);
+    const existingIndex = carts.findIndex((cart) => cart.ticketId === ticket);
 
     if (existingIndex !== -1) {
       // Jika ticket sudah ada, tambahkan quantity
@@ -44,8 +47,8 @@ const useDetailEvent = () => {
       setCarts((prev) => [
         ...prev,
         {
-          events: dataDetailEvent?.id,
-          ticket,
+          eventId: dataDetailEvent?.id,
+          ticketId: ticket,
           quantity: 1,
         },
       ]);
@@ -58,7 +61,7 @@ const useDetailEvent = () => {
   ) => {
     setCarts((prev) =>
       prev.flatMap((cart) => {
-        if (cart.ticket !== ticketId) return [cart];
+        if (cart.ticketId !== ticketId) return [cart];
 
         const ticketData = dataDetailEvent?.tickets.find(
           (ticket: ITicket) => ticket.id === ticketId,
@@ -80,6 +83,34 @@ const useDetailEvent = () => {
     );
   };
 
+  const createOrder = async () => {
+    const { data } = await orderServices.createOrder(carts);
+
+    return data?.data;
+  };
+  const {
+    mutate: mutateCreateOrder,
+    isPending: isPendingMutateCreateOrder,
+    // isSuccess: isSuccessMutateCreateOrder,
+  } = useMutation({
+    mutationFn: createOrder,
+    onSuccess: (response) => {
+      const transactionToken = response?.payment?.token;
+
+      (window as any).snap.pay(transactionToken);
+    },
+    onError: (error: any) => {
+      const { message } = errorCallback(error);
+
+      addToast({
+        title: "Failed",
+        description: message,
+        color: "danger",
+        variant: "flat",
+      });
+    },
+  });
+
   return {
     dataDetailEvent,
     isLoadingDetailEvent,
@@ -91,6 +122,9 @@ const useDetailEvent = () => {
     getTicketDataInCart,
     handleAddToCart,
     handleChangeQuantity,
+
+    mutateCreateOrder,
+    isPendingMutateCreateOrder,
   };
 };
 
