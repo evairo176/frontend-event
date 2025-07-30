@@ -1,7 +1,7 @@
 import { ICart } from "@/types/Ticket";
 
 export const DEFAULT_CART: ICart = {
-  events: "",
-  ticket: "",
+  eventId: "",
+  ticketId: "",
   quantity: 0,
 };
