@@ -1,5 +1,12 @@
 "use client";
-import { Button, Card, CardBody, Input, Spinner } from "@heroui/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Input,
+  InputOtp,
+  Spinner,
+} from "@heroui/react";
 import { Eye, EyeClosed, Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,10 +22,13 @@ const Login = (props: Props) => {
     isVisible,
     toggleVisibility,
     handleSubmit,
-    handleLogin,
+    // handleLogin,
     control,
     errors,
     isPendingLogin,
+    handleLoginService,
+    mfaRequired,
+    isSubmitting,
   } = useLogin();
 
   return (
@@ -57,7 +67,7 @@ const Login = (props: Props) => {
               "flex w-80 flex-col",
               Object.keys(errors).length > 0 ? "gap-2" : "gap-4",
             )}
-            onSubmit={handleSubmit(handleLogin)}
+            onSubmit={handleSubmit(handleLoginService)}
           >
             <Controller
               name="identifier"
@@ -107,14 +117,45 @@ const Login = (props: Props) => {
                 );
               }}
             />
+            {mfaRequired && (
+              <>
+                <Controller
+                  control={control}
+                  name="code"
+                  render={({ field }) => (
+                    <div>
+                      <p className="mb-2 p-0 text-xs text-gray-600">
+                        Masukan code OTP authenticator
+                      </p>
+                      <InputOtp
+                        {...field}
+                        errorMessage={errors.code && errors.code.message}
+                        isInvalid={!!errors.code}
+                        length={6}
+                      />
+                    </div>
+                  )}
+                  rules={{
+                    required: "OTP is required",
+                    minLength: {
+                      value: 6,
+                      message: "Please enter a valid OTP",
+                    },
+                  }}
+                />
+              </>
+            )}
+            <Link href={"/auth/forgot-password"}>
+              <p className="text-sm">Forgot password?</p>
+            </Link>
 
             <Button
-              disabled={isPendingLogin}
+              disabled={isSubmitting}
               color="danger"
               size="lg"
               type="submit"
             >
-              {isPendingLogin && <Spinner color="white" size="sm" />}
+              {isSubmitting && <Spinner color="white" size="sm" />}
               Login
             </Button>
           </form>

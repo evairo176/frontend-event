@@ -13,7 +13,7 @@ const ConfirmAccount = (props: Props) => {
   const { status } = props;
 
   return (
-    <div className="flex w-screen flex-col items-center justify-center gap-10 p-4">
+    <div className="flex flex-col items-center justify-center gap-10 p-4">
       <div className="flex flex-col items-center justify-center gap-10">
         <Image
           alt="logo"
@@ -36,11 +36,9 @@ const ConfirmAccount = (props: Props) => {
         {status === "success" ? (
           <>
             <h1 className="text-3xl font-bold text-danger-500">
-              Create account success
+              Verification email success
             </h1>
-            <p className="text-xl font-bold text-gray-400">
-              Check your email to verify your account
-            </p>
+            <p className="text-xl font-bold text-gray-400">Lets order event</p>
           </>
         ) : (
           <>

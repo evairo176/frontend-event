@@ -25,13 +25,15 @@ export default NextAuth({
           type: "password",
           placeholder: "Password",
         },
+        code: { label: "2FA Code", type: "text", optional: true },
       },
       async authorize(
         credentials: Record<"identifier" | "password", string> | undefined,
       ): Promise<IUserExtended | null> {
-        const { identifier, password } = credentials as {
+        const { identifier, password, code } = credentials as {
           identifier: string;
           password: string;
+          code?: string;
         };
         if (!identifier || !password) {
           throw new Error("Identifier and password are required");
@@ -41,11 +43,19 @@ export default NextAuth({
           const response = await authServices.login({
             identifier,
             password,
+            code,
           });
+
+          const mfaRequired = response?.data?.mfaRequired;
+
+          if (mfaRequired && !code) {
+            throw new Error("mfaRequired");
+          }
 
           if (response?.data) {
             const accessToken = response?.data?.accessToken;
             const refreshToken = response?.data?.refreshToken;
+            const mfaRequired = response?.data?.mfaRequired;
             const user = response?.data?.user;
 
             const expiresInMinutes = parseInt(
@@ -56,16 +66,23 @@ export default NextAuth({
               ...user,
               accessToken,
               refreshToken,
+              mfaRequired,
               accessTokenExpires: Date.now() + expiresInMinutes + 60 * 1000, // 🔒 expire in 15 minute
             };
           }
           throw new Error("Invalid login credentials");
         } catch (error: any) {
-          console.error("Login Error:", error.response?.data || error.message);
+          const errorBackend = error.response?.data?.message;
+          const errorFrontend = error.message;
+          console.log({ errorBackend, errorFrontend, error });
+          let messageError = errorBackend;
 
-          throw new Error(
-            error.response?.data?.message || "Authentication failed",
-          );
+          if (errorBackend === undefined) {
+            messageError = errorFrontend;
+          }
+
+          console.log({ messageError });
+          throw new Error(messageError);
         }
       },
     }),
@@ -79,6 +96,7 @@ export default NextAuth({
         token.accessTokenExpires = user?.accessTokenExpires;
         token.role = user.role;
         token.name = user.fullname;
+        token.mfaRequired = user.mfaRequired;
       }
       // console.log({
       //   callback: {
@@ -150,6 +168,7 @@ export default NextAuth({
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.role = token.role;
+      session.user.mfaRequired = token.mfaRequired;
       return session;
     },
   },

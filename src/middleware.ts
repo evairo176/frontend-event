@@ -10,7 +10,11 @@ export async function middleware(request: NextRequest) {
   });
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/auth/login" || pathname === "/auth/register") {
+  if (
+    pathname === "/auth/login" ||
+    pathname === "/auth/register" ||
+    pathname === "/auth/forgot-password"
+  ) {
     if (token) {
       return NextResponse.redirect(new URL("/", request.url));
     }

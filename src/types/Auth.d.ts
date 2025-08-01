@@ -4,6 +4,7 @@ import { JWT } from "next-auth/jwt";
 interface ILogin {
   identifier: string;
   password: string;
+  code?: string;
 }
 interface IRefreshToken {
   "refresh-token": string;
@@ -19,6 +20,21 @@ interface IRegister {
 interface IVerificationEmail {
   code: string;
 }
+interface IVerifyMfaLogin {
+  code: string;
+  email: string;
+}
+
+interface IVerificationOTP {
+  code: string;
+  secretKey: string;
+}
+
+interface IResetPassword {
+  verificationCode: string;
+  password: string;
+  confirmPassword: string;
+}
 
 interface IUserExtended extends User {
   accessToken?: string;
@@ -31,6 +47,7 @@ interface ISessionExtended extends Session {
     accessToken?: string;
     refreshToken?: string;
     role?: string;
+    mfaRequired?: boolean;
   };
 }
 
@@ -59,4 +76,7 @@ export type {
   IRefreshToken,
   IUpdateProfile,
   IUpdatePassword,
+  IResetPassword,
+  IVerificationOTP,
+  IVerifyMfaLogin,
 };

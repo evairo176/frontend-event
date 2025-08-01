@@ -6,6 +6,8 @@ import {
   ILogin,
   IUpdateProfile,
   IUpdatePassword,
+  IResetPassword,
+  IVerificationOTP,
 } from "@/types/Auth";
 
 const authServices = {
@@ -29,6 +31,10 @@ const authServices = {
     instance.put(`${endpoint.AUTH}/me/update`, payload),
   updatePassword: async (payload: IUpdatePassword) =>
     instance.put(`${endpoint.AUTH}/password/update`, payload),
+  forgotPassword: async (payload: { email: string }) =>
+    instance.post(`${endpoint.AUTH}/password/forgot`, payload),
+  resetPassword: async (payload: IResetPassword) =>
+    instance.post(`${endpoint.AUTH}/password/reset`, payload),
 };
 
 export default authServices;

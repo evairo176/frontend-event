@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Newspaper,
   Settings,
+  ShieldCheck,
   ShoppingBag,
   Tv,
 } from "lucide-react";
@@ -65,6 +66,12 @@ const SIDEBAR_ADMIN = [
     href: "/admin/setting",
     icon: <Settings />,
     subItems: [
+      {
+        key: "mfa",
+        label: "MFA",
+        href: "/admin/mfa",
+        icon: <ShieldCheck className="h-4 w-4" />,
+      },
       {
         key: "all-events",
         label: "All Events",
