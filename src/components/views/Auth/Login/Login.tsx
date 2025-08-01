@@ -25,7 +25,6 @@ const Login = (props: Props) => {
     // handleLogin,
     control,
     errors,
-    isPendingLogin,
     handleLoginService,
     mfaRequired,
     isSubmitting,
