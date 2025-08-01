@@ -1,8 +1,7 @@
 import { ILogin, ISessionExtended } from "@/types/Auth";
 import { addToast } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "@tanstack/react-query";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,8 +31,6 @@ const useLogin = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    setError,
-    watch,
   } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues: {
@@ -42,20 +39,6 @@ const useLogin = () => {
       code: "",
     },
   });
-
-  const loginService = async (body: ILogin) => {
-    const result = await signIn("credentials", {
-      ...body,
-      redirect: false,
-      callbackUrl,
-    });
-    console.log({ dfef: result });
-    if (result?.error && result.status === 401) {
-      throw new Error("Email or username not match with your password");
-    }
-
-    return result;
-  };
 
   const handleLoginService = async (body: ILogin) => {
     const res = await signIn("credentials", {
@@ -85,36 +68,12 @@ const useLogin = () => {
     }
   };
 
-  const { mutate: mutateLogin, isPending: isPendingLogin } = useMutation({
-    mutationFn: loginService,
-    onError: (error: any) => {
-      console.log(error);
-      addToast({
-        title: "Failed",
-        description: error?.message,
-        color: "danger",
-        variant: "flat",
-      });
-
-      // setError("root", {
-      //   message: error?.message,
-      // });
-    },
-    onSuccess: async (response: any) => {},
-  });
-
-  // const handleLogin = (data: ILogin) => {
-  //   // console.log("login form data:", data);
-  //   mutateLogin(data);
-  // };
-
   return {
     isVisible,
     toggleVisibility,
     control,
     handleSubmit,
     // handleLogin,
-    isPendingLogin,
     errors,
     mfaRequired,
     handleLoginService,
