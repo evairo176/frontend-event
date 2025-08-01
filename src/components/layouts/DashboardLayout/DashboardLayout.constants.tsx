@@ -2,13 +2,16 @@ import {
   BanknoteArrowDown,
   Blocks,
   Calendar,
+  Columns3Cog,
   Grid,
   LayoutDashboard,
   Newspaper,
   Settings,
   ShieldCheck,
+  ShieldUser,
   ShoppingBag,
   Tv,
+  UserLock,
 } from "lucide-react";
 
 const SIDEBAR_ADMIN = [
@@ -61,6 +64,26 @@ const SIDEBAR_ADMIN = [
     ],
   },
   {
+    key: "session",
+    label: "Session",
+    href: "/admin/session",
+    icon: <Columns3Cog />,
+    subItems: [
+      {
+        key: "me-session",
+        label: "Me",
+        href: "/admin/session/me",
+        icon: <UserLock className="h-4 w-4" />,
+      },
+      {
+        key: "all-user-session",
+        label: "all user",
+        href: "/admin/session/all-user",
+        icon: <ShieldUser className="h-4 w-4" />,
+      },
+    ],
+  },
+  {
     key: "setting",
     label: "Setting",
     href: "/admin/setting",
@@ -69,19 +92,8 @@ const SIDEBAR_ADMIN = [
       {
         key: "mfa",
         label: "MFA",
-        href: "/admin/mfa",
+        href: "/admin/setting/mfa",
         icon: <ShieldCheck className="h-4 w-4" />,
-      },
-      {
-        key: "all-events",
-        label: "All Events",
-        href: "/admin/events",
-        icon: <Calendar className="h-4 w-4" />,
-      },
-      {
-        key: "create-event",
-        label: "Create Event",
-        href: "/admin/events/create",
       },
     ],
   },
@@ -105,6 +117,14 @@ const SIDEBAR_MEMBER = [
     label: "Setting",
     href: "/member/setting",
     icon: <Settings />,
+    subItems: [
+      {
+        key: "mfa",
+        label: "MFA",
+        href: "/member/setting/mfa",
+        icon: <ShieldCheck className="h-4 w-4" />,
+      },
+    ],
   },
 ];
 

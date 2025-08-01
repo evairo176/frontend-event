@@ -8,6 +8,7 @@ const endpoint = {
   BANNER: "/banner",
   ORDER: "/orders",
   MFA: "/mfa",
+  SESSION: "/session",
 };
 
 export default endpoint;

@@ -103,6 +103,7 @@ const useProfile = () => {
 
   return {
     dataProfile,
+    refetchProfile,
 
     handleUpdateInfoProfile,
     isPendingMutateUpdateProfile,

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import useMfa from "./useMfa";
-import useProfile from "../Profile/useProfile";
+import useProfile from "../../Profile/useProfile";
 import { Button, useDisclosure } from "@heroui/react";
 
 import EnableMfaModal from "./EnableMfaModal";
