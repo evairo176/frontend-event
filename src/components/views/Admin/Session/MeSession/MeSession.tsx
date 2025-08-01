@@ -8,16 +8,21 @@ import Image from "next/image";
 import ButtonAction from "@/components/commons/ButtonAction";
 import { convertUTCToLocal } from "@/utils/date";
 import { parseUserAgent } from "@/utils/parse-useragent";
+import DeleteMeSessionModal from "./DeleteMeSession";
 
 type Props = {};
 
 const MeSession = (props: Props) => {
   const { push, query } = useRouter();
 
-  const { dataSession, refetchSession, isLoadingSession, isRefetchingSession } =
-    useMeSession();
-
-  console.log(dataSession);
+  const {
+    dataSession,
+    refetchSession,
+    isLoadingSession,
+    isRefetchingSession,
+    selectedId,
+    setSelectedId,
+  } = useMeSession();
 
   const renderCell = useCallback(
     (MeSession: any, columnKey: Key) => {
@@ -59,6 +64,10 @@ const MeSession = (props: Props) => {
           return (
             <ButtonAction
               onPressButtonDetail={() => push(`/admin/session/${MeSession.id}`)}
+              onPressButtonDelete={() => {
+                setSelectedId(`${MeSession.id}`);
+                deleteMeSessionModal.onOpen();
+              }}
             />
           );
 
@@ -68,7 +77,7 @@ const MeSession = (props: Props) => {
     },
     [push],
   );
-  const addMeSessionModal = useDisclosure();
+
   const deleteMeSessionModal = useDisclosure();
   return (
     <section>
@@ -84,16 +93,13 @@ const MeSession = (props: Props) => {
           refetch={refetchSession}
         />
       )}
-      {/* <AddMeSessionModal
-        refetchMeSession={refetchMeSession}
-        {...addMeSessionModal}
-      />
+
       <DeleteMeSessionModal
         selectedId={selectedId}
         setSelectedId={setSelectedId}
-        refetchMeSession={refetchMeSession}
+        refetchSession={refetchSession}
         {...deleteMeSessionModal}
-      /> */}
+      />
     </section>
   );
 };

@@ -2,9 +2,11 @@ import useChangeUrl from "@/hooks/useChangeUrl";
 import sessionServices from "@/services/session.service";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const useMeSession = () => {
   const { isReady } = useRouter();
+  const [selectedId, setSelectedId] = useState<string>("");
   const { currentLimit, currentPage, currentSearch } = useChangeUrl();
   const getSession = async () => {
     let params = `limit=${currentLimit}&page=${currentPage}`;
@@ -27,7 +29,14 @@ const useMeSession = () => {
     queryFn: getSession,
     enabled: isReady && !!currentLimit && !!currentPage,
   });
-  return { dataSession, refetchSession, isLoadingSession, isRefetchingSession };
+  return {
+    dataSession,
+    refetchSession,
+    isLoadingSession,
+    isRefetchingSession,
+    selectedId,
+    setSelectedId,
+  };
 };
 
 export default useMeSession;
