@@ -12,6 +12,7 @@ import {
   ShoppingBag,
   Tv,
   UserLock,
+  Users2,
 } from "lucide-react";
 
 const SIDEBAR_ADMIN = [
@@ -44,6 +45,12 @@ const SIDEBAR_ADMIN = [
     label: "Transaction",
     href: "/admin/transaction",
     icon: <BanknoteArrowDown />,
+  },
+  {
+    key: "user",
+    label: "User",
+    href: "/admin/user",
+    icon: <Users2 />,
   },
   {
     key: "blog",

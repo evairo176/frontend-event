@@ -549,14 +549,6 @@ const DetailTransaction = (props: Props) => {
 
                     <div className="text-right">
                       <Skeleton
-                        isLoaded={!!item.quantity}
-                        className="mb-1 h-4 rounded-md"
-                      >
-                        <p className="text-sm text-gray-600">
-                          Qty: {item.quantity}
-                        </p>
-                      </Skeleton>
-                      <Skeleton
                         isLoaded={!!item.price}
                         className="h-5 rounded-md"
                       >

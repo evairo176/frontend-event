@@ -9,6 +9,7 @@ const endpoint = {
   ORDER: "/orders",
   MFA: "/mfa",
   SESSION: "/session",
+  USER: "/user",
 };
 
 export default endpoint;
