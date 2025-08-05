@@ -364,6 +364,7 @@ const DailyChart = ({
     const commonProps = {
       data: processedData,
       margin: { top: 5, right: 30, left: 20, bottom: 5 },
+      padding: { right: 15, left: 15 },
     };
 
     if (chartMode === "comparison") {
