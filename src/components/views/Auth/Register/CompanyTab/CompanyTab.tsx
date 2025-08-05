@@ -11,23 +11,40 @@ const CompanyTab = (props: Props) => {
   const {
     visiblePassword,
     handleVisiblePassword,
-    handleSubmit,
-    handleRegister,
-    control,
-    errors,
-    isPendingRegister,
+    controlCompany,
+    handleSubmitCompany,
+    handleRegisterCompany,
+    isPendingRegisterCompany,
+    errorsCompany,
   } = useRegister();
   return (
     <form
       className={cn(
         "flex flex-col",
-        Object.keys(errors).length > 0 ? "gap-2" : "gap-4",
+        Object.keys(errorsCompany).length > 0 ? "gap-2" : "gap-4",
       )}
-      onSubmit={handleSubmit(handleRegister)}
+      onSubmit={handleSubmitCompany(handleRegisterCompany)}
     >
       <Controller
+        name="companyName"
+        control={controlCompany}
+        render={({ field }) => {
+          return (
+            <Input
+              {...field}
+              type="text"
+              label="Enter your name company"
+              variant="underlined"
+              autoComplete="off"
+              isInvalid={errorsCompany.fullname !== undefined}
+              errorMessage={errorsCompany.fullname?.message}
+            />
+          );
+        }}
+      />
+      <Controller
         name="fullname"
-        control={control}
+        control={controlCompany}
         render={({ field }) => {
           return (
             <Input
@@ -36,15 +53,15 @@ const CompanyTab = (props: Props) => {
               label="Fullname"
               variant="underlined"
               autoComplete="off"
-              isInvalid={errors.fullname !== undefined}
-              errorMessage={errors.fullname?.message}
+              isInvalid={errorsCompany.fullname !== undefined}
+              errorMessage={errorsCompany.fullname?.message}
             />
           );
         }}
       />
       <Controller
         name="username"
-        control={control}
+        control={controlCompany}
         render={({ field }) => {
           return (
             <Input
@@ -53,15 +70,15 @@ const CompanyTab = (props: Props) => {
               label="Username"
               variant="underlined"
               autoComplete="off"
-              isInvalid={errors.username !== undefined}
-              errorMessage={errors.username?.message}
+              isInvalid={errorsCompany.username !== undefined}
+              errorMessage={errorsCompany.username?.message}
             />
           );
         }}
       />
       <Controller
         name="email"
-        control={control}
+        control={controlCompany}
         render={({ field }) => {
           return (
             <Input
@@ -70,15 +87,15 @@ const CompanyTab = (props: Props) => {
               label="Email"
               variant="underlined"
               autoComplete="off"
-              isInvalid={errors.email !== undefined}
-              errorMessage={errors.email?.message}
+              isInvalid={errorsCompany.email !== undefined}
+              errorMessage={errorsCompany.email?.message}
             />
           );
         }}
       />
       <Controller
         name="password"
-        control={control}
+        control={controlCompany}
         render={({ field }) => {
           return (
             <Input
@@ -101,15 +118,15 @@ const CompanyTab = (props: Props) => {
               type={visiblePassword.password ? "text" : "password"}
               variant="underlined"
               autoComplete="off"
-              isInvalid={errors.password !== undefined}
-              errorMessage={errors.password?.message}
+              isInvalid={errorsCompany.password !== undefined}
+              errorMessage={errorsCompany.password?.message}
             />
           );
         }}
       />
       <Controller
         name="confirmPassword"
-        control={control}
+        control={controlCompany}
         render={({ field }) => {
           return (
             <Input
@@ -132,21 +149,21 @@ const CompanyTab = (props: Props) => {
               type={visiblePassword.confirmPassword ? "text" : "password"}
               variant="underlined"
               autoComplete="off"
-              isInvalid={errors.confirmPassword !== undefined}
-              errorMessage={errors.confirmPassword?.message}
+              isInvalid={errorsCompany.confirmPassword !== undefined}
+              errorMessage={errorsCompany.confirmPassword?.message}
             />
           );
         }}
       />
 
       <Button
-        disabled={isPendingRegister}
+        disabled={isPendingRegisterCompany}
         color="danger"
         size="lg"
         type="submit"
       >
-        {isPendingRegister && <Spinner color="white" size="sm" />}
-        Register
+        {isPendingRegisterCompany && <Spinner color="white" size="sm" />}
+        Register your company
       </Button>
     </form>
   );

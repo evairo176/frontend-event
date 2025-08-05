@@ -11,6 +11,7 @@ import {
   Chip,
   Skeleton,
   addToast,
+  Spinner,
 } from "@heroui/react";
 import {
   BarChart,
@@ -59,6 +60,8 @@ type Props = {
   previousMonthlyData?: ChartData[];
   previousYearlyData?: ChartData[];
   isLoading?: boolean;
+  isRefetch?: boolean;
+  refetch: () => void;
 };
 
 type FilterPeriod =
@@ -84,6 +87,8 @@ const DailyChart = ({
   previousMonthlyData = [],
   previousYearlyData = [],
   isLoading = false,
+  isRefetch = false,
+  refetch,
 }: Props) => {
   const [selectedPeriod, setSelectedPeriod] = useState<FilterPeriod>("monthly");
   const [chartType, setChartType] = useState<ChartType>("bar");
@@ -588,7 +593,10 @@ const DailyChart = ({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Revenue</p>
-                <Skeleton isLoaded={!isLoading} className="h-6 rounded">
+                <Skeleton
+                  isLoaded={!isLoading && !isRefetch}
+                  className="h-6 rounded"
+                >
                   <p className="text-xl font-bold text-green-600">
                     {convertIDR(statistics.totalRevenue)}
                   </p>
@@ -631,7 +639,10 @@ const DailyChart = ({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Total Orders</p>
-                <Skeleton isLoaded={!isLoading} className="h-6 rounded">
+                <Skeleton
+                  isLoaded={!isLoading && !isRefetch}
+                  className="h-6 rounded"
+                >
                   <p className="text-xl font-bold text-blue-600">
                     {statistics.totalOrders.toLocaleString()}
                   </p>
@@ -674,7 +685,10 @@ const DailyChart = ({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Avg Order Value</p>
-                <Skeleton isLoaded={!isLoading} className="h-6 rounded">
+                <Skeleton
+                  isLoaded={!isLoading && !isRefetch}
+                  className="h-6 rounded"
+                >
                   <p className="text-xl font-bold text-purple-600">
                     {convertIDR(statistics.averageOrderValue)}
                   </p>
@@ -717,7 +731,10 @@ const DailyChart = ({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Period</p>
-                <Skeleton isLoaded={!isLoading} className="h-6 rounded">
+                <Skeleton
+                  isLoaded={!isLoading && !isRefetch}
+                  className="h-6 rounded"
+                >
                   <p className="text-xl font-bold text-gray-800">
                     {filterPeriods.find((p) => p.key === selectedPeriod)?.label}
                   </p>
@@ -802,9 +819,17 @@ const DailyChart = ({
                 <Button
                   size="sm"
                   variant="bordered"
-                  startContent={<RefreshCw className="h-3 w-3" />}
+                  startContent={
+                    <>
+                      {isLoading || isRefetch ? (
+                        <Spinner size="sm" />
+                      ) : (
+                        <RefreshCw className="h-3 w-3" />
+                      )}
+                    </>
+                  }
                   onPress={() => {
-                    reload();
+                    refetch();
                     addToast({
                       title: "Success",
                       description: "Successfully refreshed chart data",
@@ -812,7 +837,7 @@ const DailyChart = ({
                       variant: "flat",
                     });
                   }}
-                  disabled={isLoading}
+                  disabled={isLoading || isRefetch}
                 >
                   Refresh
                 </Button>
@@ -829,7 +854,7 @@ const DailyChart = ({
         </CardHeader>
 
         <CardBody>
-          {mount && isLoading ? (
+          {mount && (isLoading || isRefetch) ? (
             <div className="flex h-80 items-center justify-center">
               <div className="space-y-4 text-center">
                 <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>

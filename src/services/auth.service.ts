@@ -8,6 +8,7 @@ import {
   IUpdatePassword,
   IResetPassword,
   IVerificationOTP,
+  IRegisterCompany,
 } from "@/types/Auth";
 
 const authServices = {
@@ -17,6 +18,8 @@ const authServices = {
     }),
   register: async (body: IRegister) =>
     instance.post(`${endpoint.AUTH}/register`, body),
+  registerCompany: async (body: IRegisterCompany) =>
+    instance.post(`${endpoint.AUTH}/register/company`, body),
   verificationEmail: async (body: IVerificationEmail) =>
     instance.post(`${endpoint.AUTH}/verify/email`, body),
   refreshToken: async (refreshToken: string) =>

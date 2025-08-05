@@ -17,6 +17,15 @@ interface IRegister {
   confirmPassword: string;
 }
 
+interface IRegisterCompany {
+  companyName: string;
+  fullname: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 interface IVerificationEmail {
   code: string;
 }
@@ -69,6 +78,7 @@ interface IUpdatePassword {
 export type {
   ILogin,
   IRegister,
+  IRegisterCompany,
   IVerificationEmail,
   IUserExtended,
   ISessionExtended,

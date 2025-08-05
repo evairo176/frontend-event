@@ -1,5 +1,5 @@
 import authServices from "@/services/auth.service";
-import { IRegister } from "@/types/Auth";
+import { IRegister, IRegisterCompany } from "@/types/Auth";
 import { errorCallback, successCallback } from "@/utils/tanstack-callback";
 import { addToast } from "@heroui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -43,14 +43,9 @@ const registerSchema = yup.object().shape({
 });
 
 const registerCompanySchema = yup.object().shape({
-  isCompany: yup.boolean().required(),
+  companyName: yup.string().required("Fullname is required").max(100),
   fullname: yup.string().required("Fullname is required").max(100),
   username: yup.string().required("Username is required").max(50),
-  companyName: yup
-    .string()
-    .required("Fullname is required")
-    .max(100)
-    .optional(),
   email: yup
     .string()
     .email("Invalid email format")
@@ -108,8 +103,31 @@ const useRegister = () => {
     },
   });
 
+  const {
+    control: controlCompany,
+    handleSubmit: handleSubmitCompany,
+    formState: { errors: errorsCompany },
+    reset: resetCompany,
+    setError: setErrorCompany,
+  } = useForm({
+    resolver: yupResolver(registerCompanySchema),
+    defaultValues: {
+      companyName: "",
+      fullname: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   const registerService = async (body: IRegister) => {
     const result = await authServices.register(body);
+    return result;
+  };
+
+  const registerServiceCompany = async (body: IRegisterCompany) => {
+    const result = await authServices.registerCompany(body);
     return result;
   };
 
@@ -148,14 +166,57 @@ const useRegister = () => {
     mutateRegister(data);
   };
 
+  const { mutate: mutateRegisterCompany, isPending: isPendingRegisterCompany } =
+    useMutation({
+      mutationFn: registerServiceCompany,
+      onError: (error: any) => {
+        let { message, error: errorDetails } = errorCallback(error);
+
+        addToast({
+          title: "Failed",
+          description: message,
+          color: "danger",
+          variant: "flat",
+        });
+
+        setErrorCompany("root", {
+          message: errorDetails,
+        });
+      },
+      onSuccess: (response) => {
+        // console.log(response);
+        const message = successCallback(response);
+        addToast({
+          title: "Success",
+          description: message,
+          color: "success",
+          variant: "flat",
+        });
+        router.push("/auth/register/success");
+        resetCompany();
+      },
+    });
+
+  const handleRegisterCompany = (data: IRegisterCompany) => {
+    // console.log("Register form data:", data);
+    mutateRegisterCompany(data);
+  };
+
   return {
     visiblePassword,
     handleVisiblePassword,
+
     control,
     handleSubmit,
     handleRegister,
     isPendingRegister,
     errors,
+
+    controlCompany,
+    handleSubmitCompany,
+    handleRegisterCompany,
+    isPendingRegisterCompany,
+    errorsCompany,
   };
 };
 
