@@ -106,6 +106,62 @@ const SIDEBAR_ADMIN = [
   },
 ];
 
+const SIDEBAR_COMPANY = [
+  {
+    key: "dashboard",
+    label: "Dashboard",
+    href: "/company/dashboard",
+    icon: <LayoutDashboard />,
+  },
+  {
+    key: "event",
+    label: "Event",
+    href: "/company/event",
+    icon: <Calendar />,
+  },
+
+  {
+    key: "transaction",
+    label: "Transaction",
+    href: "/company/transaction",
+    icon: <BanknoteArrowDown />,
+  },
+  {
+    key: "session",
+    label: "Session",
+    href: "/company/session",
+    icon: <Columns3Cog />,
+    subItems: [
+      {
+        key: "me-session",
+        label: "Me",
+        href: "/company/session/me",
+        icon: <UserLock className="h-4 w-4" />,
+      },
+      {
+        key: "all-user-session",
+        label: "all user",
+        href: "/company/session/all-user",
+        icon: <ShieldUser className="h-4 w-4" />,
+      },
+    ],
+  },
+  {
+    key: "setting",
+    label: "Setting",
+    href: "/company/setting",
+    icon: <Settings />,
+    subItems: [
+      {
+        key: "mfa",
+        label: "MFA",
+        href: "/company/setting/mfa",
+        icon: <ShieldCheck className="h-4 w-4" />,
+      },
+    ],
+  },
+];
+
 const SIDEBAR_MEMBER = [
   {
     key: "dashboard",
@@ -135,4 +191,4 @@ const SIDEBAR_MEMBER = [
   },
 ];
 
-export { SIDEBAR_ADMIN, SIDEBAR_MEMBER };
+export { SIDEBAR_ADMIN, SIDEBAR_MEMBER, SIDEBAR_COMPANY };

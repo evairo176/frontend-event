@@ -1,17 +1,12 @@
-const COLUMN_LIST_USER = [
+const COLUMN_LIST_TRANSACTION = [
   {
-    name: "EMAIL",
-    uid: "email",
+    name: "ORDER ID",
+    uid: "orderId",
     sort: true,
   },
   {
-    name: "FULLNAME",
-    uid: "fullname",
-    sort: true,
-  },
-  {
-    name: "COMPANY",
-    uid: "companyId",
+    name: "NOMINAL",
+    uid: "total",
     sort: true,
   },
   {
@@ -19,12 +14,6 @@ const COLUMN_LIST_USER = [
     uid: "status",
     sort: true,
   },
-  {
-    name: "ACTIVATE",
-    uid: "activate",
-    sort: false,
-  },
-
   {
     name: "CREATED AT",
     uid: "createdAt",
@@ -42,4 +31,4 @@ const COLUMN_LIST_USER = [
   },
 ];
 
-export { COLUMN_LIST_USER };
+export { COLUMN_LIST_TRANSACTION };

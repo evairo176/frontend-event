@@ -38,6 +38,24 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith("/company")) {
+    if (!token) {
+      const url = new URL("/auth/login", request.url);
+
+      url.searchParams.set("callbackUrl", encodeURI(request.url));
+
+      return NextResponse.redirect(url);
+    }
+
+    if (token.role !== "company") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (pathname === "/company") {
+      return NextResponse.redirect(new URL("/company/dashboard", request.url));
+    }
+  }
+
   if (pathname.startsWith("/member")) {
     if (!token) {
       const url = new URL("/auth/login", request.url);
@@ -45,6 +63,10 @@ export async function middleware(request: NextRequest) {
       url.searchParams.set("callbackUrl", encodeURI(request.url));
 
       return NextResponse.redirect(url);
+    }
+
+    if (token.role !== "member") {
+      return NextResponse.redirect(new URL("/", request.url));
     }
 
     if (pathname === "/member") {

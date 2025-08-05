@@ -3,6 +3,8 @@ import endpoint from "./endpoint.constant";
 import { IEvent, IEventForm, IEventUpdate } from "@/types/Event";
 
 const eventServices = {
+  getCompanyEvent: async (params?: string) =>
+    instance.get(`${endpoint.EVENT}-company?${params}`),
   getEvents: async (params?: string) =>
     instance.get(`${endpoint.EVENT}?${params}`),
   addEvent: async (payload: IEventForm) =>

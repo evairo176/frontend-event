@@ -1,7 +1,11 @@
 import PageHead from "@/components/commons/PageHead";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import DashboardLayoutSidebar from "./DashboardLayoutSidebar";
-import { SIDEBAR_ADMIN, SIDEBAR_MEMBER } from "./DashboardLayout.constants";
+import {
+  SIDEBAR_ADMIN,
+  SIDEBAR_COMPANY,
+  SIDEBAR_MEMBER,
+} from "./DashboardLayout.constants";
 import { Navbar, NavbarMenuToggle } from "@heroui/react";
 import { useIsMobile } from "@heroui/use-is-mobile";
 
@@ -30,14 +34,27 @@ const DashboardLayout = ({
     }
   }, [isMobile]);
 
+  const sidebar = useMemo(() => {
+    if (type === "admin") {
+      return SIDEBAR_ADMIN;
+    }
+
+    if (type === "member") {
+      return SIDEBAR_MEMBER;
+    }
+
+    if (type === "company") {
+      return SIDEBAR_COMPANY;
+    }
+
+    return [];
+  }, []);
+
   return (
     <>
       <PageHead title={title} />
       <div className="max-w-screen-3xl 3xl:container flex">
-        <DashboardLayoutSidebar
-          sidebarItems={type === "admin" ? SIDEBAR_ADMIN : SIDEBAR_MEMBER}
-          isOpen={open}
-        />
+        <DashboardLayoutSidebar sidebarItems={sidebar as any} isOpen={open} />
         <div className="h-screen w-full overflow-y-auto px-2 pt-2 lg:px-8">
           <Navbar
             className="mb-2 flex justify-between bg-transparent px-3 pt-2 lg:pt-0"

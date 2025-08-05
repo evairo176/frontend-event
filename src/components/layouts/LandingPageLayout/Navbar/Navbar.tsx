@@ -258,37 +258,90 @@ const Navbar = () => {
                         ></Button>
                       </DropdownTrigger>
                       <DropdownMenu aria-label="User menu actions">
-                        <DropdownItem
-                          key="profile"
-                          startContent={<User className="h-4 w-4" />}
-                          href="/member/profile"
-                          as={Link}
-                        >
-                          Profile
-                        </DropdownItem>
+                        {dataProfile?.role === "member" ? (
+                          <>
+                            <DropdownItem
+                              key="profile"
+                              startContent={<User className="h-4 w-4" />}
+                              href="/member/profile"
+                              as={Link}
+                            >
+                              Profile
+                            </DropdownItem>
 
-                        {dataProfile?.role === "admin" ? (
-                          <DropdownItem
-                            key="admin"
-                            startContent={
-                              <LayoutDashboard className="h-4 w-4" />
-                            }
-                            href="/admin/dashboard"
-                            as={Link}
-                          >
-                            Admin
-                          </DropdownItem>
+                            <DropdownItem
+                              key="member"
+                              startContent={
+                                <LayoutDashboard className="h-4 w-4" />
+                              }
+                              href="/member/dashboard"
+                              as={Link}
+                            >
+                              Member
+                            </DropdownItem>
+                          </>
                         ) : (
                           <DropdownItem
-                            key="member"
-                            startContent={
-                              <LayoutDashboard className="h-4 w-4" />
-                            }
-                            href="/member/dashboard"
-                            as={Link}
-                          >
-                            Member
-                          </DropdownItem>
+                            key={"dummy-member"}
+                            className="hidden"
+                          ></DropdownItem>
+                        )}
+
+                        {dataProfile?.role === "company" ? (
+                          <>
+                            <DropdownItem
+                              key="profile"
+                              startContent={<User className="h-4 w-4" />}
+                              href="/company/profile"
+                              as={Link}
+                            >
+                              Profile
+                            </DropdownItem>
+
+                            <DropdownItem
+                              key="company"
+                              startContent={
+                                <LayoutDashboard className="h-4 w-4" />
+                              }
+                              href="/company/dashboard"
+                              as={Link}
+                            >
+                              Company
+                            </DropdownItem>
+                          </>
+                        ) : (
+                          <DropdownItem
+                            key={"dummy-company"}
+                            className="hidden"
+                          ></DropdownItem>
+                        )}
+
+                        {dataProfile?.role === "admin" ? (
+                          <>
+                            <DropdownItem
+                              key="profile"
+                              startContent={<User className="h-4 w-4" />}
+                              href="/admin/profile"
+                              as={Link}
+                            >
+                              Profile
+                            </DropdownItem>
+                            <DropdownItem
+                              key="admin"
+                              startContent={
+                                <LayoutDashboard className="h-4 w-4" />
+                              }
+                              href="/admin/dashboard"
+                              as={Link}
+                            >
+                              Admin
+                            </DropdownItem>
+                          </>
+                        ) : (
+                          <DropdownItem
+                            key={"dummy-admin"}
+                            className="hidden"
+                          ></DropdownItem>
                         )}
                         {isLoading ? (
                           <DropdownItem
