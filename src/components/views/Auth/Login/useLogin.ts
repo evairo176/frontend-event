@@ -41,9 +41,15 @@ const useLogin = () => {
   });
 
   const handleLoginService = async (body: ILogin) => {
+    const userAgent = localStorage.getItem("user-agent");
+    const data = {
+      ...body,
+      userAgent,
+    };
+
     const res = await signIn("credentials", {
       redirect: false,
-      ...body,
+      ...data,
       callbackUrl,
     });
 

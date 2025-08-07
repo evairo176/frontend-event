@@ -16,7 +16,7 @@ const authServices = {
     instance.post(`${endpoint.AUTH}/login`, body, {
       withCredentials: true,
       headers: {
-        "User-Agent": navigator.userAgent,
+        "User-Agent": body?.userAgent,
       },
     }),
   register: async (body: IRegister) =>

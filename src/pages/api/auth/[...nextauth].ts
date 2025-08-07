@@ -30,10 +30,11 @@ export default NextAuth({
       async authorize(
         credentials: Record<"identifier" | "password", string> | undefined,
       ): Promise<IUserExtended | null> {
-        const { identifier, password, code } = credentials as {
+        const { identifier, password, code, userAgent } = credentials as {
           identifier: string;
           password: string;
           code?: string;
+          userAgent?: string;
         };
         if (!identifier || !password) {
           throw new Error("Identifier and password are required");
@@ -44,6 +45,7 @@ export default NextAuth({
             identifier,
             password,
             code,
+            userAgent,
           });
 
           const mfaRequired = response?.data?.mfaRequired;

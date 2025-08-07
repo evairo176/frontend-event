@@ -5,6 +5,7 @@ interface ILogin {
   identifier: string;
   password: string;
   code?: string;
+  userAgent?: string;
 }
 interface IRefreshToken {
   "refresh-token": string;

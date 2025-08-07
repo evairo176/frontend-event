@@ -10,7 +10,7 @@ import {
 import { Eye, EyeClosed, Loader } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { cn } from "@/utils/cn";
 import useLogin from "./useLogin";
@@ -29,6 +29,11 @@ const Login = (props: Props) => {
     mfaRequired,
     isSubmitting,
   } = useLogin();
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent;
+    localStorage.setItem("user-agent", userAgent);
+  }, []);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-10 py-10 lg:flex-row lg:gap-20 lg:py-0">
