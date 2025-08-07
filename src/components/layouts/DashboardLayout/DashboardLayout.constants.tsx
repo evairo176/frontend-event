@@ -127,6 +127,12 @@ const SIDEBAR_COMPANY = [
     icon: <BanknoteArrowDown />,
   },
   {
+    key: "user",
+    label: "User",
+    href: "/company/user",
+    icon: <Users2 />,
+  },
+  {
     key: "session",
     label: "Session",
     href: "/company/session",

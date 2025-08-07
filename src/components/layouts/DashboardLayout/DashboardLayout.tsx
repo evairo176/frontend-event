@@ -12,7 +12,7 @@ import { useIsMobile } from "@heroui/use-is-mobile";
 type Props = {
   title?: string;
   children: React.ReactNode;
-  type: string;
+  type: "admin" | "member" | "company" | "company_owner";
   description?: string;
 };
 
