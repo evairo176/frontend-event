@@ -7,7 +7,7 @@ type Props = {};
 const MemberProfilePage = (props: Props) => {
   return (
     <DashboardLayout
-      type="company"
+      type="company_owner"
       title="Profile"
       description="Profile company"
     >

@@ -43,7 +43,7 @@ const DashboardLayout = ({
       return SIDEBAR_MEMBER;
     }
 
-    if (type === "company") {
+    if (type === "company_owner") {
       return SIDEBAR_COMPANY;
     }
 

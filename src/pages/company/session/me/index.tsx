@@ -7,7 +7,7 @@ type Props = {};
 const sessionCompanyPage = (props: Props) => {
   return (
     <DashboardLayout
-      type="company"
+      type="company_owner"
       title="Me session"
       description="configuration self session"
     >

@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
 
-    if (token.role !== "company") {
+    if (token.role !== "company_owner") {
       return NextResponse.redirect(new URL("/", request.url));
     }
 

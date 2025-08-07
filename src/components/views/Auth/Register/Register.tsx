@@ -60,7 +60,7 @@ const Register = (props: Props) => {
             <Tab key={"member"} title="Member">
               <MemberTab />
             </Tab>
-            <Tab key={"company"} title="Personal atau Perusahaan">
+            <Tab key={"company_owner"} title="Personal atau Perusahaan">
               <CompanyTab />
             </Tab>
           </Tabs>

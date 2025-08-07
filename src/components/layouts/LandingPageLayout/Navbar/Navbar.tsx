@@ -287,7 +287,7 @@ const Navbar = () => {
                           ></DropdownItem>
                         )}
 
-                        {dataProfile?.role === "company" ? (
+                        {dataProfile?.role === "company_owner" ? (
                           <>
                             <DropdownItem
                               key="profile"
@@ -299,7 +299,7 @@ const Navbar = () => {
                             </DropdownItem>
 
                             <DropdownItem
-                              key="company"
+                              key="company_owner"
                               startContent={
                                 <LayoutDashboard className="h-4 w-4" />
                               }

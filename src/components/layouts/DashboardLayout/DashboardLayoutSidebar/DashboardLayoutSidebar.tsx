@@ -8,6 +8,7 @@ import {
   Ticket,
   Bell,
   HelpCircle,
+  DollarSign,
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,6 +16,7 @@ import React, { JSX, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@heroui/use-is-mobile";
 import useProfile from "@/components/views/Member/Profile/useProfile";
+import { convertIDR } from "@/utils/currency";
 
 interface SidebarSubItem {
   key: string;
@@ -175,7 +177,7 @@ const DashboardLayoutSidebar = (props: Props) => {
                 ? "/images/user/user.png"
                 : (dataProfile?.profilePicture as string)
             }
-            size="md"
+            size="lg"
             alt={dataProfile?.profilePicture as string}
             className="cursor-pointer ring-2 ring-blue-200"
             showFallback
@@ -186,9 +188,15 @@ const DashboardLayoutSidebar = (props: Props) => {
               {dataProfile?.fullname}
             </p>
             <p className="truncate text-xs text-gray-500">
-              {" "}
               {dataProfile?.email}
             </p>
+            {["member", "company_owner"].includes(dataProfile?.role) && (
+              <div className="flex items-center">
+                <p className="truncate text-xs font-bold text-gray-600">
+                  {convertIDR(dataProfile?.balance)}
+                </p>
+              </div>
+            )}
           </div>
           <div className="h-2 w-2 animate-bounce rounded-full bg-green-400"></div>
         </div>

@@ -7,7 +7,7 @@ type Props = {};
 const CompanyTransactionPage = (props: Props) => {
   return (
     <DashboardLayout
-      type="company"
+      type="company_owner"
       title="Transaction"
       description="Company transaction"
     >

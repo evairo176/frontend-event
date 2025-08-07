@@ -7,7 +7,7 @@ type Props = {};
 const CompanyEventPage = (props: Props) => {
   return (
     <DashboardLayout
-      type="company"
+      type="company_owner"
       title="Event"
       description="List of all events, create new event and manage existing events"
     >

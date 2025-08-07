@@ -6,7 +6,7 @@ type Props = {};
 
 const MfaCompanyPage = (props: Props) => {
   return (
-    <DashboardLayout type="company" title="MFA" description="Mfa company">
+    <DashboardLayout type="company_owner" title="MFA" description="Mfa company">
       <Mfa />
     </DashboardLayout>
   );
