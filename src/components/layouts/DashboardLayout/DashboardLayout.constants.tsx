@@ -176,6 +176,20 @@ const SIDEBAR_MEMBER = [
     icon: <ShoppingBag />,
   },
   {
+    key: "session",
+    label: "Session",
+    href: "/member/session",
+    icon: <Columns3Cog />,
+    subItems: [
+      {
+        key: "me-session",
+        label: "Me",
+        href: "/member/session/me",
+        icon: <UserLock className="h-4 w-4" />,
+      },
+    ],
+  },
+  {
     key: "setting",
     label: "Setting",
     href: "/member/setting",

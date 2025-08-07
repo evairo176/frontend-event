@@ -9,6 +9,7 @@ import ButtonAction from "@/components/commons/ButtonAction";
 import { convertUTCToLocal } from "@/utils/date";
 import { parseUserAgent } from "@/utils/parse-useragent";
 import DeleteMeSessionModal from "./DeleteMeSession";
+import { Check, X } from "lucide-react";
 
 type Props = {};
 
@@ -46,6 +47,19 @@ const MeSession = (props: Props) => {
         case "isCurrent":
           if (cellValue === true) {
             return (
+              <Chip variant="shadow" color="success" size="sm">
+                <Check className="h-4 w-4 text-white" />
+              </Chip>
+            );
+          }
+          return (
+            <Chip variant="shadow" color="danger" size="sm">
+              <X className="h-4 w-4 text-white" />
+            </Chip>
+          );
+        case "isActive":
+          if (cellValue === true) {
+            return (
               <Chip size="sm" variant="dot" color="success">
                 Active
               </Chip>
@@ -58,7 +72,7 @@ const MeSession = (props: Props) => {
           );
         case "createdAt":
           return `${convertUTCToLocal(cellValue as string)}`;
-        case "updatedAt":
+        case "expiredAt":
           return `${convertUTCToLocal(cellValue as string)}`;
         case "actions":
           return (

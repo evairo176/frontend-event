@@ -5,8 +5,13 @@ const COLUMN_LIST_SESSION = [
     sort: true,
   },
   {
-    name: "STATUS",
+    name: "CURRENT",
     uid: "isCurrent",
+    sort: true,
+  },
+  {
+    name: "STATUS",
+    uid: "isActive",
     sort: true,
   },
   {
@@ -27,6 +32,11 @@ const COLUMN_LIST_SESSION = [
   {
     name: "TIME AGO",
     uid: "timeAgo",
+    sort: true,
+  },
+  {
+    name: "EXPIRED AT",
+    uid: "expiredAt",
     sort: true,
   },
   {
