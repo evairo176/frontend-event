@@ -181,7 +181,27 @@ const DashboardLayoutSidebar = (props: Props) => {
             alt={dataProfile?.profilePicture as string}
             className="cursor-pointer ring-2 ring-blue-200"
             showFallback
-            onClick={() => router.push("/member/profile")}
+            onClick={() => {
+              if (dataProfile?.role === "admin") {
+                router.push("/admin/profile");
+              }
+
+              if (dataProfile?.role === "company") {
+                router.push("/company/profile");
+              }
+
+              if (dataProfile?.role === "company_owner") {
+                router.push("/company/profile");
+              }
+
+              if (dataProfile?.role === "member") {
+                router.push("/member/profile");
+              }
+
+              if (dataProfile?.role === "company_scanner") {
+                router.push("/scanner/profile");
+              }
+            }}
           />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold text-gray-800">

@@ -7,10 +7,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useSearchParams } from "next/navigation";
-
+// Regex untuk minimal 1 huruf kapital
+const capitalLetterRegex = /[A-Z]/;
 const loginSchema = yup.object().shape({
   identifier: yup.string().required("Email or Username is required"),
-  password: yup.string().required("Password is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .max(50)
+    .matches(
+      capitalLetterRegex,
+      "Password harus mengandung minimal 1 huruf kapital",
+    ),
   code: yup.string().optional().max(6),
 });
 const useLogin = () => {

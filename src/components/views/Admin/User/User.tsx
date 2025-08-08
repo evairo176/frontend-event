@@ -66,21 +66,28 @@ const User = (props: Props) => {
             );
           }
           return Status as ReactNode;
-        case "companyId":
-          let isCompany = (
-            <Chip color="secondary" variant="solid">
-              No
-            </Chip>
-          );
-          if (cellValue) {
-            isCompany = (
-              <Chip color="success" variant="solid">
-                Yes
-              </Chip>
-            );
+        case "role":
+          let ROLE = "";
+          if (cellValue === "company_scanner") {
+            ROLE = "SCANNER";
           }
 
-          return isCompany as ReactNode;
+          if (cellValue === "company_staff") {
+            ROLE = "STAFF";
+          }
+
+          if (cellValue === "company_owner") {
+            ROLE = "OWNER";
+          }
+
+          if (cellValue === "company") {
+            ROLE = "STAFF";
+          }
+
+          if (cellValue === "member") {
+            ROLE = "MEMBER";
+          }
+          return `${ROLE}`;
         case "activate":
           const isActive = user.status === "APPROVE" ? true : false;
 

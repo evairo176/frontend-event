@@ -316,6 +316,35 @@ const Navbar = () => {
                           ></DropdownItem>
                         )}
 
+                        {dataProfile?.role === "company_scanner" ? (
+                          <>
+                            <DropdownItem
+                              key="profile"
+                              startContent={<User className="h-4 w-4" />}
+                              href="/scanner/profile"
+                              as={Link}
+                            >
+                              Profile
+                            </DropdownItem>
+
+                            <DropdownItem
+                              key="scanner"
+                              startContent={
+                                <LayoutDashboard className="h-4 w-4" />
+                              }
+                              href="/scanner/dashboard"
+                              as={Link}
+                            >
+                              Scanner
+                            </DropdownItem>
+                          </>
+                        ) : (
+                          <DropdownItem
+                            key={"dummy-scanner"}
+                            className="hidden"
+                          ></DropdownItem>
+                        )}
+
                         {dataProfile?.role === "admin" ? (
                           <>
                             <DropdownItem

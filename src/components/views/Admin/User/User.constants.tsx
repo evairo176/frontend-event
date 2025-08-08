@@ -10,8 +10,8 @@ const COLUMN_LIST_USER = [
     sort: true,
   },
   {
-    name: "company_owner",
-    uid: "companyId",
+    name: "ROLE",
+    uid: "role",
     sort: true,
   },
   {

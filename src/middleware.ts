@@ -56,6 +56,24 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith("/scanner")) {
+    if (!token) {
+      const url = new URL("/auth/login", request.url);
+
+      url.searchParams.set("callbackUrl", encodeURI(request.url));
+
+      return NextResponse.redirect(url);
+    }
+
+    if (token.role !== "company_scanner") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    if (pathname === "/scanner") {
+      return NextResponse.redirect(new URL("/scanner/dashboard", request.url));
+    }
+  }
+
   if (pathname.startsWith("/member")) {
     if (!token) {
       const url = new URL("/auth/login", request.url);
@@ -81,5 +99,6 @@ export const config = {
     "/admin/:path*",
     "/member/:path*",
     "/company/:path*",
+    "/scanner/:path*",
   ],
 };

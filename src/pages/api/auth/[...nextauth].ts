@@ -84,6 +84,7 @@ export default NextAuth({
           }
 
           console.log({ messageError });
+          console.log({ data: error?.response?.data?.errors });
           throw new Error(messageError);
         }
       },

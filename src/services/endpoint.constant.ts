@@ -10,6 +10,7 @@ const endpoint = {
   MFA: "/mfa",
   SESSION: "/session",
   USER: "/user",
+  VOUCHER: "/voucher",
 };
 
 export default endpoint;

@@ -4,6 +4,7 @@ import DashboardLayoutSidebar from "./DashboardLayoutSidebar";
 import {
   SIDEBAR_ADMIN,
   SIDEBAR_COMPANY,
+  SIDEBAR_COMPANY_SCANNER,
   SIDEBAR_MEMBER,
 } from "./DashboardLayout.constants";
 import { Navbar, NavbarMenuToggle } from "@heroui/react";
@@ -12,7 +13,7 @@ import { useIsMobile } from "@heroui/use-is-mobile";
 type Props = {
   title?: string;
   children: React.ReactNode;
-  type: "admin" | "member" | "company" | "company_owner";
+  type: "admin" | "member" | "company" | "company_owner" | "company_scanner";
   description?: string;
 };
 
@@ -47,6 +48,10 @@ const DashboardLayout = ({
       return SIDEBAR_COMPANY;
     }
 
+    if (type === "company_scanner") {
+      return SIDEBAR_COMPANY_SCANNER;
+    }
+
     return [];
   }, []);
 
@@ -55,9 +60,9 @@ const DashboardLayout = ({
       <PageHead title={title} />
       <div className="max-w-screen-3xl 3xl:container flex">
         <DashboardLayoutSidebar sidebarItems={sidebar as any} isOpen={open} />
-        <div className="h-screen w-full overflow-y-auto px-2 pt-2 lg:px-8">
+        <div className="h-screen w-full overflow-y-auto px-3 pt-2 lg:px-8">
           <Navbar
-            className="mb-2 flex justify-between bg-transparent px-3 pt-2 lg:pt-0"
+            className="mb-2 flex justify-between bg-transparent pt-2 lg:pt-0"
             isBlurred={false}
             position="static"
             classNames={{ wrapper: "p-0" }}

@@ -6,6 +6,7 @@ import {
   Grid,
   LayoutDashboard,
   Newspaper,
+  ScanBarcode,
   Settings,
   ShieldCheck,
   ShieldUser,
@@ -168,6 +169,49 @@ const SIDEBAR_COMPANY = [
   },
 ];
 
+const SIDEBAR_COMPANY_SCANNER = [
+  {
+    key: "dashboard",
+    label: "Dashboard",
+    href: "/scanner/dashboard",
+    icon: <LayoutDashboard />,
+  },
+  {
+    key: "capture-scan",
+    label: "Capture Scan",
+    href: "/scanner/capture-scan",
+    icon: <ScanBarcode />,
+  },
+  {
+    key: "session",
+    label: "Session",
+    href: "/scanner/session",
+    icon: <Columns3Cog />,
+    subItems: [
+      {
+        key: "me-session",
+        label: "Me",
+        href: "/scanner/session/me",
+        icon: <UserLock className="h-4 w-4" />,
+      },
+    ],
+  },
+  {
+    key: "setting",
+    label: "Setting",
+    href: "/scanner/setting",
+    icon: <Settings />,
+    subItems: [
+      {
+        key: "mfa",
+        label: "MFA",
+        href: "/scanner/setting/mfa",
+        icon: <ShieldCheck className="h-4 w-4" />,
+      },
+    ],
+  },
+];
+
 const SIDEBAR_MEMBER = [
   {
     key: "dashboard",
@@ -211,4 +255,9 @@ const SIDEBAR_MEMBER = [
   },
 ];
 
-export { SIDEBAR_ADMIN, SIDEBAR_MEMBER, SIDEBAR_COMPANY };
+export {
+  SIDEBAR_ADMIN,
+  SIDEBAR_MEMBER,
+  SIDEBAR_COMPANY,
+  SIDEBAR_COMPANY_SCANNER,
+};
