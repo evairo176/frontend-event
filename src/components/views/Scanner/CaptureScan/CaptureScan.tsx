@@ -180,7 +180,7 @@ const CaptureScan = (props: Props) => {
                         Scanner Siap
                       </h3>
                       <p className="text-sm opacity-80">
-                        Klik "Mulai Scan" untuk mengaktifkan kamera
+                        Klik {`${"Mulai Scan"}`} untuk mengaktifkan kamera
                       </p>
                     </div>
                   ) : (
