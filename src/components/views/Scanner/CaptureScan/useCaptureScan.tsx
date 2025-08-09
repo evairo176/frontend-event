@@ -69,7 +69,7 @@ const useCaptureScan = () => {
       if (!voucherData || !voucherData.ticket) {
         addToast({
           title: "Error!",
-          description: "Format data voucher tidak valid",
+          description: message,
           color: "danger",
         });
         return;
