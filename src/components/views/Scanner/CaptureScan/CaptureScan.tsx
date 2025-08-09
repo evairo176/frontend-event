@@ -12,6 +12,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Switch,
 } from "@heroui/react";
 import {
   Camera,
@@ -47,6 +48,7 @@ const CaptureScan = (props: Props) => {
     scanLogs,
     showVoucherDetail,
     isProcessing,
+    isConfirmingVerification,
 
     // Modal
     isOpen,
@@ -66,6 +68,9 @@ const CaptureScan = (props: Props) => {
 
     // Setters
     setSoundEnabled,
+    autoVerifyEnabled,
+    setAutoVerifyEnabled,
+    autoConfirmError,
   } = useCaptureScan();
 
   // Get status info for current scanned voucher
@@ -101,7 +106,20 @@ const CaptureScan = (props: Props) => {
                   <h2 className="text-lg font-semibold">Scanner QR Code</h2>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
+                  {/* Auto Verify Switch */}
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      size="sm"
+                      color="success"
+                      isSelected={autoVerifyEnabled}
+                      onValueChange={setAutoVerifyEnabled}
+                    />
+                    <span className="text-sm font-medium text-gray-700">
+                      Auto Verify
+                    </span>
+                  </div>
+
                   <Button
                     size="sm"
                     variant="flat"
@@ -274,20 +292,20 @@ const CaptureScan = (props: Props) => {
                             </span>
                             <span
                               className={`flex-shrink-0 ${
-                                log.type === "success"
+                                log.level === "success"
                                   ? "text-green-400"
-                                  : log.type === "error"
+                                  : log.level === "error"
                                     ? "text-red-400"
-                                    : log.type === "warning"
+                                    : log.level === "warning"
                                       ? "text-yellow-400"
                                       : "text-blue-400"
                               }`}
                             >
-                              {log.type === "success"
+                              {log.level === "success"
                                 ? "✓"
-                                : log.type === "error"
+                                : log.level === "error"
                                   ? "✗"
-                                  : log.type === "warning"
+                                  : log.level === "warning"
                                     ? "⚠"
                                     : "ℹ"}
                             </span>
@@ -414,28 +432,71 @@ const CaptureScan = (props: Props) => {
                     </div>
 
                     {/* Action Buttons */}
-                    {scannedVoucher.status === "valid" && (
-                      <div className="flex gap-2 pt-4">
-                        <Button
-                          color="success"
-                          className="flex-1"
-                          startContent={<CheckCircle className="h-4 w-4" />}
-                          onPress={onOpen}
-                          isLoading={isLoading}
-                        >
-                          Verifikasi
-                        </Button>
-                        <Button
-                          color="danger"
-                          variant="flat"
-                          className="flex-1"
-                          startContent={<XCircle className="h-4 w-4" />}
-                          onPress={cancelVerification}
-                        >
-                          Batal
-                        </Button>
+                    {scannedVoucher.status === "valid" &&
+                      !autoVerifyEnabled && (
+                        <div className="flex gap-2 pt-4">
+                          <Button
+                            color="success"
+                            className="flex-1"
+                            startContent={<CheckCircle className="h-4 w-4" />}
+                            onPress={onOpen}
+                            isLoading={isLoading}
+                          >
+                            Verifikasi
+                          </Button>
+                          <Button
+                            color="danger"
+                            variant="flat"
+                            className="flex-1"
+                            startContent={<XCircle className="h-4 w-4" />}
+                            onPress={cancelVerification}
+                          >
+                            Batal
+                          </Button>
+                        </div>
+                      )}
+
+                    {/* Auto Verify Status */}
+                    {scannedVoucher.status === "valid" && autoVerifyEnabled && (
+                      <div className="mt-4 rounded-lg bg-green-50 p-3">
+                        <div className="flex items-center gap-2">
+                          {isConfirmingVerification ? (
+                            <>
+                              <div className="h-4 w-4 animate-spin rounded-full border-2 border-green-600 border-t-transparent"></div>
+                              <p className="text-sm font-medium text-green-700">
+                                Sedang memverifikasi voucher...
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle className="h-4 w-4 text-green-600" />
+                              <p className="text-sm font-medium text-green-700">
+                                Auto Verify Aktif - Voucher akan otomatis
+                                diverifikasi
+                              </p>
+                            </>
+                          )}
+                        </div>
                       </div>
                     )}
+
+                    {/* Auto Confirm Error Display */}
+                    {autoConfirmError &&
+                      scannedVoucher.status === "invalid" && (
+                        <div className="mt-4 rounded-lg bg-red-50 p-3">
+                          <div className="flex items-start gap-2">
+                            <XCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-600" />
+                            <div>
+                              <p className="text-sm font-medium text-red-700">
+                                Auto Verify Gagal
+                              </p>
+                              <p className="mt-1 text-xs text-red-600">
+                                {autoConfirmError}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                     {scannedVoucher.scannedAt && (
                       <div className="rounded-lg bg-blue-50 p-3">

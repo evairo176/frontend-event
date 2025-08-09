@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { addToast, useDisclosure } from "@heroui/react";
 import voucherServices from "@/services/voucher.service";
+import { useLogger } from "@/hooks/useLogger";
+import { useMutation } from "@tanstack/react-query";
+import { errorCallback, successCallback } from "@/utils/tanstack-callback";
 
 export type TicketData = {
   id: string;
@@ -17,13 +20,7 @@ export type TicketData = {
   eventBanner?: string;
 };
 
-export type LogEntry = {
-  id: string;
-  timestamp: string;
-  type: "info" | "success" | "error" | "warning";
-  message: string;
-  qrCode?: string;
-};
+// Removed duplicate LogEntry type - using the one from useLogger
 
 const useCaptureScan = () => {
   // States - Single Scan Mode
@@ -32,114 +29,121 @@ const useCaptureScan = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [scanLogs, setScanLogs] = useState<LogEntry[]>([]);
   const [showVoucherDetail, setShowVoucherDetail] = useState(false); // Show voucher detail modal
   const [isProcessing, setIsProcessing] = useState(false);
+  const [currentVoucherCode, setCurrentVoucherCode] = useState<string | null>(
+    null,
+  );
+  const [autoVerifyEnabled, setAutoVerifyEnabled] = useState(false);
+  const [autoConfirmError, setAutoConfirmError] = useState<string | null>(null);
 
   // Modal for verification confirmation
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // Add log entry function
-  const addLog = (type: LogEntry["type"], message: string, qrCode?: string) => {
-    const logEntry: LogEntry = {
-      id: Date.now().toString(),
-      timestamp: new Date().toLocaleTimeString("id-ID", {
-        hour12: false,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      }),
-      type,
-      message,
-      qrCode,
-    };
+  // Use the new logger hook
+  const {
+    logs: scanLogs,
+    addLog,
+    clearLogs,
+    getLogsByLevel,
+    getLogStats,
+  } = useLogger({
+    context: "VoucherScanner",
+    maxLogs: 50,
+  });
 
-    setScanLogs((prev) => [logEntry, ...prev.slice(0, 49)]); // Keep last 50 logs
-    console.log(`📝 Log: [${type.toUpperCase()}] ${message}`);
-  };
+  // TanStack Query: Verify voucher mutation
+  const verifyVoucherMutation = useMutation({
+    mutationFn: async (code: string) => {
+      // Use direct API call that throws error on failure
+      const response = await voucherServices.findOneByCode(code);
+      return response;
+    },
+    onSuccess: (response, code) => {
+      console.log("Verify voucher success:", response);
 
-  // Clear logs function
-  const clearLogs = () => {
-    setScanLogs([]);
-  };
+      const message = successCallback(response);
+      const voucherData = response.data.data || response.data;
 
-  // Verify voucher function
-  const verifyVoucher = async (code: string): Promise<TicketData | null> => {
-    try {
-      const result = await voucherServices.findOneByCode(code);
-
-      console.log("API Response:", result);
-
-      // Check if API response is successful
-      if (!result?.data?.success) {
+      // Validate that we have the required data structure
+      if (!voucherData || !voucherData.ticket) {
         addToast({
           title: "Error!",
-          description: result?.data?.message || "Voucher tidak ditemukan",
+          description: "Format data voucher tidak valid",
           color: "danger",
         });
-        return null;
+        return;
       }
 
-      const voucherData = result.data.data;
       const ticketInfo = voucherData.ticket;
       const eventInfo = ticketInfo.event;
 
-      // Convert voucher data to TicketData format based on API response
+      // Convert voucher data to TicketData format
       const ticketData: TicketData = {
         id: voucherData.id,
         code: voucherData.code,
-        ticketName: ticketInfo.name, // "VIP"
-        eventName: eventInfo.name, // "Jakarta Day Event"
-        eventDate: eventInfo.startDate, // "2025-08-05 10:58:39"
-        eventLocation: eventInfo.address, // "Kulon progo"
-        price: ticketInfo.price, // 200000
-        holderName: voucherData.orderId, // Using orderId as holder name for now
-        holderEmail: "holder@email.com", // Default email since not provided in API
+        ticketName: ticketInfo.name,
+        eventName: eventInfo.name,
+        eventDate: eventInfo.startDate,
+        eventLocation: eventInfo.address,
+        price: ticketInfo.price,
+        holderName: voucherData.orderId,
+        holderEmail: "holder@email.com",
         status: voucherData.isUsed ? "used" : "valid",
         scannedAt: voucherData.isUsed ? voucherData.updatedAt : undefined,
-        eventBanner: eventInfo.banner, // Cloudinary image URL
+        eventBanner: eventInfo.banner,
       };
 
-      return ticketData;
-    } catch (error: any) {
-      console.error("Error verifying voucher:", error);
+      setScannedVoucher(ticketData);
+      setShowVoucherDetail(true);
 
-      // Show appropriate toast based on error type
-      if (error.response?.status === 404) {
-        addToast({
-          title: "Error!",
-          description: "Voucher tidak ditemukan",
-          color: "danger",
+      addLog(
+        "success",
+        `Voucher berhasil diverifikasi: ${ticketData.holderName}`,
+        { qrCode: code },
+      );
+
+      addToast({
+        title: "Success!",
+        description: `Voucher berhasil diverifikasi: ${ticketData.holderName}`,
+        color: "success",
+      });
+
+      // Auto verify if enabled and voucher is valid
+      if (autoVerifyEnabled && ticketData.status === "valid") {
+        addLog("info", "Auto verify enabled - langsung konfirmasi voucher", {
+          qrCode: code,
         });
-      } else if (error.response?.status === 400) {
-        addToast({
-          title: "Error!",
-          description: "QR Code tidak valid",
-          color: "danger",
-        });
-      } else if (error.response?.status >= 500) {
-        addToast({
-          title: "Error!",
-          description: "Server error. Silakan coba lagi nanti",
-          color: "danger",
-        });
-      } else {
-        addToast({
-          title: "Error!",
-          description: "Gagal memverifikasi voucher. Silakan coba lagi",
-          color: "danger",
-        });
+        // Trigger confirm verification automatically
+        setTimeout(() => {
+          confirmVerificationMutation.mutate({ code: ticketData.code });
+        }, 1000); // Small delay to show the voucher details first
       }
+    },
+    onError: (error: any, code) => {
+      console.error("Verify voucher error:", error);
 
-      return null;
-    }
-  };
+      const { message } = errorCallback(error);
 
-  // Handle QR code scan - Continuous scan mode with duplicate prevention
+      addToast({
+        title: "Error!",
+        description: message,
+        color: "danger",
+      });
+
+      addLog("error", `Verifikasi voucher gagal: ${message}`, { qrCode: code });
+    },
+    onSettled: () => {
+      setIsLoading(false);
+      setIsProcessing(false);
+    },
+  });
+
+  // Handle QR code scan - using TanStack Query mutation
   const handleScan = async (detectedCodes: any[]) => {
     console.log("🎯 handleScan called with:", detectedCodes);
 
-    if (isProcessing) {
+    if (verifyVoucherMutation.isPending) {
       console.log("🔄 Already processing, ignoring...");
       return;
     }
@@ -176,48 +180,21 @@ const useCaptureScan = () => {
     addLog(
       "info",
       `QR Code terdeteksi: ${result.substring(0, 20)}${result.length > 20 ? "..." : ""}`,
-      result,
+      { qrCode: result },
     );
+
+    // Reset auto confirm error when scanning new voucher
+    setAutoConfirmError(null);
 
     setIsProcessing(true);
     setIsLoading(true);
-    // Keep scanner running - camera stays active for continuous scanning
 
     if (soundEnabled) {
       playBeepSound();
     }
 
-    try {
-      const voucherData = await verifyVoucher(result);
-
-      if (voucherData) {
-        setScannedVoucher(voucherData);
-        setShowVoucherDetail(true);
-        addLog(
-          "success",
-          `Voucher berhasil diverifikasi: ${voucherData.holderName}`,
-          result,
-        );
-
-        addToast({
-          title: "Success!",
-          description: `Voucher berhasil diverifikasi: ${voucherData.holderName}`,
-          color: "success",
-        });
-      } else {
-        addLog("error", "Verifikasi voucher gagal", result);
-      }
-    } catch (error) {
-      console.error("❌ Unexpected error during verification:", error);
-      addLog(
-        "error",
-        `Kesalahan tidak terduga: ${error instanceof Error ? error.message : "Unknown error"}`,
-        result,
-      );
-    } finally {
-      setIsLoading(false);
-      setIsProcessing(false); // Reset immediately to allow next scan
-    }
+    // Use TanStack Query mutation to verify voucher
+    verifyVoucherMutation.mutate(result);
   };
 
   // Handle scan error
@@ -242,14 +219,17 @@ const useCaptureScan = () => {
     addLog("info", "Scanner dihentikan");
   };
 
-  // Verify voucher (confirm verification)
-  const confirmVerification = async () => {
-    if (!scannedVoucher) return;
+  // TanStack Query: Confirm verification mutation
+  const confirmVerificationMutation = useMutation({
+    mutationFn: async (payload: { code: string }) => {
+      // Use direct API call that throws error on failure
+      const response = await voucherServices.verifyScanVoucher(payload);
+      return response;
+    },
+    onSuccess: (response) => {
+      console.log("Confirm verification success:", response);
 
-    setIsLoading(true);
-    try {
-      // TODO: Call API to mark voucher as used
-      // await voucherServices.markAsUsed(scannedVoucher.code);
+      const message = successCallback(response);
 
       // Update local state
       setScannedVoucher((prev) =>
@@ -261,22 +241,49 @@ const useCaptureScan = () => {
       addToast({
         title: "Success!",
         description:
+          message ||
           "Voucher berhasil diverifikasi dan ditandai sebagai digunakan",
         color: "success",
       });
 
-      addLog("success", `Voucher ${scannedVoucher.code} berhasil diverifikasi`);
+      addLog(
+        "success",
+        `Voucher ${scannedVoucher?.code} berhasil diverifikasi`,
+      );
       onClose();
-    } catch (error) {
-      console.error("Error confirming verification:", error);
+    },
+    onError: (error: any) => {
+      console.error("Confirm verification error:", error);
+
+      const { message } = errorCallback(error);
+
+      // Store auto confirm error for display in UI
+      setAutoConfirmError(message);
+
+      // Update voucher status to show error state
+      setScannedVoucher((prev) =>
+        prev ? { ...prev, status: "invalid" as const } : null,
+      );
+
       addToast({
         title: "Error!",
-        description: "Gagal memverifikasi voucher",
+        description: message,
         color: "danger",
       });
-    } finally {
+
+      addLog("error", `Gagal memverifikasi voucher: ${message}`);
+    },
+    onSettled: () => {
       setIsLoading(false);
-    }
+    },
+  });
+
+  // Confirm verification function using TanStack Query
+  const confirmVerification = () => {
+    if (!scannedVoucher) return;
+
+    setIsLoading(true);
+    confirmVerificationMutation.mutate({ code: scannedVoucher.code });
   };
 
   // Cancel verification
@@ -373,6 +380,7 @@ const useCaptureScan = () => {
     scanLogs,
     showVoucherDetail,
     isProcessing,
+    isConfirmingVerification: confirmVerificationMutation.isPending,
 
     // Modal
     isOpen,
@@ -393,6 +401,9 @@ const useCaptureScan = () => {
 
     // Setters
     setSoundEnabled,
+    autoVerifyEnabled,
+    setAutoVerifyEnabled,
+    autoConfirmError,
   };
 };
 

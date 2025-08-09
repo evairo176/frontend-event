@@ -767,6 +767,19 @@ const DetailTransaction = (props: Props) => {
                               {formatDateTime(voucher.createdAt)}
                             </span>
                           </div>
+                          {voucher.isUsed && (
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-600">
+                                Digunakan:
+                              </span>
+                              <span className="text-sm">
+                                {voucher.ticketScanHistory?.length > 0 &&
+                                  formatDateTime(
+                                    voucher.ticketScanHistory[0]?.createdAt,
+                                  )}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Download Individual QR Code */}
