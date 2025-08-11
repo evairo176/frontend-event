@@ -16,7 +16,11 @@ const useDetailEvent = () => {
     return data?.data;
   };
 
-  const { data: dataDetailEvent, isLoading: isLoadingDetailEvent } = useQuery({
+  const {
+    data: dataDetailEvent,
+    isLoading: isLoadingDetailEvent,
+    refetch: refetchDetailEvent,
+  } = useQuery({
     queryKey: ["detailEventBySlug", router.query?.slug as string],
     queryFn: () => getEventBySlug(router.query?.slug as string),
     enabled: router.isReady,
@@ -96,7 +100,7 @@ const useDetailEvent = () => {
     mutationFn: createOrder,
     onSuccess: (response) => {
       const transactionToken = response?.payment?.token;
-
+      refetchDetailEvent();
       (window as any).snap.pay(transactionToken);
     },
     onError: (error: any) => {
@@ -114,6 +118,7 @@ const useDetailEvent = () => {
   return {
     dataDetailEvent,
     isLoadingDetailEvent,
+    refetchDetailEvent,
 
     // dataTicket,
     // isLoadingTicket,

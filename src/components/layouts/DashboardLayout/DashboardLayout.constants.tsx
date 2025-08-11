@@ -4,6 +4,7 @@ import {
   Calendar,
   Columns3Cog,
   Grid,
+  History,
   LayoutDashboard,
   Newspaper,
   ScanBarcode,
@@ -181,6 +182,12 @@ const SIDEBAR_COMPANY_SCANNER = [
     label: "Capture Scan",
     href: "/scanner/capture-scan",
     icon: <ScanBarcode />,
+  },
+  {
+    key: "history-scan",
+    label: "History Scan",
+    href: "/scanner/history-scan",
+    icon: <History />,
   },
   {
     key: "session",

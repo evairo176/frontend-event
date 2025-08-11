@@ -8,6 +8,9 @@ const voucherServices = {
 
   verifyScanVoucher: async (payload: IVoucher) =>
     instance.post(`${endpoint.VOUCHER}-scan`, payload),
+
+  findAllHistoryScanByiD: async (params?: string) =>
+    instance.get(`${endpoint.VOUCHER}-history-scan?${params}`),
 };
 
 export default voucherServices;

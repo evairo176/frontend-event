@@ -17,11 +17,9 @@ import DetailEventCart from "./DetailEventCart";
 import Script from "next/script";
 import environment from "@/config/environment";
 
-type Props = {
-  serverEventData?: IEvent | null;
-};
+type Props = {};
 
-const DetailEvent = ({ serverEventData }: Props) => {
+const DetailEvent = ({}: Props) => {
   const {
     dataDetailEvent,
     isLoadingDetailEvent,
@@ -36,9 +34,9 @@ const DetailEvent = ({ serverEventData }: Props) => {
   } = useDetailEvent();
 
   // Use server data if available, otherwise use client-side data
-  const eventData = serverEventData || dataDetailEvent;
-  const isLoading = !serverEventData && isLoadingDetailEvent;
-  console.log(environment.MIDTRANS_SNAP_URL);
+  const eventData = dataDetailEvent;
+  const isLoading = isLoadingDetailEvent;
+
   return (
     <>
       <div className="mt-20 min-h-screen px-6">
