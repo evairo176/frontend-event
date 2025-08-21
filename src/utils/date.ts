@@ -55,4 +55,18 @@ function formatDateTime(input: string): string {
 
   return `${day} ${month} ${year} ${hours}:${minutes}`;
 }
-export { toDateStandard, toInputDate, convertUTCToLocal, formatDateTime };
+
+const diff = (a?: string | null, b?: string | null) => {
+  if (!a || !b) return null;
+  const ms = new Date(a).getTime() - new Date(b).getTime();
+  if (Number.isNaN(ms)) return null;
+  const sec = Math.floor(ms / 1000);
+  const mins = Math.floor(sec / 60);
+  const hrs = Math.floor(mins / 60);
+  const days = Math.floor(hrs / 24);
+  if (days > 0) return `${days}d ${hrs % 24}h`;
+  if (hrs > 0) return `${hrs}h ${mins % 60}m`;
+  if (mins > 0) return `${mins}m`;
+  return `${sec}s`;
+};
+export { toDateStandard, toInputDate, convertUTCToLocal, formatDateTime, diff };
