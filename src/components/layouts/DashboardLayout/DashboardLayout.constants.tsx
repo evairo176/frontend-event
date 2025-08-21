@@ -1,5 +1,7 @@
 import {
   BanknoteArrowDown,
+  BanknoteArrowUp,
+  BanknoteX,
   Blocks,
   Calendar,
   Columns3Cog,
@@ -47,6 +49,12 @@ const SIDEBAR_ADMIN = [
     label: "Transaction",
     href: "/admin/transaction",
     icon: <BanknoteArrowDown />,
+  },
+  {
+    key: "refund",
+    label: "Refund",
+    href: "/admin/refund",
+    icon: <BanknoteX />,
   },
   {
     key: "user",

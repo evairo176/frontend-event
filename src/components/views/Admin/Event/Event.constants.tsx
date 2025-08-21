@@ -20,6 +20,11 @@ const COLUMN_LIST_EVENT = [
     sort: true,
   },
   {
+    name: "COMPANY",
+    uid: "company.name",
+    sort: true,
+  },
+  {
     name: "START DATE",
     uid: "startDate",
     sort: true,

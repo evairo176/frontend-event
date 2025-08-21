@@ -37,6 +37,14 @@ const Event = (props: Props) => {
               </div>
             </Tooltip>
           );
+        case "company.name":
+          return (
+            <Tooltip content={event?.city?.name}>
+              <div className="line-clamp-2 cursor-pointer">
+                {event?.createdBy?.company?.name || "Internal"}
+              </div>
+            </Tooltip>
+          );
         case "category.name":
           return (
             <Tooltip content={event?.category?.name}>

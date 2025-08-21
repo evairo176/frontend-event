@@ -11,6 +11,7 @@ const endpoint = {
   SESSION: "/session",
   USER: "/user",
   VOUCHER: "/voucher",
+  REFUND: "/refund",
 };
 
 export default endpoint;

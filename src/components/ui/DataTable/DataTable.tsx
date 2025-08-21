@@ -430,13 +430,18 @@ const DataTable = ({
           onSortChange={setSortDescriptor}
           classNames={{
             base: "max-w-full",
-            wrapper: cn("shadow-none border-0 rounded-lg overflow-x-auto", {
-              "overflow-y-hidden": isLoading,
-            }),
+            wrapper: cn(
+              "shadow-none border-0 rounded-lg overflow-hidden hover:overflow-auto",
+              {
+                "overflow-hidden": isLoading,
+              },
+            ),
             table: "min-h-[400px]",
             thead:
               "[&>tr]:first:shadow-none from-slate-100 via-gray-100 to-slate-100",
-            tbody: "divide-y divide-gray-100 bg-white",
+            // ⬇️ tambahkan util ini agar baris mulai dari atas, bukan tengah
+            tbody:
+              "divide-y divide-gray-100 bg-white !items-start !justify-start !content-start",
           }}
         >
           <TableHeader columns={columnsWithNo}>
@@ -476,8 +481,6 @@ const DataTable = ({
                     // First and last column styling
                     "first:rounded-tl-lg last:rounded-tr-lg",
                     "first:border-l-0 last:border-r-0",
-                    // Prevent background overflow
-                    "relative overflow-hidden",
                     // Prevent background overflow
                     "relative overflow-hidden",
                   )}
