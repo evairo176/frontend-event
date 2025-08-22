@@ -7,7 +7,6 @@ import {
   IUpdateProfile,
   IUpdatePassword,
   IResetPassword,
-  IVerificationOTP,
   IRegisterCompany,
 } from "@/types/Auth";
 

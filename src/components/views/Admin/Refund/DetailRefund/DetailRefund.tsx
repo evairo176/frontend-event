@@ -279,7 +279,7 @@ const DetailRefund = () => {
                 <div className="text-sm text-default-500">Order</div>
                 <div className="flex items-center gap-2 font-medium">
                   <Link
-                    href={`/admin/orders/${refund?.order.id}`}
+                    href={`/admin/transaction/${refund?.order.orderId}`}
                     className="text-sm text-primary underline underline-offset-4"
                   >
                     {refund?.order.orderId}
@@ -423,7 +423,7 @@ const DetailRefund = () => {
             <div className="flex items-center justify-between">
               <span className="text-sm text-default-500">Order</span>
               <Link
-                href={`/admin/orders/${refund?.order.id}`}
+                href={`/admin/transaction/${refund?.order.orderId}`}
                 className="text-sm text-primary underline underline-offset-4"
               >
                 {refund?.order.orderId}

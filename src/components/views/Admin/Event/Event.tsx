@@ -29,10 +29,16 @@ const Event = (props: Props) => {
       const cellValue = event[columnKey as keyof typeof event];
 
       switch (columnKey) {
+        case "name":
+          return (
+              <div className="cursor-pointer text-nowrap">
+                {cellValue}
+              </div>
+          );
         case "city.name":
           return (
             <Tooltip content={event?.city?.name}>
-              <div className="line-clamp-2 cursor-pointer">
+              <div className="line-clamp-2 cursor-pointer text-nowrap">
                 {event?.city?.name}
               </div>
             </Tooltip>
@@ -40,7 +46,7 @@ const Event = (props: Props) => {
         case "company.name":
           return (
             <Tooltip content={event?.city?.name}>
-              <div className="line-clamp-2 cursor-pointer">
+              <div className="line-clamp-2 cursor-pointer text-nowrap">
                 {event?.createdBy?.company?.name || "Internal"}
               </div>
             </Tooltip>
@@ -48,7 +54,7 @@ const Event = (props: Props) => {
         case "category.name":
           return (
             <Tooltip content={event?.category?.name}>
-              <div className="line-clamp-2 cursor-pointer">
+              <div className="line-clamp-2 cursor-pointer text-nowrap">
                 {event?.category?.name}
               </div>
             </Tooltip>

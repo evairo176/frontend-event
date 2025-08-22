@@ -1,5 +1,10 @@
 const COLUMN_LIST_REFUND = [
   {
+    name: "ACTIONS",
+    uid: "actions",
+    sort: false,
+  },
+  {
     name: "REQUESTER",
     uid: "requester",
     sort: false,
@@ -49,11 +54,7 @@ const COLUMN_LIST_REFUND = [
     uid: "createdAt",
     sort: true,
   },
-  {
-    name: "ACTIONS",
-    uid: "actions",
-    sort: false,
-  },
+
 ];
 
 export { COLUMN_LIST_REFUND };

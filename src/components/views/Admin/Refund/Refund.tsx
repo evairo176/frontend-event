@@ -1,12 +1,11 @@
 import DataTable from "@/components/ui/DataTable";
-import { Avatar, Chip, Tooltip, useDisclosure } from "@heroui/react";
+import { Avatar, Button, Chip, Tooltip, useDisclosure } from "@heroui/react";
 import React, { Key, ReactNode, useCallback } from "react";
 import { COLUMN_LIST_REFUND } from "./Refund.constants";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import ButtonAction from "@/components/commons/ButtonAction";
 import { convertUTCToLocal } from "@/utils/date";
-import useRefund from "./useRefund";
+
 import { convertIDR } from "@/utils/currency";
 import {
   Table,
@@ -16,14 +15,23 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/table";
+import ActionStatusModal from "./ActionStatusModal/ActionStatusModal";
+import useRefund from "./useRefund";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const Refund = (props: Props) => {
   const { push, query } = useRouter();
 
-  const { dataRefund, isLoadingRefund, isRefetchingRefund, refetchRefund } =
-    useRefund();
+  const {
+    dataRefund,
+    isLoadingRefund,
+    isRefetchingRefund,
+    refetchRefund,
+    selectedId,
+    setSelectedId,
+  } = useRefund();
 
   const renderCell = useCallback(
     (refund: any, columnKey: Key) => {
@@ -33,13 +41,16 @@ const Refund = (props: Props) => {
         case "requester":
           return (
             <div className="flex flex-row items-center gap-2">
-              <Avatar size="lg" src="/images/user/user.png" />
+              <Avatar
+                size="lg"
+                src={`${refund?.requester?.profilePicture ? refund?.requester?.profilePicture : "/images/Refund/user.png"}`}
+              />
               <div>
                 <h3 className="text-xs text-gray-700">
                   {refund?.requester?.fullname}
                 </h3>
                 <p className="text-xs text-gray-500">
-                  {refund?.requester?.username}
+                  {refund?.requester?.Refundname}
                 </p>
                 <p className="text-xs text-gray-500">
                   {refund?.requester?.email}
@@ -156,7 +167,7 @@ const Refund = (props: Props) => {
                 Admin: {refund?.adminNote}
               </p>
               <p className="text-nowrap text-xs text-gray-500">
-                User: {refund?.reason}
+                Refund: {refund?.reason}
               </p>
             </div>
           );
@@ -165,7 +176,14 @@ const Refund = (props: Props) => {
           return `${convertIDR(Number(cellValue))}`;
         case "status":
           let Status = (
-            <Chip color="warning" variant="dot">
+            <Chip
+              color="warning"
+              variant="dot"
+              onClick={() => {
+                actionStatusModal.onOpen();
+                setSelectedId(refund.id);
+              }}
+            >
               PENDING
             </Chip>
           );
@@ -201,7 +219,7 @@ const Refund = (props: Props) => {
     },
     [push],
   );
-
+  const actionStatusModal = useDisclosure();
   return (
     <section>
       {Object.keys(query)?.length > 0 && (
@@ -216,6 +234,14 @@ const Refund = (props: Props) => {
           refetch={refetchRefund}
         />
       )}
+
+      <ActionStatusModal
+        refetchRefund={refetchRefund}
+        {...actionStatusModal}
+        selectedId={selectedId}
+        confirmText="Confirm"
+        cancelText="Cancel"
+      />
     </section>
   );
 };
